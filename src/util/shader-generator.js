@@ -1,17 +1,21 @@
 const vertCode3D = `
-    attribute vec3 vPosition;
+    attribute vec3 aPosition;
+    attribute vec2 aTexcoord;
+    attribute vec3 aNormal;
 
     uniform float fudgeFactor;
     uniform mat4 mTransform;
     uniform mat4 mProjection;
 
-    varying float color;
+    varying float vColor;
+    varying vec2 vTexcoord;
 
     void main(void) {
-        vec4 transformedPos = mTransform * vec4(vPosition.xy, vPosition.z * -1.0, 1.0);
+        vec4 transformedPos = mTransform * vec4(aPosition.xy, aPosition.z * -1.0, 1.0);
         vec4 projectedPos   = mProjection * transformedPos;
 
-        color = min(max((1.0 - transformedPos.z) / 2.0, 0.0), 1.0);
+        vColor = min(max((1.0 - transformedPos.z) / 2.0, 0.0), 1.0);
+        vTexcoord = aTexcoord;
 
         if (fudgeFactor < 0.5) gl_Position = projectedPos;
         else {
@@ -24,19 +28,24 @@ const vertCode3D = `
 const fragCode3D = {
     light: `
         precision mediump float;
-        uniform vec3 vColor;
-        varying float color;
+        uniform vec3 uColor;
+        uniform sampler2D uTexture;
+        uniform bool uUseTexture;
+
+        varying float vColor;
+        varying vec2 vTexcoord;
 
         void main(void) {
-            gl_FragColor = vec4(vColor * color, 1.0);
+            if (uUseTexture) gl_FragColor = texture2D(uTexture, vTexcoord);
+            else gl_FragColor = vec4(uColor, 1.0);
         }
     `,
     flat: `
         precision mediump float;
-        uniform vec3 vColor;
+        uniform vec3 uColor;
 
         void main(void) {
-            gl_FragColor = vec4(vColor, 1.0);
+            gl_FragColor = vec4(uColor, 1.0);
         }
     `
 }
