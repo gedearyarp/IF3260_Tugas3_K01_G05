@@ -33,25 +33,24 @@ function save(state) {
 function load(state, glState, event) {
     let file = event.target.files[0];
     if (!file) {
-      console.log("No file selected.");
+        console.log("No file selected.");
     }
 
     let reader = new FileReader();
     reader.readAsText(file);
     reader.onload = function (event) {
-      let data = JSON.parse(event.target.result);
+        let data = JSON.parse(event.target.result);
 
-      state.shape = data.shape;
-      state.projection = data.projection;
-      state.color = data.color;
-      state.shading = data.shading;
-      state.animation = data.animation;
-      state.camera = data.camera;
+        state.shape = data.shape;
+        state.projection = data.projection;
+        state.color = data.color;
+        state.shading = data.shading;
+        state.animation = data.animation;
+        state.camera = data.camera;
 
-      loadShape(state, glState);
-      updateUI(state);
+        loadShape(state, glState);
+        updateUI(state);
     };
 }
-  
 
 export { save, load };

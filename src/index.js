@@ -1,6 +1,5 @@
 import { vertCode3D, fragCode3D, generateShaderProgram } from "./util/shader-generator.js";
 import { projectionType, shadingType, shapeType, defaultState } from "./config/constant.js";
-import { cube, pyramid, diamond } from "./config/object.js";
 import { configureEventListener, updateUI } from "./event-listener.js";
 import { mat4 } from "./util/mat4.js";
 
@@ -9,22 +8,10 @@ let state, glState;
 let lightProgram, flatProgram;
 let vertexBuffer, indexBuffer;
 
-function checkBrowserCompatibility(gl) {
-    if (!gl) {
-        alert("WebGL tidak tersedia di browser ini.");
-        return false;
-    }
-    return true;
-}
-
 function generateState() {
     state = {
         shape: defaultState.shape,
         projection: defaultState.projection,
-        color: defaultState.color,
-
-        shading: defaultState.shading,
-        animation: defaultState.animation,
 
         transformation: {
             translation: {
@@ -103,19 +90,7 @@ function playAnimation() {
     updateUI(state);
 }
 
-function render() {
-    if (state.animation) playAnimation();
-
-    const transformationMatrix = calculateTransformMatrix();
-    const projectionMatrix = calculateProjectionMatrix();
-
-    let program = state.shading === shadingType.LIGHT ? lightProgram : flatProgram;
-    let positionLoc = gl.getAttribLocation(program, "vPosition");
-    let colorLoc = gl.getUniformLocation(program, "vColor");
-    let transformLoc = gl.getUniformLocation(program, "mTransform");
-    let projectionLoc = gl.getUniformLocation(program, "mProjection");
-    let fudgeFactorLoc = gl.getUniformLocation(program, "fudgeFactor");
-
+function drawObject() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
@@ -141,6 +116,26 @@ function render() {
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(glState.indices), gl.STATIC_DRAW);
 
     gl.drawElements(gl.TRIANGLES, glState.indices.length, gl.UNSIGNED_SHORT, 0);
+}
+
+function drawArticulatedObject() {
+    drawObject
+}
+
+function render() {
+    if (state.animation) playAnimation();
+
+    const transformationMatrix = calculateTransformMatrix();
+    const projectionMatrix = calculateProjectionMatrix();
+
+    let program = state.shading === shadingType.LIGHT ? lightProgram : flatProgram;
+    let positionLoc = gl.getAttribLocation(program, "aPosition");
+    let colorLoc = gl.getUniformLocation(program, "Color");
+    let transformLoc = gl.getUniformLocation(program, "mTransform");
+    let projectionLoc = gl.getUniformLocation(program, "mProjection");
+    let fudgeFactorLoc = gl.getUniformLocation(program, "fudgeFactor");
+
+    
 
     requestAnimationFrame(render);
 }
@@ -152,7 +147,10 @@ function main() {
     canvas = document.getElementById("my-canvas");
     gl = canvas.getContext("webgl");
 
-    if (!checkBrowserCompatibility(gl)) return;
+    if (!gl) {
+        alert("WebGL tidak tersedia di browser ini.");
+        return;
+    }
 
     lightProgram = generateShaderProgram(gl, vertCode3D, fragCode3D.light);
     flatProgram = generateShaderProgram(gl, vertCode3D, fragCode3D.flat); 
@@ -160,4 +158,4 @@ function main() {
     requestAnimationFrame(render);
 }
 
-main();
+window.onload = main();
