@@ -67,9 +67,9 @@ const fragCode3D = `
     varying vec3 vTsLightPos;
     varying vec3 vTsFragPos;
 
-    uniform samplerCube uTextureReflective;
-    uniform samplerCube uTextureCubeMap;
     uniform sampler2D uTextureBump;
+    uniform samplerCube uTextureReflective;
+    uniform samplerCube uTextureImage;
 
     uniform vec3 uWorldCameraPosition;
     uniform bool uUseShading;
@@ -96,7 +96,7 @@ const fragCode3D = `
             vec4 color = textureCube(uTextureReflective, reflectVector);
             gl_FragColor = color;
         } else if (uTextureType == 2) { // cube map
-            gl_FragColor = texture2D(uTextureCubeMap, vTexCoord);
+            gl_FragColor = texture2D(uTextureImage, vTexCoord);
         }
 
         if (uUseShading) {
@@ -108,13 +108,13 @@ const fragCode3D = `
 `
 
 
-function generateShaderProgram (gl, vertCode, fragCode) {
+function generateShaderProgram (gl) {
     let vertShader = gl.createShader(gl.VERTEX_SHADER);
-    gl.shaderSource(vertShader, vertCode);
+    gl.shaderSource(vertShader, vertCode3D);
     gl.compileShader(vertShader);
 
     let fragShader = gl.createShader(gl.FRAGMENT_SHADER);
-    gl.shaderSource(fragShader, fragCode);
+    gl.shaderSource(fragShader, fragCode3D);
     gl.compileShader(fragShader);
 
     let program = gl.createProgram();
@@ -124,11 +124,10 @@ function generateShaderProgram (gl, vertCode, fragCode) {
 
     let success = gl.getProgramParameter(program, gl.LINK_STATUS);
     if (!success) {
-        console.log('Program tidak dapat digunakan');
-        return;
+        throw new Error("Could not compile WebGL program. " + gl.getProgramInfoLog(program));
     }
 
     return program;
 }
 
-export { generateShaderProgram, vertCode3D, fragCode3D };
+export { generateShaderProgram };
