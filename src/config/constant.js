@@ -1,7 +1,8 @@
 const shapeType = {
-    CUBE: 'CUBE',
-    PYRAMID: 'PYRAMID',
-    DIAMOND: 'DIAMOND',
+    PERSON: 'PERSON',
+    DOG: 'DOG',
+    TABLE: 'TABLE',
+    CAR: 'CAR',
 };
 
 const projectionType = {
@@ -15,35 +16,12 @@ const shadingType = {
     FLAT: 'FLAT',
 };
 
-const defaultState = {
-    shape: shapeType.CUBE,
-    projection: projectionType.ORTHOGRAPHIC,
-    color: "#000000",
+const textureType = {
+    COLOR: -1,
+    BUMP: 0,
+    REFLECTIVE: 1,
+    IMAGE: 2,
+}
 
-    shading: shadingType.LIGHT,
-    animation: false,
 
-    transformation: {
-        translation: {
-            x: 0,
-            y: 0,
-            z: 0,
-        },
-        rotation: {
-            x: 0,
-            y: 0,
-            z: 0,
-        },
-        scalation: {
-            x: 1,
-            y: 1,
-            z: 1,
-        },
-    },
-    camera: {
-        radius: 0,
-        rotation: 0,
-    },
-};
-
-export { projectionType, shadingType, shapeType, defaultState };
+export { projectionType, shadingType, shapeType, textureType };

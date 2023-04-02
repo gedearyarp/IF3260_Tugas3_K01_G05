@@ -8,40 +8,6 @@ let state, glState;
 let lightProgram, flatProgram;
 let vertexBuffer, indexBuffer;
 
-function generateState() {
-    state = {
-        shape: defaultState.shape,
-        projection: defaultState.projection,
-
-        transformation: {
-            translation: {
-                x: defaultState.transformation.translation.x,
-                y: defaultState.transformation.translation.y,
-                z: defaultState.transformation.translation.z,
-            },
-            rotation: {
-                x: defaultState.transformation.rotation.x,
-                y: defaultState.transformation.rotation.y,
-                z: defaultState.transformation.rotation.z,
-            },
-            scalation: {
-                x: defaultState.transformation.scalation.x,
-                y: defaultState.transformation.scalation.y,
-                z: defaultState.transformation.scalation.z,
-            },
-        },
-        camera: {
-            radius: defaultState.camera.radius,
-            rotation: defaultState.camera.rotation,
-        },
-    };
-
-    glState = {
-        vertices: cube.vertices,
-        indices: cube.indices,
-    };
-}
-
 function hexToRgb(hex) {
     let r = parseInt(hex.slice(1, 3), 16);
     let g = parseInt(hex.slice(3, 5), 16);
