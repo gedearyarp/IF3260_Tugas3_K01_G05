@@ -1,5 +1,5 @@
 import { shadingType, projectionType, shapeType, defaultState } from "./config/constant.js";
-import { cube, pyramid, diamond } from "./config/object.js";
+import { cube, pyramid, diamond } from "./config/model.js";
 import { save, load } from "./util/save-load.js";
 
 function setDefaultState(state) {

@@ -1,6 +1,15 @@
-import { projectionType } from "../config/constant.js";
+import { vec3 } from "./vec3.js";
 
 export const mat4 = {
+    identityMatrix: function () {
+        return [
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1
+        ];
+    },
+
     scalationMatrix: function (x, y, z) {
         return [
             x, 0, 0, 0,
@@ -42,32 +51,6 @@ export const mat4 = {
         ];
 
         return this.mult(this.mult(rotationX, rotationY), rotationZ);
-    },
-
-    projectionMatrix: function (type) {
-        switch (type) {
-            case projectionType.ORTHOGRAPHIC:
-                return [
-                    1, 0, 0, 0,
-                    0, 1, 0, 0,
-                    0, 0, 1, 0,
-                    0, 0, 0, 1
-                ];
-            case projectionType.OBLIQUE:
-                return [
-                    1, 0, 0, 0,
-                    0, 1, 0, 0,
-                    Math.cos(64/180*Math.PI)/2, Math.cos(64/180*Math.PI)/2, 1, 0,
-                    0, 0, 0, 1
-                ];
-            case projectionType.PERSPECTIVE:
-                return [
-                    1, 0, 0, 0,
-                    0, 1, 0, 0,
-                    0, 0, 1, 0,
-                    0, 0, 0, 1
-                ];
-        }
     },
 
     mult: function (a, b) {
@@ -138,4 +121,50 @@ export const mat4 = {
 
         return temp;
     },
+
+    lookAt: function (eye, center, up) {
+        let z = vec3.normalize(vec3.sub(eye, center));
+        let x = vec3.normalize(vec3.cross(up, z));
+        let y = vec3.cross(z, x);
+
+        return [
+            x[0], x[1], x[2], 0,
+            y[0], y[1], y[2], 0,
+            z[0], z[1], z[2], 0,
+            eye[0], eye[1], eye[2], 1
+        ];
+    },
+
+    orthographic: function (left, right, bottom, top, near, far) {
+        return [
+            2 / (right - left), 0, 0, 0,
+            0, 2 / (top - bottom), 0, 0,
+            0, 0, 2 / (near - far), 0,
+            (left + right) / (left - right), (bottom + top) / (bottom - top), (near + far) / (near - far), 1
+        ];
+    },
+
+    perspective: function (fovy, aspect, near, far) {
+        let f = 1 / Math.tan(fovy / 2);
+        let nf = 1 / (near - far);
+
+        return [
+            f / aspect, 0, 0, 0,
+            0, f, 0, 0,
+            0, 0, (far + near) * nf, -1,
+            0, 0, (2 * far * near) * nf, 0
+        ];
+    },
+
+    oblique: function (a, b) {
+        const cot = 1 / Math.tan(a);
+        const cot2 = 1 / Math.tan(b);
+
+        return [
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            cot, cot2, 1, 0,
+            0, 0, 0, 1
+        ];
+    }
 };

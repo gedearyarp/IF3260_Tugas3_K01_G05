@@ -1,6 +1,6 @@
 import { updateUI } from "../event-listener.js";
 import { shapeType } from "../config/constant.js";
-import { cube, pyramid, diamond } from "../config/object.js";
+import { cube, pyramid, diamond } from "../config/model.js";
 
 function loadShape(state, glState) {
     switch (state.shape) {

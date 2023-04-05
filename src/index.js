@@ -22,6 +22,9 @@ function main() {
 
     const modelProgram = generateShaderProgram(modelGl);
     const componentProgram = generateShaderProgram(componentGl);
+
+    
+
     requestAnimationFrame(render);
 }
 

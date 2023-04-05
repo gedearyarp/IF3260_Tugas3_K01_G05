@@ -23,11 +23,11 @@ export class ArticulatedObject {
         return this.object;
     }
 
-    draw() {
-        this.object.draw();
+    draw(projectionMat, viewMat, cameraPos, useShading) {
+        this.object.draw(projectionMat, viewMat, cameraPos, useShading);
 
         for (let i = 0; i < this.child.length; i++) {
-            this.child[i].draw();
+            this.child[i].draw(projectionMat, viewMat, cameraPos, useShading);
         }
     }
 }
