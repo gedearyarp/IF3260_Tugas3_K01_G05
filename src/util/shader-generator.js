@@ -57,7 +57,7 @@ const vertCode3D = `
 `
 
 const fragCode3D = `
-    precision highp float;
+    precision mediump float;
 
     varying vec3 vWorldPosition;
     varying vec3 vWorldNormal;
@@ -80,7 +80,7 @@ const fragCode3D = `
 
         gl_FragColor = vec4(vColor, 1.0);
 
-        if (uTextureType == 0) { // bump
+        if (uTextureType == 0) {
             vec3 lightDirection = normalize(vTsLightPos - vTsFragPos);
             vec3 albedo = texture2D(uTextureBump, vTexCoord).rgb;
             vec3 ambient = 0.3 * albedo;
@@ -89,13 +89,12 @@ const fragCode3D = `
             float diffuse = max(dot(lightDirection, norm), 0.0);
 
             gl_FragColor = vec4(ambient + diffuse * albedo, 1.0);
-        } else if (uTextureType == 1) { // reflective
+        } else if (uTextureType == 1) {
             vec3 worldCameraToVertex = normalize(vWorldPosition - uWorldCameraPosition);
             vec3 reflectVector = reflect(worldCameraToVertex, worldNormal);
 
-            vec4 color = textureCube(uTextureReflective, reflectVector);
-            gl_FragColor = color;
-        } else if (uTextureType == 2) { // cube map
+            gl_FragColor = textureCube(uTextureReflective, reflectVector);
+        } else if (uTextureType == 2) {
             gl_FragColor = texture2D(uTextureImage, vTexCoord);
         }
 
@@ -122,7 +121,7 @@ function generateShaderProgram (gl) {
     gl.attachShader(program, fragShader);
     gl.linkProgram(program);
 
-    let success = gl.getProgramParameter(program, gl.LINK_STATUS);
+    const success = gl.getProgramParameter(program, gl.LINK_STATUS);
     if (!success) {
         throw new Error("Could not compile WebGL program. " + gl.getProgramInfoLog(program));
     }

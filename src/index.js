@@ -1,13 +1,9 @@
 import { generateShaderProgram } from "./util/shader-generator.js";
-import { configureEventListener, updateUI } from "./event-listener.js";
-
-function render() {
-
-    requestAnimationFrame(render);
-}
+// import { configureEventListener } from "./event-listener.js";
+import { GLRenderer } from "./util/gl-renderer.js";
 
 function main() {
-    configureEventListener(state, glState);
+    // configureEventListener(state, glState);
 
     const modelCanvas = document.getElementById("model-canvas");
     const componentCanvas = document.getElementById("component-canvas");
@@ -23,9 +19,11 @@ function main() {
     const modelProgram = generateShaderProgram(modelGl);
     const componentProgram = generateShaderProgram(componentGl);
 
-    
+    const modelRenderer = new GLRenderer(modelGl, modelProgram);
+    const componentRenderer = new GLRenderer(componentGl, componentProgram);
 
-    requestAnimationFrame(render);
+    requestAnimationFrame(modelRenderer.render.bind(modelRenderer));
+    requestAnimationFrame(componentRenderer.render.bind(componentRenderer));
 }
 
 main();

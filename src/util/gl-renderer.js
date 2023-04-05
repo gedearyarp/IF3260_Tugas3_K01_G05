@@ -1,10 +1,12 @@
 import { projectionType } from '../config/constant.js';
 import { mat4 } from './mat4.js';
+import { PersonModel } from '../config/person.js';
 
 class GLRenderer {
     constructor(gl, program) {
         this.gl = gl;
         this.program = program;
+        this.object = PersonModel.get();
 
         this.projection = projectionType.ORTHOGRAPHIC;
         this.cameraAngle = 0;
@@ -73,3 +75,5 @@ class GLRenderer {
         return deg * Math.PI / 180;
     }
 }
+
+export { GLRenderer };
