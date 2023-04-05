@@ -6,7 +6,7 @@ class GLRenderer {
     constructor(gl, program) {
         this.gl = gl;
         this.program = program;
-        this.object = PersonModel.get();
+        this.object = PersonModel.get(gl, program);
 
         this.projection = projectionType.ORTHOGRAPHIC;
         this.cameraAngle = 0;

@@ -1,10 +1,10 @@
 import { GlObject } from "./gl-object.js";
 
 export class ArticulatedObject {
-    constructor(name, vertices, indices) {
+    constructor(gl, program, name, vertices, indices) {
         this.name = name;
         this.child = [];
-        this.object = new GlObject(name, vertices, indices);
+        this.object = new GlObject(gl, program, name, vertices, indices);
     }
 
     addChild(child) {
