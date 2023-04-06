@@ -70,7 +70,7 @@ export class GlObject {
             z: 1
         }
     }
-
+    
     __bindBuffers(gl) {
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW);
