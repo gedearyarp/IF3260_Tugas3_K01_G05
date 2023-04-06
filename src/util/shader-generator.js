@@ -68,8 +68,8 @@ const fragCode3D = `
     varying vec3 vTsFragPos;
 
     uniform sampler2D uTextureBump;
+    uniform sampler2D uTextureImage;
     uniform samplerCube uTextureReflective;
-    uniform samplerCube uTextureImage;
 
     uniform vec3 uWorldCameraPosition;
     uniform bool uUseShading;
