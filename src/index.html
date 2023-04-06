@@ -112,27 +112,27 @@
                         <div>
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="shading-model" checked>
-                                <label class="custom-control-label" for="shading">Shading</label>
+                                <label class="custom-control-label" for="shading-model">Shading</label>
                             </div>
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="animation-model">
-                                <label class="custom-control-label" for="animation">Animation</label>
+                                <label class="custom-control-label" for="animation-model">Animation</label>
                             </div>
                         </div>
                         <div>
                             <div>
                                 Camera Angle:
-                                <input type="range" class="form-range" id="camera-model-radius" 
-                                    min="0" max="1" value="0" step="0.01" oninput="this.nextElementSibling.value = this.value"
+                                <input type="range" class="form-range" id="camera-angle-model" 
+                                    min="0" max="360" value="0" step="1" oninput="this.nextElementSibling.value = this.value"
                                 >
                                 <output style="width: 2rem;">0</output>
                             </div>
                             <div>
-                                Camera Rotation: 
-                                <input type="range" class="form-range" id="camera-model-rotation"
-                                    min="0" max="360" value="0" step="1" oninput="this.nextElementSibling.value = this.value"
+                                Camera Radius: 
+                                <input type="range" class="form-range" id="camera-radius-model"
+                                    min="0" max="1000" value="300" step="1" oninput="this.nextElementSibling.value = this.value"
                                 >
-                                <output style="width: 2rem;">0</output>
+                                <output style="width: 2rem;">300</output>
                             </div>
                         </div>
                     </div>

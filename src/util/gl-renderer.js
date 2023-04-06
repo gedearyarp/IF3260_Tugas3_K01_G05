@@ -1,4 +1,4 @@
-import { projectionType, textureType } from '../config/constant.js';
+import { projectionType, textureType, modelType } from '../config/constant.js';
 import { mat4 } from './mat4.js';
 import { PersonModel } from '../config/person.js';
 
@@ -29,75 +29,74 @@ class GLRenderer {
     }
 
     setModel() {
+        const renderer = this;
         return {
             object: function (objectType) {
-                const gl = this.model.gl;
-                const program = this.model.program;
-
                 if (objectType === modelType.PERSON) {
-                    this.model.object = PersonModel.getModel(gl, program);
+                    renderer.model.object = PersonModel.getModel();
                 } else if (objectType === modelType.DOG) {
-                    this.model.object = DogModel.get(gl, program);
+                    renderer.model.object = PersonModel.getModel(); // TODO: change to dog model
                 } else if (objectType === modelType.TABLE) {
-                    this.model.object = TableModel.get(gl, program);
+                    renderer.model.object = PersonModel.getModel(); // TODO: change to table model
                 } else if (objectType === modelType.CAR) {
-                    this.model.object = CarModel.get(gl, program);
+                    renderer.model.object = PersonModel.getModel(); // TODO: change to car model
                 }
             },
 
             projection: function (projectionType) {
-                this.model.projection = projectionType;
+                renderer.model.projection = projectionType;
             },
 
             texture: function (textureType) {
-                this.model.texture = textureType;
+                renderer.model.texture = textureType;
             },
 
             cameraAngle: function (angle) {
-                this.model.cameraAngle = angle;
+                renderer.model.cameraAngle = angle;
             },
 
             cameraRadius: function (radius) {
-                this.model.cameraRadius = radius;
+                renderer.model.cameraRadius = radius;
             },
 
             useShading: function (useShading) {
-                this.model.useShading = useShading;
+                renderer.model.useShading = useShading;
             },
         }
     }
 
     setComponent() {
+        const renderer = this;
         return {
             object: function (name) {
-                this.component.object = this.model.object.findComponentByName(name);
+                renderer.component.object = renderer.model.object.findComponentByName(name);
             },
 
             projection: function (projectionType) {
-                this.component.projection = projectionType;
+                renderer.component.projection = projectionType;
             },
 
             texture: function (textureType) {
-                this.component.texture = textureType;
+                renderer.component.texture = textureType;
             },
 
             cameraAngle: function (angle) {
-                this.component.cameraAngle = angle;
+                renderer.component.cameraAngle = angle;
             },
 
             cameraRadius: function (radius) {
-                this.component.cameraRadius = radius;
+                renderer.component.cameraRadius = radius;
             },
 
             useShading: function (useShading) {
-                this.component.useShading = useShading;
+                renderer.component.useShading = useShading;
             },
         }
     }
 
     render() {
-        this.__renderModel();
-        this.__renderComponent();
+        // this.__renderModel();
+        // this.__renderComponent();
 
         requestAnimationFrame(this.render.bind(this));
     }

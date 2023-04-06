@@ -2,51 +2,75 @@ import { projectionType, modelType, textureType } from "./config/constant.js";
 
 function modelEventListener(renderer) {
     document.getElementById("person").addEventListener("change", (event) => {
-        renderer.setObject(modelType.PERSON);
+        renderer.setModel().object(modelType.PERSON)
     });
 
-    document.getElementById("dog").addEventListener("dog", (event) => {
-        renderer.setObject(modelType.DOG);
+    document.getElementById("dog").addEventListener("change", (event) => {
+        renderer.setModel().object(modelType.DOG);
     });
 
     document.getElementById("table").addEventListener("change", (event) => {
-        renderer.setObject(modelType.TABLE);
+        renderer.setModel().object(modelType.TABLE);
     });
 
     document.getElementById("car").addEventListener("change", (event) => {
-        renderer.setObject(modelType.CAR);
+        renderer.setModel().object(modelType.CAR);
     });
 }
 
 function projectionModelEventListener(renderer) {
     document.getElementById("orthographic-model").addEventListener("change", (event) => {
-        renderer.setProjection(projectionType.ORTHOGRAPHIC);
+        renderer.setModel().projection(projectionType.ORTHOGRAPHIC);
     });
 
     document.getElementById("oblique-model").addEventListener("change", (event) => {
-        renderer.setProjection(projectionType.OBLIQUE);
+        renderer.setModel().projection(projectionType.OBLIQUE);
     });
 
     document.getElementById("perspective-model").addEventListener("change", (event) => {
-        renderer.setProjection(projectionType.PERSPECTIVE);
+        renderer.setModel().projection(projectionType.PERSPECTIVE);
     });
 }
 
 function textureModelEventListener(renderer) {
     document.getElementById("color-model").addEventListener("change", (event) => {
-        renderer.setTexture(textureType.COLOR);
+        renderer.setModel().texture(textureType.COLOR);
     });
 
     document.getElementById("bump-model").addEventListener("change", (event) => {
-        renderer.setTexture(textureType.BUMP);
+        renderer.setModel().texture(textureType.BUMP);
     });
 
     document.getElementById("reflective-model").addEventListener("change", (event) => {
-        renderer.setTexture(textureType.REFLECTIVE);
+        renderer.setModel().texture(textureType.REFLECTIVE);
     });
 
     document.getElementById("custom-model").addEventListener("change", (event) => {
-        renderer.setTexture(textureType.IMAGE);
+        renderer.setModel().texture(textureType.IMAGE);
+    });
+}
+
+function shadingModelEventListener(renderer) {
+    document.getElementById("shading-model").addEventListener("change", (event) => {
+        renderer.setModel().useShading(event.target.checked);
+    });
+}
+
+function animationModelEventListener(renderer) {
+    document.getElementById("animation-model").addEventListener("change", (event) => {
+        renderer.setModel().animation(event.target.checked);
+    });
+}
+
+function cameraAngleModelEventListener(renderer) {
+    document.getElementById("camera-angle-model").addEventListener("input", (event) => {
+        renderer.setModel().cameraAngle(event.target.value);
+    });
+}
+
+function cameraRadiusModelEventListener(renderer) {
+    document.getElementById("camera-radius-model").addEventListener("input", (event) => {
+        renderer.setModel().cameraRadius(event.target.value);
     });
 }
 
@@ -183,6 +207,10 @@ function configureEventListener(renderer) {
     modelEventListener(renderer);
     projectionModelEventListener(renderer);
     textureModelEventListener(renderer);
+    shadingModelEventListener(renderer);
+    animationModelEventListener(renderer);
+    cameraAngleModelEventListener(renderer);
+    cameraRadiusModelEventListener(renderer);
 }
 
 export { configureEventListener };
