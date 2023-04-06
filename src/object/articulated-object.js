@@ -1,10 +1,10 @@
 import { GlObject } from "./gl-object.js";
 
 export class ArticulatedObject {
-    constructor(gl, program, name, vertices, indices) {
+    constructor(name, vertices, indices) {
         this.name = name;
         this.child = [];
-        this.object = new GlObject(gl, program, name, vertices, indices);
+        this.object = new GlObject(name, vertices, indices);
     }
 
     addChild(child) {
@@ -23,11 +23,24 @@ export class ArticulatedObject {
         return this.object;
     }
 
-    draw(projectionMat, viewMat, cameraPos, useShading) {
-        this.object.draw(projectionMat, viewMat, cameraPos, useShading);
+    draw(gl, program, projectionMat, viewMat, cameraPos, useShading) {
+        this.object.draw(gl, program, projectionMat, viewMat, cameraPos, useShading);
 
         for (let i = 0; i < this.child.length; i++) {
-            this.child[i].draw(projectionMat, viewMat, cameraPos, useShading);
+            this.child[i].draw(gl, program, projectionMat, viewMat, cameraPos, useShading);
         }
+    }
+
+    findComponentByName(name) {
+        if (this.name === name) {
+            return this.object;
+        }
+
+        for (let i = 0; i < this.child.length; i++) {
+            const result = this.child[i].findComponentByName(name);
+            if (result !== null) return result;
+        }
+
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-import { updateUI } from "../event-listener.js";
+import { updateUI } from "../view.js";
 import { shapeType } from "../config/constant.js";
 import { cube, pyramid, diamond } from "../config/person.js";
 

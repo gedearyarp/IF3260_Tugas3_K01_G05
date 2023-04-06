@@ -3,36 +3,137 @@ import { mat4 } from './mat4.js';
 import { PersonModel } from '../config/person.js';
 
 class GLRenderer {
-    constructor(gl, program) {
-        this.gl = gl;
-        this.program = program;
-        this.object = PersonModel.get(gl, program);
+    constructor(modelGl, modelProgram, componentGl, componentProgram) {
+        this.model = {
+            gl: modelGl,
+            program: modelProgram,
+            object: PersonModel.getModel(),
+            projection: projectionType.ORTHOGRAPHIC,
+            texture: textureType.BUMP,
+            cameraAngle: 0,
+            cameraRadius: 300,
+            useShading: true,
+            animation: false,
+        }
 
-        this.projection = projectionType.ORTHOGRAPHIC;
-        this.texture = textureType.BUMP;
-        this.cameraAngle = 0;
-        this.cameraRadius = 300;
-        this.useShading = true;
+        this.component = {
+            gl: componentGl,
+            program: componentProgram,
+            object: this.model.object.findComponentByName("head"),
+            projection: projectionType.ORTHOGRAPHIC,
+            texture: textureType.BUMP,
+            cameraAngle: 0,
+            cameraRadius: 300,
+            useShading: true,
+        }
     }
 
-    setObject(object) {
-        this.object = object;
+    setModel() {
+        return {
+            object: function (objectType) {
+                const gl = this.model.gl;
+                const program = this.model.program;
+
+                if (objectType === modelType.PERSON) {
+                    this.model.object = PersonModel.getModel(gl, program);
+                } else if (objectType === modelType.DOG) {
+                    this.model.object = DogModel.get(gl, program);
+                } else if (objectType === modelType.TABLE) {
+                    this.model.object = TableModel.get(gl, program);
+                } else if (objectType === modelType.CAR) {
+                    this.model.object = CarModel.get(gl, program);
+                }
+            },
+
+            projection: function (projectionType) {
+                this.model.projection = projectionType;
+            },
+
+            texture: function (textureType) {
+                this.model.texture = textureType;
+            },
+
+            cameraAngle: function (angle) {
+                this.model.cameraAngle = angle;
+            },
+
+            cameraRadius: function (radius) {
+                this.model.cameraRadius = radius;
+            },
+
+            useShading: function (useShading) {
+                this.model.useShading = useShading;
+            },
+        }
+    }
+
+    setComponent() {
+        return {
+            object: function (name) {
+                this.component.object = this.model.object.findComponentByName(name);
+            },
+
+            projection: function (projectionType) {
+                this.component.projection = projectionType;
+            },
+
+            texture: function (textureType) {
+                this.component.texture = textureType;
+            },
+
+            cameraAngle: function (angle) {
+                this.component.cameraAngle = angle;
+            },
+
+            cameraRadius: function (radius) {
+                this.component.cameraRadius = radius;
+            },
+
+            useShading: function (useShading) {
+                this.component.useShading = useShading;
+            },
+        }
     }
 
     render() {
-        this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-        this.gl.enable(this.gl.DEPTH_TEST);
-        this.gl.enable(this.gl.CULL_FACE);
-
-        const projectionMat = this.__getProjectionMatrix();
-        const viewMat = this.__getViewMatrix();
-        const cameraPos = this.__getCameraPos();
-        const useShading = this.useShading;
-
-        this.object.draw(projectionMat, viewMat, cameraPos, useShading);
+        this.__renderModel();
+        this.__renderComponent();
 
         requestAnimationFrame(this.render.bind(this));
+    }
+
+    __renderModel() {
+        const gl = this.model.gl;
+        const program = this.model.program;
+
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.enable(gl.DEPTH_TEST);
+        gl.enable(gl.CULL_FACE);
+
+        const projectionMat = this.__getProjectionMatrix(gl);
+        const viewMat = this.__getViewMatrix();
+        const cameraPos = this.__getCameraPos();
+        const useShading = this.model.useShading;
+
+        this.model.object.draw(gl, program, projectionMat, viewMat, cameraPos, useShading);
+    }
+
+    __renderComponent() {
+        const gl = this.component.gl;
+        const program = this.component.program;
+
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.enable(gl.DEPTH_TEST);
+        gl.enable(gl.CULL_FACE);
+
+        const projectionMat = this.__getProjectionMatrix(gl);
+        const viewMat = this.__getViewMatrix();
+        const cameraPos = this.__getCameraPos();
+        const useShading = this.component.useShading;
+
+        this.component.object.draw(gl, program, projectionMat, viewMat, cameraPos, useShading);
     }
 
     __getViewMatrix() {;
@@ -55,8 +156,8 @@ class GLRenderer {
         return [cameraEye[12], cameraEye[13], cameraEye[14]];
     }
 
-    __getProjectionMatrix() {
-        const aspect = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
+    __getProjectionMatrix(gl) {
+        const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
         const zNear = 1;
         const zFar = 2000;
         const degA = this.__degToRad(45);

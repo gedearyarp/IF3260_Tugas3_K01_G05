@@ -1,16 +1,23 @@
 import { ArticulatedObject } from "../object/articulated-object.js";
 
 class PersonModel {
-    static get(gl, program) {
-        const body = PersonModel.__generateBody(gl, program);
-        const head = PersonModel.__generateHead(gl, program);
+    static getComponents() {
+        return {
+            BODY: "body",
+            HEAD: "head",
+        }
+    }
+
+    static getModel() {
+        const body = PersonModel.__generateBody();
+        const head = PersonModel.__generateHead();
 
         body.addChild(head);
 
         return body;
     }
 
-    static __generateBody(gl, program) {
+    static __generateBody() {
         const vertices = [
             1.0, 1.0, 1.0,
             1.0, 1.0, -1.0,
@@ -31,7 +38,7 @@ class PersonModel {
             1, 2, 6, 1, 6, 5
         ];
 
-        return new ArticulatedObject(gl, program, "body", vertices, indices);
+        return new ArticulatedObject("body", vertices, indices);
     }
     
     static __generateHead(gl, program) {
@@ -55,7 +62,7 @@ class PersonModel {
             1, 2, 6, 1, 6, 5
         ];
 
-        return new ArticulatedObject(gl, program, "head", vertices, indices);
+        return new ArticulatedObject("head", vertices, indices);
     }
 }
 

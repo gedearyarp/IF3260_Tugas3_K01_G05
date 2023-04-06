@@ -1,4 +1,4 @@
-const shapeType = {
+const modelType = {
     PERSON: 'PERSON',
     DOG: 'DOG',
     TABLE: 'TABLE',
@@ -24,4 +24,4 @@ const textureType = {
 }
 
 
-export { projectionType, shadingType, shapeType, textureType };
+export { projectionType, shadingType, modelType, textureType };
