@@ -1,4 +1,4 @@
-import { projectionType } from '../config/constant.js';
+import { projectionType, textureType } from '../config/constant.js';
 import { mat4 } from './mat4.js';
 import { PersonModel } from '../config/person.js';
 
@@ -9,6 +9,7 @@ class GLRenderer {
         this.object = PersonModel.get(gl, program);
 
         this.projection = projectionType.ORTHOGRAPHIC;
+        this.texture = textureType.BUMP;
         this.cameraAngle = 0;
         this.cameraRadius = 300;
         this.useShading = true;

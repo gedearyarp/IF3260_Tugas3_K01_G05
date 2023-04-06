@@ -1,10 +1,11 @@
-import { shadingType, projectionType, shapeType, defaultState } from "./config/constant.js";
+import { shadingType, projectionType, shapeType, defaultState, textureType } from "./config/constant.js";
 import { cube, pyramid, diamond } from "./config/person.js";
 import { save, load } from "./util/save-load.js";
 
 function setDefaultState(state) {
     state.shape = defaultState.shape;
     state.projection = defaultState.projection;
+    state.texture = defaultState.texture;
     state.color = defaultState.color;
 
     state.shading = defaultState.shading;
@@ -36,6 +37,10 @@ function updateUI(state) {
     document.getElementById("orthographic").checked = state.projection === projectionType.ORTHOGRAPHIC;
     document.getElementById("oblique").checked = state.projection === projectionType.OBLIQUE;
     document.getElementById("perspective").checked = state.projection === projectionType.PERSPECTIVE;
+
+    document.getElementById("bump").checked = state.texture === textureType.BUMP;
+    document.getElementById("reflection").checked = state.texture === textureType.REFLECTIVE;
+    document.getElementById("custom").checked = state.texture === textureType.IMAGE;
 
     document.getElementById("translation-x").value = state.transformation.translation.x;
     document.getElementById("translation-y").value = state.transformation.translation.y;
@@ -110,6 +115,20 @@ function projectionEventListener(state) {
 
     document.getElementById("perspective").addEventListener("change", (event) => {
         state.projection = projectionType.PERSPECTIVE;
+    });
+}
+
+function textureEventListener(state) {
+    document.getElementById("bump").addEventListener("change", (event) => {
+        state.projection = textureType.BUMP;
+    });
+
+    document.getElementById("reflection").addEventListener("change", (event) => {
+        state.projection = textureType.REFLECTIVE;
+    });
+
+    document.getElementById("custom").addEventListener("change", (event) => {
+        state.projection = textureType.IMAGE;
     });
 }
 
@@ -201,6 +220,7 @@ function configureEventListener(state, glState) {
     colorEventListener(state);
     shapeEventListener(state, glState);
     projectionEventListener(state);
+    textureEventListener(state);
 
     translationEventListener(state);
     rotationEventListener(state);
