@@ -1,76 +1,114 @@
 import { projectionType, modelType, textureType } from "./config/constant.js";
 
-function modelEventListener(renderer) {
+function modelEventListener(controller) {
     document.getElementById("person").addEventListener("change", (event) => {
-        renderer.setModel().object(modelType.PERSON)
+        controller.setModel().object(modelType.PERSON)
     });
 
     document.getElementById("dog").addEventListener("change", (event) => {
-        renderer.setModel().object(modelType.DOG);
+        controller.setModel().object(modelType.DOG);
     });
 
     document.getElementById("table").addEventListener("change", (event) => {
-        renderer.setModel().object(modelType.TABLE);
+        controller.setModel().object(modelType.TABLE);
     });
 
     document.getElementById("car").addEventListener("change", (event) => {
-        renderer.setModel().object(modelType.CAR);
+        controller.setModel().object(modelType.CAR);
     });
 }
 
-function projectionModelEventListener(renderer) {
+function projectionModelEventListener(controller) {
     document.getElementById("orthographic-model").addEventListener("change", (event) => {
-        renderer.setModel().projection(projectionType.ORTHOGRAPHIC);
+        controller.setModel().projection(projectionType.ORTHOGRAPHIC);
     });
 
     document.getElementById("oblique-model").addEventListener("change", (event) => {
-        renderer.setModel().projection(projectionType.OBLIQUE);
+        controller.setModel().projection(projectionType.OBLIQUE);
     });
 
     document.getElementById("perspective-model").addEventListener("change", (event) => {
-        renderer.setModel().projection(projectionType.PERSPECTIVE);
+        controller.setModel().projection(projectionType.PERSPECTIVE);
     });
 }
 
-function textureModelEventListener(renderer) {
+function textureModelEventListener(controller) {
     document.getElementById("color-model").addEventListener("change", (event) => {
-        renderer.setModel().texture(textureType.COLOR);
+        controller.setModel().texture(textureType.COLOR);
     });
 
     document.getElementById("bump-model").addEventListener("change", (event) => {
-        renderer.setModel().texture(textureType.BUMP);
+        controller.setModel().texture(textureType.BUMP);
     });
 
     document.getElementById("reflective-model").addEventListener("change", (event) => {
-        renderer.setModel().texture(textureType.REFLECTIVE);
+        controller.setModel().texture(textureType.REFLECTIVE);
     });
 
     document.getElementById("custom-model").addEventListener("change", (event) => {
-        renderer.setModel().texture(textureType.IMAGE);
+        controller.setModel().texture(textureType.IMAGE);
     });
 }
 
-function shadingModelEventListener(renderer) {
+function shadingModelEventListener(controller) {
     document.getElementById("shading-model").addEventListener("change", (event) => {
-        renderer.setModel().useShading(event.target.checked);
+        controller.setModel().useShading(event.target.checked);
     });
 }
 
-function animationModelEventListener(renderer) {
+function animationModelEventListener(controller) {
     document.getElementById("animation-model").addEventListener("change", (event) => {
-        renderer.setModel().animation(event.target.checked);
+        controller.setModel().animation(event.target.checked);
     });
 }
 
-function cameraAngleModelEventListener(renderer) {
+function cameraAngleModelEventListener(controller) {
     document.getElementById("camera-angle-model").addEventListener("input", (event) => {
-        renderer.setModel().cameraAngle(event.target.value);
+        controller.setModel().cameraAngle(event.target.value);
     });
 }
 
-function cameraRadiusModelEventListener(renderer) {
+function cameraRadiusModelEventListener(controller) {
     document.getElementById("camera-radius-model").addEventListener("input", (event) => {
-        renderer.setModel().cameraRadius(event.target.value);
+        controller.setModel().cameraRadius(event.target.value);
+    });
+}
+
+function transformationModelEventListener(controller) {
+    document.getElementById("translate-x-model").addEventListener("input", (event) => {
+        controller.setModel().translate(0, event.target.value);
+    });
+
+    document.getElementById("translate-y-model").addEventListener("input", (event) => {
+        controller.setModel().translate(1, event.target.value);
+    });
+
+    document.getElementById("translate-z-model").addEventListener("input", (event) => {
+        controller.setModel().translate(2, event.target.value);
+    });
+
+    document.getElementById("rotate-x-model").addEventListener("input", (event) => {
+        controller.setModel().rotate(0, event.target.value);
+    });
+
+    document.getElementById("rotate-y-model").addEventListener("input", (event) => {
+        controller.setModel().rotate(1, event.target.value);
+    });
+
+    document.getElementById("rotate-z-model").addEventListener("input", (event) => {
+        controller.setModel().rotate(2, event.target.value);
+    });
+
+    document.getElementById("scale-x-model").addEventListener("input", (event) => {
+        controller.setModel().scale(0, event.target.value);
+    });
+
+    document.getElementById("scale-y-model").addEventListener("input", (event) => {
+        controller.setModel().scale(1, event.target.value);
+    });
+
+    document.getElementById("scale-z-model").addEventListener("input", (event) => {
+        controller.setModel().scale(2, event.target.value);
     });
 }
 
@@ -203,14 +241,110 @@ function cameraRadiusModelEventListener(renderer) {
 //     });
 // }
 
-function configureEventListener(renderer) {
-    modelEventListener(renderer);
-    projectionModelEventListener(renderer);
-    textureModelEventListener(renderer);
-    shadingModelEventListener(renderer);
-    animationModelEventListener(renderer);
-    cameraAngleModelEventListener(renderer);
-    cameraRadiusModelEventListener(renderer);
+function projectionComponentEventListener(controller) {
+    document.getElementById("orthographic-component").addEventListener("change", (event) => {
+        controller.setComponent().projection(projectionType.ORTHOGRAPHIC);
+    });
+
+    document.getElementById("oblique-component").addEventListener("change", (event) => {
+        controller.setComponent().projection(projectionType.OBLIQUE);
+    });
+
+    document.getElementById("perspective-component").addEventListener("change", (event) => {
+        controller.setComponent().projection(projectionType.PERSPECTIVE);
+    });
+}
+
+function textureComponentEventListener(controller) {
+    document.getElementById("color-component").addEventListener("change", (event) => {
+        controller.setComponent().texture(textureType.COLOR);
+    });
+
+    document.getElementById("bump-component").addEventListener("change", (event) => {
+        controller.setComponent().texture(textureType.BUMP);
+    });
+
+    document.getElementById("reflective-component").addEventListener("change", (event) => {
+        controller.setComponent().texture(textureType.REFLECTIVE);
+    });
+
+    document.getElementById("custom-component").addEventListener("change", (event) => {
+        controller.setComponent().texture(textureType.IMAGE);
+    });
+}
+
+function shadingComponentEventListener(controller) {
+    document.getElementById("shading-component").addEventListener("change", (event) => {
+        controller.setComponent().useShading(event.target.checked);
+    });
+}
+
+function cameraAngleComponentEventListener(controller) {
+    document.getElementById("camera-angle-component").addEventListener("input", (event) => {
+        controller.setComponent().cameraAngle(event.target.value);
+    });
+}
+
+function cameraRadiusComponentEventListener(controller) {
+    document.getElementById("camera-radius-component").addEventListener("input", (event) => {
+        controller.setComponent().cameraRadius(event.target.value);
+    });
+}
+
+function transformationComponentEventListener(controller) {
+    document.getElementById("translate-x-component").addEventListener("input", (event) => {
+        controller.setComponent().translate(0, event.target.value);
+    });
+
+    document.getElementById("translate-y-component").addEventListener("input", (event) => {
+        controller.setComponent().translate(1, event.target.value);
+    });
+
+    document.getElementById("translate-z-component").addEventListener("input", (event) => {
+        controller.setComponent().translate(2, event.target.value);
+    });
+
+    document.getElementById("rotate-x-component").addEventListener("input", (event) => {
+        controller.setComponent().rotate(0, event.target.value);
+    });
+
+    document.getElementById("rotate-y-component").addEventListener("input", (event) => {
+        controller.setComponent().rotate(1, event.target.value);
+    });
+
+    document.getElementById("rotate-z-component").addEventListener("input", (event) => {
+        controller.setComponent().rotate(2, event.target.value);
+    });
+
+    document.getElementById("scale-x-component").addEventListener("input", (event) => {
+        controller.setComponent().scale(0, event.target.value);
+    });
+
+    document.getElementById("scale-y-component").addEventListener("input", (event) => {
+        controller.setComponent().scale(1, event.target.value);
+    });
+
+    document.getElementById("scale-z-component").addEventListener("input", (event) => {
+        controller.setComponent().scale(2, event.target.value);
+    });
+}
+
+function configureEventListener(controller) {
+    modelEventListener(controller);
+    projectionModelEventListener(controller);
+    textureModelEventListener(controller);
+    shadingModelEventListener(controller);
+    animationModelEventListener(controller);
+    cameraAngleModelEventListener(controller);
+    cameraRadiusModelEventListener(controller);
+    transformationModelEventListener(controller);
+
+    projectionComponentEventListener(controller);
+    textureComponentEventListener(controller);
+    shadingComponentEventListener(controller);
+    cameraAngleComponentEventListener(controller);
+    cameraRadiusComponentEventListener(controller);
+    transformationComponentEventListener(controller);
 }
 
 export { configureEventListener };

@@ -2,7 +2,7 @@ import { projectionType, textureType, modelType } from '../config/constant.js';
 import { mat4 } from './mat4.js';
 import { PersonModel } from '../config/person.js';
 
-class GLRenderer {
+class Controller {
     constructor(modelGl, modelProgram, componentGl, componentProgram) {
         this.model = {
             gl: modelGl,
@@ -14,6 +14,9 @@ class GLRenderer {
             cameraRadius: 300,
             useShading: true,
             animation: false,
+            translate: [0, 0, 0],
+            rotate: [0, 0, 0],
+            scale: [1, 1, 1],
         }
 
         this.component = {
@@ -25,71 +28,102 @@ class GLRenderer {
             cameraAngle: 0,
             cameraRadius: 300,
             useShading: true,
+            translate: [0, 0, 0],
+            rotate: [0, 0, 0],
+            scale: [1, 1, 1],
         }
     }
 
     setModel() {
-        const renderer = this;
+        const controller = this;
         return {
             object: function (objectType) {
                 if (objectType === modelType.PERSON) {
-                    renderer.model.object = PersonModel.getModel();
+                    controller.model.object = PersonModel.getModel();
                 } else if (objectType === modelType.DOG) {
-                    renderer.model.object = PersonModel.getModel(); // TODO: change to dog model
+                    controller.model.object = PersonModel.getModel(); // TODO: change to dog model
                 } else if (objectType === modelType.TABLE) {
-                    renderer.model.object = PersonModel.getModel(); // TODO: change to table model
+                    controller.model.object = PersonModel.getModel(); // TODO: change to table model
                 } else if (objectType === modelType.CAR) {
-                    renderer.model.object = PersonModel.getModel(); // TODO: change to car model
+                    controller.model.object = PersonModel.getModel(); // TODO: change to car model
                 }
             },
 
             projection: function (projectionType) {
-                renderer.model.projection = projectionType;
+                controller.model.projection = projectionType;
             },
 
             texture: function (textureType) {
-                renderer.model.texture = textureType;
+                controller.model.texture = textureType;
             },
 
             cameraAngle: function (angle) {
-                renderer.model.cameraAngle = angle;
+                controller.model.cameraAngle = angle;
             },
 
             cameraRadius: function (radius) {
-                renderer.model.cameraRadius = radius;
+                controller.model.cameraRadius = radius;
             },
 
             useShading: function (useShading) {
-                renderer.model.useShading = useShading;
+                controller.model.useShading = useShading;
+            },
+
+            animation: function (animation) {
+                controller.model.animation = animation;
+            },
+
+            translate: function (id, translate) {
+                controller.model.translate[id] = translate;
+            },
+
+            rotate: function (id, rotate) {
+                controller.model.rotate[id] = rotate;
+            },
+
+            scale: function (id, scale) {
+                controller.model.scale[id] = scale;
             },
         }
     }
 
     setComponent() {
-        const renderer = this;
+        const controller = this;
         return {
             object: function (name) {
-                renderer.component.object = renderer.model.object.findComponentByName(name);
+                controller.component.object = controller.model.object.findComponentByName(name);
             },
 
             projection: function (projectionType) {
-                renderer.component.projection = projectionType;
+                controller.component.projection = projectionType;
             },
 
             texture: function (textureType) {
-                renderer.component.texture = textureType;
+                controller.component.texture = textureType;
             },
 
             cameraAngle: function (angle) {
-                renderer.component.cameraAngle = angle;
+                controller.component.cameraAngle = angle;
             },
 
             cameraRadius: function (radius) {
-                renderer.component.cameraRadius = radius;
+                controller.component.cameraRadius = radius;
             },
 
             useShading: function (useShading) {
-                renderer.component.useShading = useShading;
+                controller.component.useShading = useShading;
+            },
+
+            translate: function (id, translate) {
+                controller.component.translate[id] = translate;
+            },
+
+            rotate: function (id, rotate) {
+                controller.component.rotate[id] = rotate;
+            },
+
+            scale: function (id, scale) {
+                controller.component.scale[id] = scale;
             },
         }
     }
@@ -177,4 +211,4 @@ class GLRenderer {
     }
 }
 
-export { GLRenderer };
+export { Controller };

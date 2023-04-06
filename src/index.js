@@ -1,6 +1,6 @@
 import { generateShaderProgram } from "./util/shader-generator.js";
 import { configureEventListener } from "./view.js";
-import { GLRenderer } from "./util/gl-renderer.js";
+import { Controller } from "./util/controller.js";
 
 function main() {
     const modelCanvas = document.getElementById("model-canvas");
@@ -17,10 +17,10 @@ function main() {
     const modelProgram = generateShaderProgram(modelGl);
     const componentProgram = generateShaderProgram(componentGl);
 
-    const renderer = new GLRenderer(modelGl, modelProgram, componentGl, componentProgram);
+    const controller = new Controller(modelGl, modelProgram, componentGl, componentProgram);
 
-    configureEventListener(renderer);
+    configureEventListener(controller);
 
-    requestAnimationFrame(renderer.render.bind(renderer));}
+    requestAnimationFrame(controller.render.bind(controller));}
 
 main();

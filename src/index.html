@@ -103,7 +103,7 @@
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="texture-model-type" id="custom-model">
                             <label class="form-check-label">
-                                Custom Image
+                                Image
                             </label>
                         </div>
                     </div>
@@ -154,21 +154,21 @@
                     <div class="d-flex flex-row" style="gap: 1rem; margin-bottom: 1rem;">
                         <div>
                             X: 
-                            <input type="range" class="form-range" id="rotation-model-x"
+                            <input type="range" class="form-range" id="rotate-x-model"
                                 min="0" max="360" value="0" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">0</output>
                         </div>
                         <div>
                             Y: 
-                            <input type="range" class="form-range" id="rotation-model-y"
+                            <input type="range" class="form-range" id="rotate-y-model"
                                 min="0" max="360" value="0" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">0</output>
                         </div>
                         <div>
                             Z: 
-                            <input type="range" class="form-range" id="rotation-model-z"
+                            <input type="range" class="form-range" id="rotate-z-model"
                                 min="0" max="360" value="0" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">0</output>
@@ -179,21 +179,21 @@
                     <div class="d-flex flex-row" style="gap: 1rem; margin-bottom: 1rem;">
                         <div>
                             X: 
-                            <input type="range" class="form-range" id="translation-model-x"
+                            <input type="range" class="form-range" id="translate-x-model"
                                 min="-100" max="100" value="0" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">0</output>
                         </div>
                         <div>
                             Y:
-                            <input type="range" class="form-range" id="translation-model-y"
+                            <input type="range" class="form-range" id="translate-y-model"
                                 min="-100" max="100" value="0" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">0</output>
                         </div>
                         <div>
                             Z: 
-                            <input type="range" class="form-range" id="translation-model-z"
+                            <input type="range" class="form-range" id="translate-z-model"
                                 min="-100" max="100" value="0" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">0</output>
@@ -204,21 +204,21 @@
                     <div class="d-flex flex-row" style="gap: 1rem;">
                         <div>
                             X: 
-                            <input type="range" class="form-range" id="scalation-model-x"
+                            <input type="range" class="form-range" id="scale-x-model"
                                 min="0" max="2" value="1" step="0.1" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">1</output>
                         </div>
                         <div>
                             Y: 
-                            <input type="range" class="form-range" id="scalation-model-y"
+                            <input type="range" class="form-range" id="scale-y-model"
                                 min="0" max="2" value="1" step="0.1" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">1</output>
                         </div>
                         <div>
                             Z: 
-                            <input type="range" class="form-range" id="scalation-model-z"
+                            <input type="range" class="form-range" id="scale-z-model"
                                 min="0" max="2" value="1" step="0.1" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">1</output>
@@ -293,19 +293,19 @@
                     <div class="d-flex flex-row" style="gap: 1rem">
                         <p style="font-weight: 600;">Projection: </p>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="projection-object-type" id="orthographic" checked>
+                            <input class="form-check-input" type="radio" name="projection-object-type" id="orthographic-component" checked>
                             <label class="form-check-label">
                                 Orthographic
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="projection-object-type" id="oblique">
+                            <input class="form-check-input" type="radio" name="projection-object-type" id="oblique-component">
                             <label class="form-check-label">
                                 Oblique
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="projection-object-type" id="perspective">
+                            <input class="form-check-input" type="radio" name="projection-object-type" id="perspective-component">
                             <label class="form-check-label">
                                 Perspective
                             </label>
@@ -315,21 +315,27 @@
                     <div class="d-flex flex-row" style="gap: 1rem">
                         <p style="font-weight: 600;">Texture: </p>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="texture-object-type" id="bump" checked>
+                            <input class="form-check-input" type="radio" name="texture-object-type" id="color-component" checked>
+                            <label class="form-check-label">
+                                Color
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="texture-object-type" id="bump-component" checked>
                             <label class="form-check-label">
                                 Bump
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="texture-object-type" id="reflection">
+                            <input class="form-check-input" type="radio" name="texture-object-type" id="reflective-component">
                             <label class="form-check-label">
-                                Reflection
+                                Reflective
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="texture-object-type" id="custom">
+                            <input class="form-check-input" type="radio" name="texture-object-type" id="custom-component">
                             <label class="form-check-label">
-                                Custom
+                                Image
                             </label>
                         </div>
                     </div>
@@ -337,24 +343,24 @@
                     <div class="d-flex flex-row" style="justify-content: space-between">
                         <div>
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="shading-object" checked>
-                                <label class="custom-control-label" for="shading">Shading</label>
+                                <input type="checkbox" class="custom-control-input" id="shading-component" checked>
+                                <label class="custom-control-label" for="shading-component">Shading</label>
                             </div>
                         </div>
                         <div>
                             <div>
-                                Camera Radius:
-                                <input type="range" class="form-range" id="camera-object-radius" 
-                                    min="0" max="1" value="0" step="0.01" oninput="this.nextElementSibling.value = this.value"
+                                Camera Angle:
+                                <input type="range" class="form-range" id="camera-angle-component" 
+                                    min="0" max="360" value="0" step="1" oninput="this.nextElementSibling.value = this.value"
                                 >
                                 <output style="width: 2rem;">0</output>
                             </div>
                             <div>
-                                Camera Rotation: 
-                                <input type="range" class="form-range" id="camera-object-rotation"
-                                    min="0" max="360" value="0" step="1" oninput="this.nextElementSibling.value = this.value"
+                                Camera Radius: 
+                                <input type="range" class="form-range" id="camera-radius-component"
+                                    min="0" max="1000" value="300" step="1" oninput="this.nextElementSibling.value = this.value"
                                 >
-                                <output style="width: 2rem;">0</output>
+                                <output style="width: 2rem;">300</output>
                             </div>
                         </div>
                     </div>
@@ -376,21 +382,21 @@
                     <div class="d-flex flex-row" style="gap: 1rem; margin-bottom: 1rem;">
                         <div>
                             X: 
-                            <input type="range" class="form-range" id="rotation-object-x"
+                            <input type="range" class="form-range" id="rotate-x-component"
                                 min="0" max="360" value="0" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">0</output>
                         </div>
                         <div>
                             Y: 
-                            <input type="range" class="form-range" id="rotation-object-y"
+                            <input type="range" class="form-range" id="rotate-y-component"
                                 min="0" max="360" value="0" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">0</output>
                         </div>
                         <div>
                             Z: 
-                            <input type="range" class="form-range" id="rotation-object-z"
+                            <input type="range" class="form-range" id="rotate-z-component"
                                 min="0" max="360" value="0" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">0</output>
@@ -401,21 +407,21 @@
                     <div class="d-flex flex-row" style="gap: 1rem; margin-bottom: 1rem;">
                         <div>
                             X: 
-                            <input type="range" class="form-range" id="translation-object-x"
+                            <input type="range" class="form-range" id="translate-x-component"
                                 min="-100" max="100" value="0" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">0</output>
                         </div>
                         <div>
                             Y:
-                            <input type="range" class="form-range" id="translation-object-y"
+                            <input type="range" class="form-range" id="translate-y-component"
                                 min="-100" max="100" value="0" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">0</output>
                         </div>
                         <div>
                             Z: 
-                            <input type="range" class="form-range" id="translation-object-z"
+                            <input type="range" class="form-range" id="translate-z-component"
                                 min="-100" max="100" value="0" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">0</output>
@@ -426,21 +432,21 @@
                     <div class="d-flex flex-row" style="gap: 1rem;">
                         <div>
                             X: 
-                            <input type="range" class="form-range" id="scalation-object-x"
+                            <input type="range" class="form-range" id="scale-x-component"
                                 min="0" max="2" value="1" step="0.1" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">1</output>
                         </div>
                         <div>
                             Y: 
-                            <input type="range" class="form-range" id="scalation-object-y"
+                            <input type="range" class="form-range" id="scale-y-component"
                                 min="0" max="2" value="1" step="0.1" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">1</output>
                         </div>
                         <div>
                             Z: 
-                            <input type="range" class="form-range" id="scalation-object-z"
+                            <input type="range" class="form-range" id="scale-z-component"
                                 min="0" max="2" value="1" step="0.1" oninput="this.nextElementSibling.value = this.value"
                             >
                             <output style="width: 2rem;">1</output>
