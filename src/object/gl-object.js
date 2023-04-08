@@ -1,4 +1,5 @@
 import { mat4 } from '../util/mat4.js';
+import { vec3 } from '../util/vec3.js';
 
 export class GlObject {
     constructor(name, vertices, indices) {
@@ -16,7 +17,7 @@ export class GlObject {
         this.__bindBuffers(gl);
         this.__setUniforms(gl, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType);
 
-        gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
+        gl.drawArrays(gl.TRIANGLES, 0, this.vertices.length / 3);
     }
 
     __createBuffers(gl) {
@@ -52,38 +53,37 @@ export class GlObject {
     }
 
     __bindBuffers(gl) {
+        const attributesData = this.__generateAttributesData();
+
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attributesData.vertices), gl.STATIC_DRAW);
         gl.vertexAttribPointer(this.positionLoc, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(this.positionLoc);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normals), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attributesData.normals), gl.STATIC_DRAW);
         gl.vertexAttribPointer(this.normalLoc, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(this.normalLoc);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colors), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attributesData.colors), gl.STATIC_DRAW);
         gl.vertexAttribPointer(this.colorLoc, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(this.colorLoc);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.tangentBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.tangents), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attributesData.tangents), gl.STATIC_DRAW);
         gl.vertexAttribPointer(this.tangentLoc, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(this.tangentLoc);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.bitangentBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.bitangents), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attributesData.bitangents), gl.STATIC_DRAW);
         gl.vertexAttribPointer(this.bitangentLoc, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(this.bitangentLoc);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.textureCoords), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attributesData.textureCoords), gl.STATIC_DRAW);
         gl.vertexAttribPointer(this.textureCoordLoc, 2, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(this.textureCoordLoc);
-
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
     }
 
     __setUniforms(gl, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType) {
@@ -240,5 +240,59 @@ export class GlObject {
             }
         };
         return texture;
+    }
+
+    __generateAttributesData() {
+        const attributes = {
+            vertices: [],
+            normals: [],
+            colors: [],
+            tangents: [],
+            bitangents: [],
+            textureCoords: [],
+        }
+
+        const indicesLength = this.indices.length;
+        for (let i=0; i < indicesLength; i += 6) {
+            for (let j=0; j < 6; j++) {
+                const index = this.indices[i + j];
+                const vertex = this.vertices[index];
+                attributes.vertices = attributes.vertices.concat(vertex);
+
+                attributes.colors = attributes.colors.concat([1.0, 1.0, 1.0, 1.0]);
+            }
+            
+            attributes.textureCoords = attributes.textureCoords.concat([
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0,
+                0, 0,
+                1, 1
+            ]);
+        }
+
+        const verticesLength = attributes.vertices.length;
+        for (let i=0; i < verticesLength; i += 9) {
+            const v1 = [attributes.vertices[i], attributes.vertices[i + 1], attributes.vertices[i + 2]];
+            const v2 = [attributes.vertices[i + 3], attributes.vertices[i + 4], attributes.vertices[i + 5]];
+            const v3 = [attributes.vertices[i + 6], attributes.vertices[i + 7], attributes.vertices[i + 8]];
+
+            let tan = vec3.sub(v2, v1);
+            let bitan = vec3.sub(v3, v1);
+            let norm = vec3.cross(tan, bitan);
+
+            tan = vec3.normalize(tan);
+            bitan = vec3.normalize(bitan);
+            norm = vec3.normalize(norm);
+
+            for (let j=0; j < 3; j++) {
+                attributes.tangents = attributes.tangents.concat([tan[0], tan[1], tan[2]]);
+                attributes.bitangents = attributes.bitangents.concat([bitan[0], bitan[1], bitan[2]]);
+                attributes.normals = attributes.normals.concat([norm[0], norm[1], norm[2]]);
+            }
+        }
+
+        return {...attributes};
     }
 }
