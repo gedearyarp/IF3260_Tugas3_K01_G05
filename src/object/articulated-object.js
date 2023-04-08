@@ -31,6 +31,13 @@ export class ArticulatedObject {
         }
     }
 
+    setTexture(gl, program, texture, textureType) {
+        this.object.setTexture(gl, program, texture, textureType);
+        for (let i = 0; i < this.child.length; i++) {
+            this.child[i].setTexture(gl, program, texture, textureType);
+        }
+    }
+
     findComponentByName(name) {
         if (this.name === name) {
             return this.object;
