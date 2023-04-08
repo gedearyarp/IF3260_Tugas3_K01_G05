@@ -7,16 +7,14 @@ export class GlObject {
         this.indices = indices;
     }
 
-    draw(gl, program, projectionMat, viewMat, cameraPos, useShading) {
+    draw(gl, program, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType) {
         this.__createBuffers(gl);
         this.__getLocations(gl, program);
-        this.__setupTransformation();
-        this.__setupTexture();
 
         gl.useProgram(program);
 
         this.__bindBuffers(gl);
-        // this.__setUniforms(gl, projectionMat, viewMat, cameraPos, useShading);
+        this.__setUniforms(gl, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType);
 
     }
 
@@ -52,26 +50,6 @@ export class GlObject {
         this.textureTypeLoc = gl.getUniformLocation(program, 'uTextureType');
     }
 
-    __setupTransformation() {
-        this.rotation = {
-            x: 0,
-            y: 0,
-            z: 0
-        }
-
-        this.translation = {
-            x: 0,
-            y: 0,
-            z: 0
-        }
-
-        this.scalation = {
-            x: 1,
-            y: 1,
-            z: 1
-        }
-    }
-    
     __bindBuffers(gl) {
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW);
@@ -107,42 +85,45 @@ export class GlObject {
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
     }
 
-    __setUniforms(gl) {
-        gl.uniformMatrix4fv(this.projectionLoc, false, this.projection);
-        gl.uniformMatrix4fv(this.viewLoc, false, this.view);
-        gl.uniformMatrix4fv(this.worldLoc, false, this.world);
-        gl.uniformMatrix4fv(this.normalLoc, false, this.normal);
+    __setUniforms(gl, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType) {
+        console.log(projectionMat)
 
-        gl.uniform3fv(this.worldCameraPositionLoc, this.worldCameraPosition);
 
-        gl.uniform1i(this.useShadingLoc, this.useShading);
-        gl.uniform1i(this.textureTypeLoc, this.textureType);
+        gl.uniformMatrix4fv(this.projectionLoc, false, projectionMat);
+        gl.uniformMatrix4fv(this.viewLoc, false, viewMat);
+        gl.uniformMatrix4fv(this.worldLoc, false, transformMat);
 
+        let normalMat;
+        normalMat = mat4.mult(viewMat, transformMat);
+        normalMat = mat4.inverse(normalMat);
+        normalMat = mat4.transpose(normalMat);
+        gl.uniformMatrix4fv(this.normalLoc, false, normalMat);
+
+        gl.uniform3fv(this.worldCameraPositionLoc, cameraPos);
+
+        gl.uniform1i(this.useShadingLoc, Number(useShading));
+        gl.uniform1i(this.textureTypeLoc, Number(textureType));
+
+        const texture = this.__generateTexture(gl);
         gl.uniform1i(this.textureBumpLoc, 0);
         gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, this.textureBump);
+        gl.bindTexture(gl.TEXTURE_2D, texture.bump);
 
-        gl.uniform1i(this.textureReflectiveLoc, 0);
+        gl.uniform1i(this.textureReflectiveLoc, 1);
         gl.activeTexture(gl.TEXTURE1);
-        gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.textureReflective);
+        gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.reflective);
 
-        gl.uniform1i(this.textureImageLoc, 1);
+        gl.uniform1i(this.textureImageLoc, 2);
         gl.activeTexture(gl.TEXTURE2);
-        gl.bindTexture(gl.TEXTURE_2D, this.textureCubemap);
+        gl.bindTexture(gl.TEXTURE_2D, texture.image);
     }
 
-    __setupTexture(gl) {
-        var textureCoordinates = [];
-        for (let i = 0; i < 6; i++) {
-            textureCoordinates.push([
-                0.0, 0.0,
-                1.0, 0.0,
-                1.0, 1.0,
-                0.0, 1.0
-            ]);
+    __generateTexture(gl) {
+        return {
+            bump: this.__getBumpTexture(gl),
+            reflective: this.__getReflectiveTexture(gl),
+            image: this.__getImageTexture(gl)
         }
-        this.textureCoords = textureCoordinates;
-        this.texture = [this.__getBumpTexture(gl), this.__getReflectiveTexture(gl), this.__getImageTexture(gl)];
     }
 
     __getBumpTexture(gl) {
@@ -161,11 +142,12 @@ export class GlObject {
 
         const image = new Image();
         image.src = '../assets/bump.png';
+        image.crossOrigin = "";   // ask for CORS permission
         image.onload = function () {
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
 
-            if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+            if (__isPowerOf2(image.width) && __isPowerOf2(image.height)) {
                 gl.generateMipmap(gl.TEXTURE_2D);
             } else {
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -222,6 +204,7 @@ export class GlObject {
 
             const image = new Image();
             image.src = url;
+            image.crossOrigin = "";   // ask for CORS permission
             image.onload = function () {
                 gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
                 gl.texImage2D(target, level, internalFormat, srcFormat, srcType, image);
@@ -249,11 +232,12 @@ export class GlObject {
 
         const image = new Image();
         image.src = '../assets/universe.png';
+        image.crossOrigin = "";   // ask for CORS permission
         image.onload = function () {
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
 
-            if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+            if (__isPowerOf2(image.width) && __isPowerOf2(image.height)) {
                 gl.generateMipmap(gl.TEXTURE_2D);
             } else {
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -264,7 +248,7 @@ export class GlObject {
         return texture;
     }
 
-    isPowerOf2(value) {
+    __isPowerOf2(value) {
         return (value & (value - 1)) == 0;
     }
 }

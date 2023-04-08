@@ -5,8 +5,8 @@ function modelEventListener(controller) {
         controller.setModel().object(modelType.PERSON)
     });
 
-    document.getElementById("dog").addEventListener("change", (event) => {
-        controller.setModel().object(modelType.DOG);
+    document.getElementById("chicken").addEventListener("change", (event) => {
+        controller.setModel().object(modelType.CHICKEN);
     });
 
     document.getElementById("table").addEventListener("change", (event) => {

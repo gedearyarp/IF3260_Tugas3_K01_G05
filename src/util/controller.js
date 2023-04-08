@@ -1,6 +1,7 @@
 import { projectionType, textureType, modelType } from '../config/constant.js';
 import { mat4 } from './mat4.js';
 import { PersonModel } from '../config/person.js';
+import { ChickenModel } from '../config/chicken.js';
 
 class Controller {
     constructor(modelGl, modelProgram, componentGl, componentProgram) {
@@ -40,8 +41,8 @@ class Controller {
             object: function (objectType) {
                 if (objectType === modelType.PERSON) {
                     controller.model.object = PersonModel.getModel();
-                } else if (objectType === modelType.DOG) {
-                    controller.model.object = PersonModel.getModel(); // TODO: change to dog model
+                } else if (objectType === modelType.CHICKEN) {
+                    controller.model.object = ChickenModel.getModel(); 
                 } else if (objectType === modelType.TABLE) {
                     controller.model.object = PersonModel.getModel(); // TODO: change to table model
                 } else if (objectType === modelType.CAR) {
@@ -129,8 +130,8 @@ class Controller {
     }
 
     render() {
-        // this.__renderModel();
-        // this.__renderComponent();
+        this.__renderModel();
+        this.__renderComponent();
 
         requestAnimationFrame(this.render.bind(this));
     }
@@ -144,12 +145,14 @@ class Controller {
         gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.CULL_FACE);
 
-        const projectionMat = this.__getProjectionMatrix(gl);
+        const projectionMat = this.__getProjectionMatrix(gl, this.model);
         const viewMat = this.__getViewMatrix();
+        const transformMat = this.__getTransformMatrix(this.model);
         const cameraPos = this.__getCameraPos();
         const useShading = this.model.useShading;
+        const textureType = this.model.texture;
 
-        this.model.object.draw(gl, program, projectionMat, viewMat, cameraPos, useShading);
+        this.model.object.draw(gl, program, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType);
     }
 
     __renderComponent() {
@@ -161,12 +164,14 @@ class Controller {
         gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.CULL_FACE);
 
-        const projectionMat = this.__getProjectionMatrix(gl);
+        const projectionMat = this.__getProjectionMatrix(gl, this.component);
         const viewMat = this.__getViewMatrix();
+        const transformMat = this.__getTransformMatrix(this.component);
         const cameraPos = this.__getCameraPos();
         const useShading = this.component.useShading;
+        const textureType = this.component.texture;
 
-        this.component.object.draw(gl, program, projectionMat, viewMat, cameraPos, useShading);
+        this.component.object.draw(gl, program, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType);
     }
 
     __getViewMatrix() {;
@@ -189,14 +194,14 @@ class Controller {
         return [cameraEye[12], cameraEye[13], cameraEye[14]];
     }
 
-    __getProjectionMatrix(gl) {
+    __getProjectionMatrix(gl, object) {
         const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
         const zNear = 1;
         const zFar = 2000;
         const degA = this.__degToRad(45);
         const degB = this.__degToRad(45);
 
-        switch (this.projection) {
+        switch (object.projection) {
             case projectionType.ORTHOGRAPHIC:
                 return mat4.orthographic(-300, 300, -300, 300, zNear, zFar);
             case projectionType.OBLIQUE:
@@ -204,6 +209,19 @@ class Controller {
             case projectionType.PERSPECTIVE:
                 return mat4.perspective(45, aspect, zNear, zFar);
         }
+    }
+
+    __getTransformMatrix(object) {
+        let transformMat = mat4.identityMatrix();
+        const translateMat = mat4.translationMatrix(object.translate[0], object.translate[1], object.translate[2]);
+        const rotateMat = mat4.rotationMatrix(object.rotate[0], object.rotate[1], object.rotate[2]);
+        const scaleMat = mat4.scalationMatrix(object.scale[0], object.scale[1], object.scale[2]);
+
+        transformMat = mat4.mult(transformMat, translateMat);
+        transformMat = mat4.mult(transformMat, rotateMat);
+        transformMat = mat4.mult(transformMat, scaleMat);
+
+        return transformMat;
     }
 
     __degToRad(deg) {
