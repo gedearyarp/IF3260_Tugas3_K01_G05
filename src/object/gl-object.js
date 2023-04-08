@@ -16,6 +16,7 @@ export class GlObject {
         this.__bindBuffers(gl);
         this.__setUniforms(gl, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType);
 
+        gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
     }
 
     __createBuffers(gl) {
@@ -86,9 +87,6 @@ export class GlObject {
     }
 
     __setUniforms(gl, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType) {
-        console.log(projectionMat)
-
-
         gl.uniformMatrix4fv(this.projectionLoc, false, projectionMat);
         gl.uniformMatrix4fv(this.viewLoc, false, viewMat);
         gl.uniformMatrix4fv(this.worldLoc, false, transformMat);
@@ -98,7 +96,6 @@ export class GlObject {
         normalMat = mat4.inverse(normalMat);
         normalMat = mat4.transpose(normalMat);
         gl.uniformMatrix4fv(this.normalLoc, false, normalMat);
-
         gl.uniform3fv(this.worldCameraPositionLoc, cameraPos);
 
         gl.uniform1i(this.useShadingLoc, Number(useShading));
@@ -141,13 +138,12 @@ export class GlObject {
         gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel);
 
         const image = new Image();
-        image.src = '../assets/bump.png';
-        image.crossOrigin = "";   // ask for CORS permission
+        image.src = './assets/bump.png';
         image.onload = function () {
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
 
-            if (__isPowerOf2(image.width) && __isPowerOf2(image.height)) {
+            if ((image.width & (image.width - 1)) === 0 && (image.width & (image.width - 1)) === 0) {
                 gl.generateMipmap(gl.TEXTURE_2D);
             } else {
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -165,27 +161,27 @@ export class GlObject {
         const cubeFaces = [
             {
                 target: gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-                url: '../assets/pos-x.jpg',
+                url: './assets/pos-x.jpg',
             },
             {
                 target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-                url: '../assets/neg-x.jpg',
+                url: './assets/neg-x.jpg',
             },
             {
                 target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-                url: '../assets/pos-y.jpg',
+                url: './assets/pos-y.jpg',
             },
             {
                 target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-                url: '../assets/neg-y.jpg',
+                url: './assets/neg-y.jpg',
             },
             {
                 target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-                url: '../assets/pos-z.jpg',
+                url: './assets/pos-z.jpg',
             },
             {
                 target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
-                url: '../assets/neg-z.jpg',
+                url: './assets/neg-z.jpg',
             },
         ];
 
@@ -204,7 +200,6 @@ export class GlObject {
 
             const image = new Image();
             image.src = url;
-            image.crossOrigin = "";   // ask for CORS permission
             image.onload = function () {
                 gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
                 gl.texImage2D(target, level, internalFormat, srcFormat, srcType, image);
@@ -231,13 +226,12 @@ export class GlObject {
         gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel);
 
         const image = new Image();
-        image.src = '../assets/universe.png';
-        image.crossOrigin = "";   // ask for CORS permission
+        image.src = './assets/universe.png';
         image.onload = function () {
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
 
-            if (__isPowerOf2(image.width) && __isPowerOf2(image.height)) {
+            if ((image.width & (image.width - 1)) === 0 && (image.width & (image.width - 1)) === 0) {
                 gl.generateMipmap(gl.TEXTURE_2D);
             } else {
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -246,9 +240,5 @@ export class GlObject {
             }
         };
         return texture;
-    }
-
-    __isPowerOf2(value) {
-        return (value & (value - 1)) == 0;
     }
 }
