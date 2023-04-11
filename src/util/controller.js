@@ -146,9 +146,9 @@ class Controller {
         gl.enable(gl.CULL_FACE);
 
         const projectionMat = this.__getProjectionMatrix(gl, this.model);
-        const viewMat = this.__getViewMatrix();
+        const viewMat = this.__getViewMatrix(this.model);
         const transformMat = this.__getTransformMatrix(this.model);
-        const cameraPos = this.__getCameraPos();
+        const cameraPos = this.__getCameraPos(this.model);
         const useShading = this.model.useShading;
         const textureType = this.model.texture;
 
@@ -165,28 +165,28 @@ class Controller {
         gl.enable(gl.CULL_FACE);
 
         const projectionMat = this.__getProjectionMatrix(gl, this.component);
-        const viewMat = this.__getViewMatrix();
+        const viewMat = this.__getViewMatrix(this.component);
         const transformMat = this.__getTransformMatrix(this.component);
-        const cameraPos = this.__getCameraPos();
+        const cameraPos = this.__getCameraPos(this.component);
         const useShading = this.component.useShading;
         const textureType = this.component.texture;
 
         this.component.object.draw(gl, program, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType);
     }
 
-    __getViewMatrix() {;
-        const cameraPos = this.__getCameraPos();
+    __getViewMatrix(object) {;
+        const cameraPos = this.__getCameraPos(object);
         const viewMat = mat4.lookAt(cameraPos, [0, 0, 0], [0, 1, 0]);
 
         return mat4.inverse(viewMat);
     }
 
-    __getCameraPos() {
+    __getCameraPos(object) {
         let cameraEye;
 
         const cameraMat = mat4.identityMatrix();
-        const cameraTranslate = mat4.translationMatrix(0, 0, this.cameraRadius);
-        const cameraRotation = mat4.rotationMatrix(0, this.cameraAngle, 0);
+        const cameraTranslate = mat4.translationMatrix(0, 0, object.cameraRadius);
+        const cameraRotation = mat4.rotationMatrix(0, object.cameraAngle, 0);
 
         cameraEye = mat4.mult(cameraMat, cameraTranslate);
         cameraEye = mat4.mult(cameraEye, cameraRotation);

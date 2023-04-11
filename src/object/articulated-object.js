@@ -24,7 +24,7 @@ export class ArticulatedObject {
     }
 
     draw(gl, program, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType) {
-        this.object.draw(gl, program, projectionMat, transformMat, viewMat, cameraPos, useShading, textureType);
+        this.object.draw(gl, program, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType);
 
         for (let i = 0; i < this.child.length; i++) {
             this.child[i].draw(gl, program, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType);

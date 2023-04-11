@@ -6,9 +6,11 @@ export class GlObject {
         this.name = name;
         this.vertices = vertices;
         this.indices = indices;
+
     }
 
     draw(gl, program, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType) {
+        // console.log(projectionMat, viewMat, transformMat, cameraPos, useShading, textureType)
         this.__createBuffers(gl);
         this.__getLocations(gl, program);
 

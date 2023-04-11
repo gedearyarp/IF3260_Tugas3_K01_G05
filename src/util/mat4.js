@@ -68,58 +68,33 @@ export const mat4 = {
         return result;
     },
 
-    inverse: function (a) {
-        let result = [];
-        let temp = [];
+    inverse: function (m) {
+        var r = [];
+        for (var i = 0; i < 16; i++) r.push(0);
 
-        for (let i = 0; i < 4; i++) {
-            for (let j = 0; j < 4; j++) {
-                result[i * 4 + j] = a[i * 4 + j];
-                temp[i * 4 + j] = 0;
-            }
-            temp[i * 4 + i] = 1;
-        }
+        r[0] = m[5]*m[10]*m[15] - m[5]*m[14]*m[11] - m[6]*m[9]*m[15] + m[6]*m[13]*m[11] + m[7]*m[9]*m[14] - m[7]*m[13]*m[10];
+        r[1] = -m[1]*m[10]*m[15] + m[1]*m[14]*m[11] + m[2]*m[9]*m[15] - m[2]*m[13]*m[11] - m[3]*m[9]*m[14] + m[3]*m[13]*m[10];
+        r[2] = m[1]*m[6]*m[15] - m[1]*m[14]*m[7] - m[2]*m[5]*m[15] + m[2]*m[13]*m[7] + m[3]*m[5]*m[14] - m[3]*m[13]*m[6];
+        r[3] = -m[1]*m[6]*m[11] + m[1]*m[10]*m[7] + m[2]*m[5]*m[11] - m[2]*m[9]*m[7] - m[3]*m[5]*m[10] + m[3]*m[9]*m[6];
 
-        for (let i = 0; i < 4; i++) {
-            let max = Math.abs(result[i * 4 + i]);
-            let maxRow = i;
-            for (let j = i + 1; j < 4; j++) {
-                if (Math.abs(result[j * 4 + i]) > max) {
-                    max = Math.abs(result[j * 4 + i]);
-                    maxRow = j;
-                }
-            }
+        r[4] = -m[4]*m[10]*m[15] + m[4]*m[14]*m[11] + m[6]*m[8]*m[15] - m[6]*m[12]*m[11] - m[7]*m[8]*m[14] + m[7]*m[12]*m[10];
+        r[5] = m[0]*m[10]*m[15] - m[0]*m[14]*m[11] - m[2]*m[8]*m[15] + m[2]*m[12]*m[11] + m[3]*m[8]*m[14] - m[3]*m[12]*m[10];
+        r[6] = -m[0]*m[6]*m[15] + m[0]*m[14]*m[7] + m[2]*m[4]*m[15] - m[2]*m[12]*m[7] - m[3]*m[4]*m[14] + m[3]*m[12]*m[6];
+        r[7] = m[0]*m[6]*m[11] - m[0]*m[10]*m[7] - m[2]*m[4]*m[11] + m[2]*m[8]*m[7] + m[3]*m[4]*m[10] - m[3]*m[8]*m[6];
 
-            if (maxRow != i) {
-                for (let j = 0; j < 4; j++) {
-                    let temp1 = result[i * 4 + j];
-                    result[i * 4 + j] = result[maxRow * 4 + j];
-                    result[maxRow * 4 + j] = temp1;
+        r[8] = m[4]*m[9]*m[15] - m[4]*m[13]*m[11] - m[5]*m[8]*m[15] + m[5]*m[12]*m[11] + m[7]*m[8]*m[13] - m[7]*m[12]*m[9];
+        r[9] = -m[0]*m[9]*m[15] + m[0]*m[13]*m[11] + m[1]*m[8]*m[15] - m[1]*m[12]*m[11] - m[3]*m[8]*m[13] + m[3]*m[12]*m[9];
+        r[10] = m[0]*m[5]*m[15] - m[0]*m[13]*m[7] - m[1]*m[4]*m[15] + m[1]*m[12]*m[7] + m[3]*m[4]*m[13] - m[3]*m[12]*m[5];
+        r[11] = -m[0]*m[5]*m[11] + m[0]*m[9]*m[7] + m[1]*m[4]*m[11] - m[1]*m[8]*m[7] - m[3]*m[4]*m[9] + m[3]*m[8]*m[5];
 
-                    temp1 = temp[i * 4 + j];
-                    temp[i * 4 + j] = temp[maxRow * 4 + j];
-                    temp[maxRow * 4 + j] = temp1;
-                }
-            }
+        r[12] = -m[4]*m[9]*m[14] + m[4]*m[13]*m[10] + m[5]*m[8]*m[14] - m[5]*m[12]*m[10] - m[6]*m[8]*m[13] + m[6]*m[12]*m[9];
+        r[13] = m[0]*m[9]*m[14] - m[0]*m[13]*m[10] - m[1]*m[8]*m[14] + m[1]*m[12]*m[10] + m[2]*m[8]*m[13] - m[2]*m[12]*m[9];
+        r[14] = -m[0]*m[5]*m[14] + m[0]*m[13]*m[6] + m[1]*m[4]*m[14] - m[1]*m[12]*m[6] - m[2]*m[4]*m[13] + m[2]*m[12]*m[5];
+        r[15] = m[0]*m[5]*m[10] - m[0]*m[9]*m[6] - m[1]*m[4]*m[10] + m[1]*m[8]*m[6] + m[2]*m[4]*m[9] - m[2]*m[8]*m[5];
 
-            for (let j = 0; j < 4; j++) {
-                let temp1 = result[i * 4 + j] / result[i * 4 + i];
-                result[i * 4 + j] = temp1;
-                temp[i * 4 + j] = temp[i * 4 + j] / temp[i * 4 + i];
-            }
-
-            for (let j = 0; j < 4; j++) {
-                if (j != i) {
-                    for (let k = 0; k < 4; k++) {
-                        let temp1 = result[j * 4 + i];
-                        result[j * 4 + k] -= result[i * 4 + k] * temp1;
-                        temp[j * 4 + k] -= temp[i * 4 + k] * temp1;
-                    }
-                }
-            }
-        }
-
-        return temp;
+        var det = m[0]*r[0] + m[1]*r[4] + m[2]*r[8] + m[3]*r[12];
+        for (var i = 0; i < 16; i++) r[i] /= det;
+        return r;
     },
 
     lookAt: function (eye, center, up) {
@@ -175,5 +150,7 @@ export const mat4 = {
             a[2], a[6], a[10], a[14],
             a[3], a[7], a[11], a[15]
         ];
-    }
+    },
+
+    
 };
