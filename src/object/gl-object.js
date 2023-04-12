@@ -145,7 +145,7 @@ export class GlObject {
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
 
-            if ((image.width & (image.width - 1)) === 0 && (image.width & (image.width - 1)) === 0) {
+            if ((image.width & (image.width - 1)) === 0 && (image.height & (image.height - 1)) === 0) {
                 gl.generateMipmap(gl.TEXTURE_2D);
             } else {
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -233,7 +233,7 @@ export class GlObject {
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
 
-            if ((image.width & (image.width - 1)) === 0 && (image.width & (image.width - 1)) === 0) {
+            if ((image.width & (image.width - 1)) === 0 && (image.height & (image.height - 1)) === 0) {
                 gl.generateMipmap(gl.TEXTURE_2D);
             } else {
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);

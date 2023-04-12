@@ -21,6 +21,10 @@ function main() {
 
     configureEventListener(controller);
 
-    requestAnimationFrame(controller.render.bind(controller));}
+    console.log(controller);
+
+    controller.render();
+    // requestAnimationFrame(controller.render.bind(controller));
+}
 
 main();

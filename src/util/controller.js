@@ -133,7 +133,7 @@ class Controller {
         this.__renderModel();
         this.__renderComponent();
 
-        requestAnimationFrame(this.render.bind(this));
+        // requestAnimationFrame(this.render.bind(this));
     }
 
     __renderModel() {
