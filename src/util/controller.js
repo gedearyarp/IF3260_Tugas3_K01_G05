@@ -131,28 +131,31 @@ class Controller {
 
     render() {
         this.__renderModel();
-        this.__renderComponent();
+        // this.__renderComponent();
 
         // requestAnimationFrame(this.render.bind(this));
     }
 
     __renderModel() {
-        const gl = this.model.gl;
-        const program = this.model.program;
+        let gl = this.model.gl;
+        let program = this.model.program;
 
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.DEPTH_TEST);
-        gl.enable(gl.CULL_FACE);
 
-        const projectionMat = this.__getProjectionMatrix(gl, this.model);
-        const viewMat = this.__getViewMatrix(this.model);
-        const transformMat = this.__getTransformMatrix(this.model);
-        const cameraPos = this.__getCameraPos(this.model);
-        const useShading = this.model.useShading;
-        const textureType = this.model.texture;
+        const transformMat = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+        const projectionMat = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+        const colorVec = [0.5, 0.5, 0.3];
 
-        this.model.object.draw(gl, program, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType);
+        this.model.object.draw(
+            gl, 
+            program, 
+            transformMat, 
+            projectionMat, 
+            colorVec,
+            this.model.useShading,
+            this.model.texture,
+        );
     }
 
     __renderComponent() {

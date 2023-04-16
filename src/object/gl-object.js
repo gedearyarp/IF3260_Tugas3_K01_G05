@@ -9,112 +9,50 @@ export class GlObject {
 
     }
 
-    draw(gl, program, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType) {
-        // console.log(projectionMat, viewMat, transformMat, cameraPos, useShading, textureType)
+    draw(gl, program, transformMat, projectionMat, colorVec, useShading, textureType) {
         this.__createBuffers(gl);
         this.__getLocations(gl, program);
 
         gl.useProgram(program);
 
         this.__bindBuffers(gl);
-        this.__setUniforms(gl, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType);
+        this.__setUniforms(gl, transformMat, projectionMat, colorVec, useShading, textureType);
 
-        gl.drawArrays(gl.TRIANGLES, 0, this.vertices.length / 3);
+        gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
     }
 
     __createBuffers(gl) {
         this.positionBuffer = gl.createBuffer();
-        this.normalBuffer = gl.createBuffer();
-        this.colorBuffer = gl.createBuffer();
-        this.tangentBuffer = gl.createBuffer();
-        this.bitangentBuffer = gl.createBuffer();
-        this.textureCoordBuffer = gl.createBuffer();
+        this.indexBuffer = gl.createBuffer();
     }
 
     __getLocations(gl, program) {
         this.positionLoc = gl.getAttribLocation(program, 'aPosition');
-        this.normalLoc = gl.getAttribLocation(program, 'aNormal');
-        this.colorLoc = gl.getAttribLocation(program, 'aColor');
-        this.tangentLoc = gl.getAttribLocation(program, 'aTangent');
-        this.bitangentLoc = gl.getAttribLocation(program, 'aBitangent');
-        this.textureCoordLoc = gl.getAttribLocation(program, 'aTexCoord');
+        this.colorLoc = gl.getUniformLocation(program, 'uColor');
+        this.transformLoc = gl.getUniformLocation(program, "uTransform");
+        this.projectionLoc = gl.getUniformLocation(program, "uProjection");
 
-        this.projectionLoc = gl.getUniformLocation(program, 'uProjection');
-        this.viewLoc = gl.getUniformLocation(program, 'uView');
-        this.worldLoc = gl.getUniformLocation(program, 'uWorld');
-        this.normalLoc = gl.getUniformLocation(program, 'uNormal');
-
-        this.textureBumpLoc = gl.getUniformLocation(program, 'uTextureBump');
-        this.textureReflectiveLoc = gl.getUniformLocation(program, 'uTextureReflective');
-        this.textureImageLoc = gl.getUniformLocation(program, 'uTextureImage');
-
-        this.worldCameraPositionLoc = gl.getUniformLocation(program, 'uWorldCameraPosition');
-
-        this.useShadingLoc = gl.getUniformLocation(program, 'uUseShading');
-        this.textureTypeLoc = gl.getUniformLocation(program, 'uTextureType');
+        this.useShadingLoc = gl.getUniformLocation(program, "uUseShading");
+        this.textureTypeLoc = gl.getUniformLocation(program, "uTextureType");
     }
 
     __bindBuffers(gl) {
-        const attributesData = this.__generateAttributesData();
-
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attributesData.vertices), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW);
         gl.vertexAttribPointer(this.positionLoc, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(this.positionLoc);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attributesData.normals), gl.STATIC_DRAW);
-        gl.vertexAttribPointer(this.normalLoc, 3, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(this.normalLoc);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attributesData.colors), gl.STATIC_DRAW);
-        gl.vertexAttribPointer(this.colorLoc, 3, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(this.colorLoc);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.tangentBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attributesData.tangents), gl.STATIC_DRAW);
-        gl.vertexAttribPointer(this.tangentLoc, 3, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(this.tangentLoc);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.bitangentBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attributesData.bitangents), gl.STATIC_DRAW);
-        gl.vertexAttribPointer(this.bitangentLoc, 3, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(this.bitangentLoc);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attributesData.textureCoords), gl.STATIC_DRAW);
-        gl.vertexAttribPointer(this.textureCoordLoc, 2, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(this.textureCoordLoc);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
     }
 
-    __setUniforms(gl, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType) {
-        gl.uniformMatrix4fv(this.projectionLoc, false, projectionMat);
-        gl.uniformMatrix4fv(this.viewLoc, false, viewMat);
-        gl.uniformMatrix4fv(this.worldLoc, false, transformMat);
+    __setUniforms(gl, transformMat, projectionMat, colorVec, useShading, textureType) {
+        gl.uniform3fv(this.colorLoc, new Float32Array(colorVec));
+        gl.uniformMatrix4fv(this.transformLoc, false, new Float32Array(transformMat));
+        gl.uniformMatrix4fv(this.projectionLoc, false, new Float32Array(projectionMat));
 
-        let normalMat;
-        normalMat = mat4.mult(viewMat, transformMat);
-        normalMat = mat4.inverse(normalMat);
-        normalMat = mat4.transpose(normalMat);
-        gl.uniformMatrix4fv(this.normalLoc, false, normalMat);
-        gl.uniform3fv(this.worldCameraPositionLoc, cameraPos);
-
-        gl.uniform1i(this.useShadingLoc, Number(useShading));
-        gl.uniform1i(this.textureTypeLoc, Number(textureType));
-
-        const texture = this.__generateTexture(gl);
-        gl.uniform1i(this.textureBumpLoc, 0);
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, texture.bump);
-
-        gl.uniform1i(this.textureReflectiveLoc, 1);
-        gl.activeTexture(gl.TEXTURE1);
-        gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.reflective);
-
-        gl.uniform1i(this.textureImageLoc, 2);
-        gl.activeTexture(gl.TEXTURE2);
-        gl.bindTexture(gl.TEXTURE_2D, texture.image);
+        gl.uniform1i(this.useShadingLoc, useShading);
+        gl.uniform1i(this.textureTypeLoc, textureType);
     }
 
     __generateTexture(gl) {
