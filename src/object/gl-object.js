@@ -283,14 +283,4 @@ export class GlObject {
     __degToRad(deg) {
         return deg * Math.PI / 180;
     }
-
-    addTranslate(id, addition) {
-        this.translate[id] += addition;
-
-        if (this.translate[id] > 100) {
-            this.translate[id] = -100 + (this.translate[id]%100);
-        } else if (this.translate[id] < -100) {
-            this.translate[id] = 100 - (this.translate[id]%100);
-        }
-    }
 }

@@ -1,5 +1,84 @@
 import { projectionType, modelType, textureType } from "./config/constant.js";
 
+function resetModelViewControl() {
+    document.getElementById("translate-x-model").value = 0;
+    document.getElementById("translate-y-model").value = 0;
+    document.getElementById("translate-z-model").value = 0;
+
+    document.getElementById("translate-x-model").nextElementSibling.value = 0;
+    document.getElementById("translate-y-model").nextElementSibling.value = 0;
+    document.getElementById("translate-z-model").nextElementSibling.value = 0;
+
+    document.getElementById("rotate-x-model").value = 0;
+    document.getElementById("rotate-y-model").value = 0;
+    document.getElementById("rotate-z-model").value = 0;
+
+    document.getElementById("rotate-x-model").nextElementSibling.value = 0;
+    document.getElementById("rotate-y-model").nextElementSibling.value = 0;
+    document.getElementById("rotate-z-model").nextElementSibling.value = 0;
+
+    document.getElementById("scale-x-model").value = 1;
+    document.getElementById("scale-y-model").value = 1;
+    document.getElementById("scale-z-model").value = 1;
+
+    document.getElementById("scale-x-model").nextElementSibling.value = 1;
+    document.getElementById("scale-y-model").nextElementSibling.value = 1;
+    document.getElementById("scale-z-model").nextElementSibling.value = 1;
+
+    document.getElementById("camera-angle-model").value = 0;
+    document.getElementById("camera-radius-model").value = 0;
+
+    document.getElementById("camera-angle-model").nextElementSibling.value = 0;
+    document.getElementById("camera-radius-model").nextElementSibling.value = 0;
+
+    document.getElementById("shading-model").checked = true;
+    document.getElementById("animation-model").checked = false;
+
+    document.getElementById("orthographic-model").checked = true;
+    document.getElementById("oblique-model").checked = false;
+    document.getElementById("perspective-model").checked = false;
+
+    resetComponentViewControl();
+}
+
+function resetComponentViewControl() {
+    document.getElementById("translate-x-component").value = 0;
+    document.getElementById("translate-y-component").value = 0;
+    document.getElementById("translate-z-component").value = 0;
+
+    document.getElementById("translate-x-component").nextElementSibling.value = 0;
+    document.getElementById("translate-y-component").nextElementSibling.value = 0;
+    document.getElementById("translate-z-component").nextElementSibling.value = 0;
+
+    document.getElementById("rotate-x-component").value = 0;
+    document.getElementById("rotate-y-component").value = 0;
+    document.getElementById("rotate-z-component").value = 0;
+
+    document.getElementById("rotate-x-component").nextElementSibling.value = 0;
+    document.getElementById("rotate-y-component").nextElementSibling.value = 0;
+    document.getElementById("rotate-z-component").nextElementSibling.value = 0;
+
+    document.getElementById("scale-x-component").value = 1;
+    document.getElementById("scale-y-component").value = 1;
+    document.getElementById("scale-z-component").value = 1;
+
+    document.getElementById("scale-x-component").nextElementSibling.value = 1;
+    document.getElementById("scale-y-component").nextElementSibling.value = 1;
+    document.getElementById("scale-z-component").nextElementSibling.value = 1;
+
+    document.getElementById("camera-angle-component").value = 0;
+    document.getElementById("camera-radius-component").value = 0;
+
+    document.getElementById("camera-angle-component").nextElementSibling.value = 0;
+    document.getElementById("camera-radius-component").nextElementSibling.value = 0;
+
+    document.getElementById("shading-component").checked = true;
+
+    document.getElementById("orthographic-component").checked = true;
+    document.getElementById("oblique-component").checked = false;
+    document.getElementById("perspective-component").checked = false;
+}
+
 function modelEventListener(controller) {
     document.getElementById("person").addEventListener("change", (event) => {
         controller.setModel().object(modelType.PERSON)
@@ -112,135 +191,6 @@ function transformationModelEventListener(controller) {
     });
 }
 
-
-
-// ------------------------------
-// function colorEventListener(state) {
-//     document.getElementById("color-picker").addEventListener("input", (event) => {
-//         state.color = event.target.value;
-//     });
-// }
-
-// function shapeEventListener(state, glState) {
-//     document.getElementById("cube").addEventListener("change", (event) => {
-//         state.shape = shapeType.CUBE;
-//         glState.vertices = cube.vertices;
-//         glState.indices = cube.indices;
-//     });
-
-//     document.getElementById("pyramid").addEventListener("change", (event) => {
-//         state.shape = shapeType.PYRAMID;
-//         glState.vertices = pyramid.vertices;
-//         glState.indices = pyramid.indices;
-//         console.log(glState);
-//     });
-
-//     document.getElementById("diamond").addEventListener("change", (event) => {
-//         state.shape = shapeType.DIAMOND;
-//         glState.vertices = diamond.vertices;
-//         glState.indices = diamond.indices;
-//         console.log(glState);
-//     });
-// }
-
-// function projectionEventListener(state) {
-//     document.getElementById("orthographic").addEventListener("change", (event) => {
-//         state.projection = projectionType.ORTHOGRAPHIC;
-//     });
-
-//     document.getElementById("oblique").addEventListener("change", (event) => {
-//         state.projection = projectionType.OBLIQUE;
-//     });
-
-//     document.getElementById("perspective").addEventListener("change", (event) => {
-//         state.projection = projectionType.PERSPECTIVE;
-//     });
-// }
-
-// function translationEventListener(state) {
-//     document.getElementById("translation-x").addEventListener("input", (event) => {
-//         state.transformation.translation.x = event.target.value;
-//     });
-
-//     document.getElementById("translation-y").addEventListener("input", (event) => {
-//         state.transformation.translation.y = event.target.value;
-//     });
-
-//     document.getElementById("translation-z").addEventListener("input", (event) => {
-//         state.transformation.translation.z = event.target.value;
-//     });
-// }
-
-// function rotationEventListener(state) {
-//     document.getElementById("rotation-x").addEventListener("input", (event) => {
-//         state.transformation.rotation.x = event.target.value;
-//     });
-
-//     document.getElementById("rotation-y").addEventListener("input", (event) => {
-//         state.transformation.rotation.y = event.target.value;
-//     });
-
-//     document.getElementById("rotation-z").addEventListener("input", (event) => {
-//         state.transformation.rotation.z = event.target.value;
-//     });
-// }
-
-// function scalationEventListener(state) {
-//     document.getElementById("scalation-x").addEventListener("input", (event) => {
-//         state.transformation.scalation.x = event.target.value;
-//     });
-
-//     document.getElementById("scalation-y").addEventListener("input", (event) => {
-//         state.transformation.scalation.y = event.target.value;
-//     });
-
-//     document.getElementById("scalation-z").addEventListener("input", (event) => {
-//         state.transformation.scalation.z = event.target.value;
-//     });
-// }
-
-// function cameraEventListener(state) {
-//     document.getElementById("camera-radius").addEventListener("input", (event) => {
-//         state.camera.radius = event.target.value;
-//     });
-
-//     document.getElementById("camera-rotation").addEventListener("input", (event) => {
-//         state.camera.rotation = event.target.value;
-//     });
-// }
-
-// function utilityEventListener(state) {
-//     document.getElementById("shading").addEventListener("click", (event) => {
-//         state.shading = event.target.checked ? shadingType.LIGHT : shadingType.FLAT;
-//     });
-
-//     document.getElementById("animation").addEventListener("change", (event) => {
-//         state.animation = event.target.checked;
-//     });
-// }
-
-// function resetEventListener(state, glState) {
-//     document.getElementById("reset-default").addEventListener("click", (event) => {
-//         setDefaultState(state);
-//         updateUI(state);
-
-//         document.getElementById("load-data").value = "";
-
-//         glState.vertices = cube.vertices;
-//         glState.indices = cube.indices;
-//     });
-// }
-
-// function fileEventListener(state, glState) {
-//     document.getElementById("save-data").addEventListener("click", (event) => {
-//         save(state);
-//     });
-
-//     document.getElementById("load-data").addEventListener("change", (event) => {
-//         load(state, glState, event);
-//     });
-// }
-
 function projectionComponentEventListener(controller) {
     document.getElementById("orthographic-component").addEventListener("change", (event) => {
         controller.setComponent().projection(projectionType.ORTHOGRAPHIC);
@@ -329,6 +279,16 @@ function transformationComponentEventListener(controller) {
     });
 }
 
+function resetEventListener(controller) {
+    document.getElementById("reset-model-default").addEventListener("click", (event) => {
+        controller.setModel().reset();
+    });
+
+    document.getElementById("reset-component-default").addEventListener("click", (event) => {
+        controller.setComponent().reset();
+    });
+}
+
 function configureEventListener(controller) {
     modelEventListener(controller);
     projectionModelEventListener(controller);
@@ -345,6 +305,8 @@ function configureEventListener(controller) {
     cameraAngleComponentEventListener(controller);
     cameraRadiusComponentEventListener(controller);
     transformationComponentEventListener(controller);
+
+    resetEventListener(controller);
 }
 
-export { configureEventListener };
+export { configureEventListener, resetModelViewControl, resetComponentViewControl };

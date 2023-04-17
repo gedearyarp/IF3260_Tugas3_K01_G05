@@ -3,6 +3,8 @@ import { mat4 } from './mat4.js';
 import { PersonModel } from '../config/person.js';
 import { ChickenModel } from '../config/chicken.js';
 
+import {resetModelViewControl, resetComponentViewControl} from '../view.js'
+
 class Controller {
     constructor(modelGl, modelProgram, componentGl, componentProgram) {
         this.model = {
@@ -12,7 +14,7 @@ class Controller {
             projection: projectionType.ORTHOGRAPHIC,
             texture: textureType.BUMP,
             cameraAngle: 0,
-            cameraRadius: 300,
+            cameraRadius: 0,
             useShading: true,
             animation: false,
         }
@@ -24,7 +26,7 @@ class Controller {
             projection: projectionType.ORTHOGRAPHIC,
             texture: textureType.BUMP,
             cameraAngle: 0,
-            cameraRadius: 300,
+            cameraRadius: 0,
             useShading: true,
         }
     }
@@ -81,6 +83,33 @@ class Controller {
             scale: function (id, scale) {
                 controller.model.object.dfsScale(id, parseFloat(scale));
             },
+
+            reset: function () {
+                for (let i = 0; i < 3; i++) {
+                    controller.model.object.dfsTranslate(i, 0);
+                    controller.model.object.dfsRotate(i, 0);
+                    controller.model.object.dfsScale(i, 1);
+                }
+
+                for (let i = 0; i < 3; i++) {
+                    controller.component.object.object.translate[i] = 0;
+                    controller.component.object.object.rotate[i] = 0;
+                    controller.component.object.object.scale[i] = 1;
+                }
+
+                controller.model.animation = false;
+                controller.model.cameraAngle = 0;
+                controller.model.cameraRadius = 0;
+                controller.model.useShading = true;
+                controller.model.projection = projectionType.ORTHOGRAPHIC;
+
+                controller.component.cameraAngle = 0;
+                controller.component.cameraRadius = 0;
+                controller.component.useShading = true;
+                controller.component.projection = projectionType.ORTHOGRAPHIC;
+
+                resetModelViewControl();
+            },
         }
     }
 
@@ -122,6 +151,21 @@ class Controller {
             scale: function (id, scale) {
                 controller.component.object.object.scale[id] = parseFloat(scale);
             },
+
+            reset: function () {
+                for (let i = 0; i < 3; i++) {
+                    controller.component.object.object.translate[i] = 0;
+                    controller.component.object.object.rotate[i] = 0;
+                    controller.component.object.object.scale[i] = 1;
+                }
+
+                controller.component.cameraAngle = 0;
+                controller.component.cameraRadius = 0;
+                controller.component.useShading = true;
+                controller.component.projection = projectionType.ORTHOGRAPHIC;
+
+                resetComponentViewControl();
+            }
         }
     }
 
