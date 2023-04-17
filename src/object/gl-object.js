@@ -9,14 +9,14 @@ export class GlObject {
 
     }
 
-    draw(gl, program, transformMat, projectionMat, viewMat, colorVec, useShading, textureType) {
+    draw(gl, program, transformMat, projectionMat, colorVec, useShading, textureType) {
         this.__createBuffers(gl);
         this.__getLocations(gl, program);
 
         gl.useProgram(program);
 
         this.__bindBuffers(gl);
-        this.__setUniforms(gl, transformMat, projectionMat, viewMat, colorVec, useShading, textureType);
+        this.__setUniforms(gl, transformMat, projectionMat, colorVec, useShading, textureType);
 
         gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
     }
@@ -31,8 +31,6 @@ export class GlObject {
         this.colorLoc = gl.getUniformLocation(program, 'uColor');
         this.transformLoc = gl.getUniformLocation(program, "uTransform");
         this.projectionLoc = gl.getUniformLocation(program, "uProjection");
-        this.viewLoc = gl.getUniformLocation(program, "uView");
-        this.normalLoc = gl.getUniformLocation(program, "uNormal");
 
         this.useShadingLoc = gl.getUniformLocation(program, "uUseShading");
         this.textureTypeLoc = gl.getUniformLocation(program, "uTextureType");
@@ -48,18 +46,10 @@ export class GlObject {
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
     }
 
-    __setUniforms(gl, transformMat, projectionMat, viewMat, colorVec, useShading, textureType) {
+    __setUniforms(gl, transformMat, projectionMat, colorVec, useShading, textureType) {
         gl.uniform3fv(this.colorLoc, new Float32Array(colorVec));
         gl.uniformMatrix4fv(this.transformLoc, false, new Float32Array(transformMat));
         gl.uniformMatrix4fv(this.projectionLoc, false, new Float32Array(projectionMat));
-        gl.uniformMatrix4fv(this.viewLoc, false, new Float32Array(viewMat));
-
-        let normalMat = mat4.mult(viewMat, transformMat);
-        normalMat = mat4.inverse(normalMat);
-        normalMat = mat4.transpose(normalMat);
-        gl.uniformMatrix4fv(this.normalLoc, false, new Float32Array(normalMat));
-
-        console.log(transformMat, projectionMat, viewMat)
 
         gl.uniform1i(this.useShadingLoc, useShading);
         gl.uniform1i(this.textureTypeLoc, textureType);

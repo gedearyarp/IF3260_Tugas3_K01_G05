@@ -3,12 +3,10 @@
 // reference: https://apoorvaj.io/exploring-bump-mapping-with-webgl/#normal-mapping
 
 const vertCode3D = `
-    attribute vec3 aPosition;
+    attribute vec4 aPosition;
 
     uniform mat4 uTransform;
     uniform mat4 uProjection;
-    uniform mat4 uView;
-    uniform mat4 uNormal;
 
     mat3 transpose(in mat3 inMatrix) {
         vec3 i0 = inMatrix[0];
@@ -23,14 +21,17 @@ const vertCode3D = `
     }
 
     void main(void) {
-        gl_Position = uProjection * (uView * uTransform) * vec4(aPosition.xyz, 1.0) ;
+        vec4 transformedPos = uTransform * aPosition;
+        vec4 projectedPos   = uProjection * transformedPos;
+
+        gl_Position = projectedPos;
     }
 `
 
 const fragCode3D = `
     precision mediump float;
-    uniform vec3 uColor;
 
+    uniform vec3 uColor;
     uniform bool uUseShading;
     uniform int uTextureType;
 

@@ -132,13 +132,13 @@ export const mat4 = {
     },
 
     oblique: function (a, b) {
-        const cot = 1 / Math.tan(a);
-        const cot2 = 1 / Math.tan(b);
+        const cos1 = Math.cos(a);
+        const cos2 = Math.cos(b);
 
         return [
             1, 0, 0, 0,
             0, 1, 0, 0,
-            cot, cot2, 1, 0,
+            cos1, cos2, 1, 0,
             0, 0, 0, 1
         ];
     },

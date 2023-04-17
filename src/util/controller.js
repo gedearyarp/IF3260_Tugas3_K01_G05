@@ -131,7 +131,7 @@ class Controller {
 
     render() {
         this.__renderModel();
-        this.__renderComponent();
+        // this.__renderComponent();
 
         requestAnimationFrame(this.render.bind(this));
     }
@@ -140,31 +140,19 @@ class Controller {
         let gl = this.model.gl;
         let program = this.model.program;
 
-        gl.canvas.width = gl.canvas.clientWidth;
-        gl.canvas.height = gl.canvas.clientHeight;
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        gl.enable(gl.CULL_FACE);
+        gl.clearColor(0.0, 0.0, 0.0, 0.0);
         gl.enable(gl.DEPTH_TEST);
 
         const transformMat = this.__getTransformMatrix(this.model);
         const projectionMat = this.__getProjectionMatrix(gl, this.model);
-        const viewMat = this.__getViewMatrix(this.model);
-
-        // const transformMat = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-        // const projectionMat = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
         const colorVec = [0.5, 0.5, 0.3];
-
-        console.log("transformMat", transformMat);
-        console.log("projectionMat", projectionMat);
-        console.log("viewMat", viewMat);
 
         this.model.object.draw(
             gl, 
             program, 
             transformMat, 
             projectionMat,
-            viewMat,
             colorVec,
             this.model.useShading,
             this.model.texture,
@@ -175,16 +163,11 @@ class Controller {
         let gl = this.component.gl;
         let program = this.component.program;
 
-        gl.canvas.width = gl.canvas.clientWidth;
-        gl.canvas.height = gl.canvas.clientHeight;
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        gl.enable(gl.CULL_FACE);
         gl.enable(gl.DEPTH_TEST);
 
         const transformMat = this.__getTransformMatrix(this.component);
         const projectionMat = this.__getProjectionMatrix(gl, this.component);
-        const viewMat = this.__getViewMatrix(this.component);
         const colorVec = [0.5, 0.5, 0.3];
 
 
@@ -193,7 +176,6 @@ class Controller {
             program, 
             transformMat, 
             projectionMat,
-            viewMat,
             colorVec,
             this.component.useShading,
             this.component.texture,
@@ -211,7 +193,7 @@ class Controller {
         let cameraEye = mat4.identityMatrix();
 
         const cameraRotation = mat4.rotationMatrix(0, this.__degToRad(object.cameraAngle), 0);
-        const cameraTranslate = mat4.translationMatrix(0, 0, object.cameraRadius);
+        const cameraTranslate = mat4.translationMatrix(0, 0, object.cameraRadius / 1000);
 
         cameraEye = mat4.mult(cameraEye, cameraRotation);
         cameraEye = mat4.mult(cameraEye, cameraTranslate);
@@ -221,26 +203,37 @@ class Controller {
 
     __getProjectionMatrix(gl, object) {
         const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-        const zNear = -850;
-        const zFar = 850;
-        const degA = this.__degToRad(45);
-        const degB = this.__degToRad(45);
+        const zNear = 0.1;
+        const zFar = 1000;
+        const degA = this.__degToRad(64);
+        const degB = this.__degToRad(64);
 
         const left = -1;
         const right = 1;
-
         const bottom = -1;
         const top = 1;
+        const near = -1;
+        const far = 1;
 
+        let projection;
         switch (object.projection) {
             case projectionType.ORTHOGRAPHIC:
-                return mat4.orthographic(left, right, bottom, top, zNear, zFar);
+                projection = mat4.orthographic(left, right, bottom, top, near, far);
+                break;
             case projectionType.OBLIQUE:
-                const ortho = mat4.orthographic(-1, 1, -1, 1, zNear, zFar);
-                return mat4.oblique(degA, degB);
+                projection = mat4.oblique(degA, degB);
+                break;
             case projectionType.PERSPECTIVE:
-                return mat4.perspective(this.__degToRad(60), aspect, zNear, zFar);
+                projection = mat4.perspective(this.__degToRad(60), aspect, zNear, zFar);
+                break;
         }
+
+        const cameraRotation = mat4.rotationMatrix(0, this.__degToRad(object.cameraAngle), 0);
+        const cameraTranslation = mat4.translationMatrix(0, 0, object.cameraRadius / 1000);
+
+        const cameraTransform = mat4.mult(cameraRotation, cameraTranslation);
+
+        return mat4.mult(projection, cameraTransform);
     }
 
     __getTransformMatrix(object) {
