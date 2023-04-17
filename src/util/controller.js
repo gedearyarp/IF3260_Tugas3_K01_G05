@@ -131,7 +131,7 @@ class Controller {
 
     render() {
         this.__renderModel();
-        // this.__renderComponent();
+        this.__renderComponent();
 
         requestAnimationFrame(this.render.bind(this));
     }
@@ -141,7 +141,6 @@ class Controller {
         let program = this.model.program;
 
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        gl.clearColor(0.0, 0.0, 0.0, 0.0);
         gl.enable(gl.DEPTH_TEST);
 
         const transformMat = this.__getTransformMatrix(this.model);
@@ -150,10 +149,11 @@ class Controller {
 
         this.model.object.draw(
             gl, 
-            program, 
+            program,
             transformMat, 
             projectionMat,
             colorVec,
+            this.model.projection,
             this.model.useShading,
             this.model.texture,
         );
@@ -177,6 +177,7 @@ class Controller {
             transformMat, 
             projectionMat,
             colorVec,
+            this.component.projection,
             this.component.useShading,
             this.component.texture,
         );
@@ -202,9 +203,6 @@ class Controller {
     }
 
     __getProjectionMatrix(gl, object) {
-        const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-        const zNear = 0.1;
-        const zFar = 1000;
         const degA = this.__degToRad(64);
         const degB = this.__degToRad(64);
 
@@ -224,7 +222,7 @@ class Controller {
                 projection = mat4.oblique(degA, degB);
                 break;
             case projectionType.PERSPECTIVE:
-                projection = mat4.perspective(this.__degToRad(60), aspect, zNear, zFar);
+                projection = mat4.identityMatrix();
                 break;
         }
 

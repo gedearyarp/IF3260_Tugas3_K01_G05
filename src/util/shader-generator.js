@@ -7,6 +7,7 @@ const vertCode3D = `
 
     uniform mat4 uTransform;
     uniform mat4 uProjection;
+    uniform float uFudgeFactor;
 
     mat3 transpose(in mat3 inMatrix) {
         vec3 i0 = inMatrix[0];
@@ -22,9 +23,14 @@ const vertCode3D = `
 
     void main(void) {
         vec4 transformedPos = uTransform * aPosition;
-        vec4 projectedPos   = uProjection * transformedPos;
+        vec4 projectedPos = uProjection * transformedPos;
 
-        gl_Position = projectedPos;
+        if (uFudgeFactor > 0.0) {
+            float zToDivideBy = 1.0 + projectedPos.z * uFudgeFactor;
+            gl_Position = vec4(projectedPos.xyz, zToDivideBy);
+        } else {
+            gl_Position = projectedPos;
+        }
     }
 `
 

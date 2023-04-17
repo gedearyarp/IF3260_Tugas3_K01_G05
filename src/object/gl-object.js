@@ -1,3 +1,5 @@
+import { projectionType } from '../config/constant.js';
+
 import { mat4 } from '../util/mat4.js';
 import { vec3 } from '../util/vec3.js';
 
@@ -9,14 +11,14 @@ export class GlObject {
 
     }
 
-    draw(gl, program, transformMat, projectionMat, colorVec, useShading, textureType) {
+    draw(gl, program, transformMat, projectionMat, colorVec, projType, useShading, textureType) {
         this.__createBuffers(gl);
         this.__getLocations(gl, program);
 
         gl.useProgram(program);
 
         this.__bindBuffers(gl);
-        this.__setUniforms(gl, transformMat, projectionMat, colorVec, useShading, textureType);
+        this.__setUniforms(gl, transformMat, projectionMat, colorVec, projType, useShading, textureType);
 
         gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
     }
@@ -31,6 +33,7 @@ export class GlObject {
         this.colorLoc = gl.getUniformLocation(program, 'uColor');
         this.transformLoc = gl.getUniformLocation(program, "uTransform");
         this.projectionLoc = gl.getUniformLocation(program, "uProjection");
+        this.fudgeFactorLoc = gl.getUniformLocation(program, "uFudgeFactor");
 
         this.useShadingLoc = gl.getUniformLocation(program, "uUseShading");
         this.textureTypeLoc = gl.getUniformLocation(program, "uTextureType");
@@ -46,10 +49,16 @@ export class GlObject {
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
     }
 
-    __setUniforms(gl, transformMat, projectionMat, colorVec, useShading, textureType) {
+    __setUniforms(gl, transformMat, projectionMat, colorVec, projType, useShading, textureType) {
         gl.uniform3fv(this.colorLoc, new Float32Array(colorVec));
         gl.uniformMatrix4fv(this.transformLoc, false, new Float32Array(transformMat));
         gl.uniformMatrix4fv(this.projectionLoc, false, new Float32Array(projectionMat));
+
+        if (projType === projectionType.PERSPECTIVE) {
+            gl.uniform1f(this.fudgeFactorLoc, 1.0);
+        } else {
+            gl.uniform1f(this.fudgeFactorLoc, 0.0);
+        }
 
         gl.uniform1i(this.useShadingLoc, useShading);
         gl.uniform1i(this.textureTypeLoc, textureType);
