@@ -4,8 +4,11 @@
 
 const vertCode3D = `
     attribute vec3 aPosition;
+
     uniform mat4 uTransform;
     uniform mat4 uProjection;
+    uniform mat4 uView;
+    uniform mat4 uNormal;
 
     mat3 transpose(in mat3 inMatrix) {
         vec3 i0 = inMatrix[0];
@@ -20,10 +23,7 @@ const vertCode3D = `
     }
 
     void main(void) {
-        vec4 transformedPos = uTransform * vec4(aPosition.xy, aPosition.z * -1.0, 1.0);
-        vec4 projectedPos   = uProjection * transformedPos;
-
-        gl_Position = projectedPos;
+        gl_Position = uProjection * (uView * uTransform) * vec4(aPosition.xyz, 1.0) ;
     }
 `
 

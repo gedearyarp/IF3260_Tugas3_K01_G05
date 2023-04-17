@@ -23,11 +23,11 @@ export class ArticulatedObject {
         return this.object;
     }
 
-    draw(gl, program, transformMat, projectionMat, colorVec, useShading, textureType) {
-        this.object.draw(gl, program, transformMat, projectionMat, colorVec, useShading, textureType);
+    draw(gl, program, transformMat, projectionMat, viewMat, colorVec, useShading, textureType) {
+        this.object.draw(gl, program, transformMat, projectionMat, viewMat, colorVec, useShading, textureType);
 
         for (let i = 0; i < this.child.length; i++) {
-            this.child[i].draw(gl, program, transformMat, projectionMat, colorVec, useShading, textureType);
+            this.child[i].draw(gl, program, transformMat, projectionMat, viewMat, colorVec, useShading, textureType);
         }
     }
 

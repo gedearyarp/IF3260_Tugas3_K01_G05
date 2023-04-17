@@ -114,13 +114,13 @@ export const mat4 = {
         return [
             2 / (right - left), 0, 0, 0,
             0, 2 / (top - bottom), 0, 0,
-            0, 0, 2 / (near - far), 0,
-            (left + right) / (left - right), (bottom + top) / (bottom - top), (near + far) / (near - far), 1
+            0, 0, 2 / (far - near), 0,
+            0, 0, 0, 1
         ];
     },
 
     perspective: function (fovy, aspect, near, far) {
-        let f = 1 / Math.tan(fovy / 2);
+        let f = Math.tan(Math.PI * 0.5 - 0.5 * fovy);
         let nf = 1 / (near - far);
 
         return [
