@@ -9,16 +9,20 @@ export class GlObject {
         this.vertices = vertices;
         this.indices = indices;
 
+        this.translate = [0, 0, 0];
+        this.rotate = [0, 0, 0];
+        this.scale = [1, 1, 1];
+
     }
 
-    draw(gl, program, transformMat, projectionMat, colorVec, projType, useShading, textureType) {
+    draw(gl, program, projectionMat, colorVec, projType, useShading, textureType, parentTransform) {
         this.__createBuffers(gl);
         this.__getLocations(gl, program);
 
         gl.useProgram(program);
 
         this.__bindBuffers(gl);
-        this.__setUniforms(gl, transformMat, projectionMat, colorVec, projType, useShading, textureType);
+        this.__setUniforms(gl, projectionMat, colorVec, projType, useShading, textureType, parentTransform);
 
         gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
     }
@@ -49,8 +53,10 @@ export class GlObject {
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
     }
 
-    __setUniforms(gl, transformMat, projectionMat, colorVec, projType, useShading, textureType) {
+    __setUniforms(gl, projectionMat, colorVec, projType, useShading, textureType, parentTransform) {
         gl.uniform3fv(this.colorLoc, new Float32Array(colorVec));
+
+        const transformMat = this.__getTransformMatrix(parentTransform);
         gl.uniformMatrix4fv(this.transformLoc, false, new Float32Array(transformMat));
         gl.uniformMatrix4fv(this.projectionLoc, false, new Float32Array(projectionMat));
 
@@ -62,6 +68,35 @@ export class GlObject {
 
         gl.uniform1i(this.useShadingLoc, useShading);
         gl.uniform1i(this.textureTypeLoc, textureType);
+    }
+
+    __getTransformMatrix(parentTransform) {
+        const parentTranslate = parentTransform ? parentTransform.translate : [0, 0, 0];
+        const parentRotate = parentTransform ? parentTransform.rotate : [0, 0, 0];
+        const parentScale = parentTransform ? parentTransform.scale : [1, 1, 1];
+
+        let transformMat = mat4.identityMatrix();
+        const translateMat = mat4.translationMatrix(
+            (this.translate[0] + parentTranslate[0])/100, 
+            (this.translate[1] + parentTranslate[1])/100, 
+            (this.translate[2] + parentTranslate[2])/100
+        );
+        const rotateMat = mat4.rotationMatrix(
+            this.__degToRad(this.rotate[0] + parentRotate[0]), 
+            this.__degToRad(this.rotate[1] + parentRotate[1]),
+            this.__degToRad(this.rotate[2] + parentRotate[2])
+        );
+        const scaleMat = mat4.scalationMatrix(
+            this.scale[0] * parentScale[0],
+            this.scale[1] * parentScale[1],
+            this.scale[2] * parentScale[2]
+        );
+
+        transformMat = mat4.mult(transformMat, translateMat);
+        transformMat = mat4.mult(transformMat, rotateMat);
+        transformMat = mat4.mult(transformMat, scaleMat);
+
+        return transformMat;
     }
 
     __generateTexture(gl) {
@@ -243,5 +278,19 @@ export class GlObject {
         }
 
         return {...attributes};
+    }
+
+    __degToRad(deg) {
+        return deg * Math.PI / 180;
+    }
+
+    addTranslate(id, addition) {
+        this.translate[id] += addition;
+
+        if (this.translate[id] > 100) {
+            this.translate[id] = -100 + (this.translate[id]%100);
+        } else if (this.translate[id] < -100) {
+            this.translate[id] = 100 - (this.translate[id]%100);
+        }
     }
 }

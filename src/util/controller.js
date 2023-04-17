@@ -15,23 +15,17 @@ class Controller {
             cameraRadius: 300,
             useShading: true,
             animation: false,
-            translate: [0, 0, 0],
-            rotate: [0, 0, 0],
-            scale: [1, 1, 1],
         }
 
         this.component = {
             gl: componentGl,
             program: componentProgram,
-            object: this.model.object.findComponentByName("head"),
+            object: this.model.object.findComponentByName("body"),
             projection: projectionType.ORTHOGRAPHIC,
             texture: textureType.BUMP,
             cameraAngle: 0,
             cameraRadius: 300,
             useShading: true,
-            translate: [0, 0, 0],
-            rotate: [0, 0, 0],
-            scale: [1, 1, 1],
         }
     }
 
@@ -42,12 +36,14 @@ class Controller {
                 if (objectType === modelType.PERSON) {
                     controller.model.object = PersonModel.getModel();
                 } else if (objectType === modelType.CHICKEN) {
-                    controller.model.object = ChickenModel.getModel(); 
+                    controller.model.object = ChickenModel.getModel();
                 } else if (objectType === modelType.TABLE) {
                     controller.model.object = PersonModel.getModel(); // TODO: change to table model
                 } else if (objectType === modelType.CAR) {
                     controller.model.object = PersonModel.getModel(); // TODO: change to car model
                 }
+
+                controller.component.object = controller.model.object;
             },
 
             projection: function (projectionType) {
@@ -75,15 +71,15 @@ class Controller {
             },
 
             translate: function (id, translate) {
-                controller.model.translate[id] = translate;
+                controller.model.object.dfsTranslate(id, parseFloat(translate));
             },
 
             rotate: function (id, rotate) {
-                controller.model.rotate[id] = rotate;
+                controller.model.object.dfsRotate(id, parseFloat(rotate));
             },
 
             scale: function (id, scale) {
-                controller.model.scale[id] = scale;
+                controller.model.object.dfsScale(id, parseFloat(scale));
             },
         }
     }
@@ -116,15 +112,15 @@ class Controller {
             },
 
             translate: function (id, translate) {
-                controller.component.translate[id] = translate;
+                controller.component.object.object.translate[id] = parseFloat(translate);
             },
 
             rotate: function (id, rotate) {
-                controller.component.rotate[id] = rotate;
+                controller.component.object.object.rotate[id] = parseFloat(rotate);
             },
 
             scale: function (id, scale) {
-                controller.component.scale[id] = scale;
+                controller.component.object.object.scale[id] = parseFloat(scale);
             },
         }
     }
@@ -143,14 +139,12 @@ class Controller {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.DEPTH_TEST);
 
-        const transformMat = this.__getTransformMatrix(this.model);
         const projectionMat = this.__getProjectionMatrix(gl, this.model);
-        const colorVec = [0.5, 0.5, 0.3];
+        const colorVec = [0.6, 0.2, 0.4];
 
         this.model.object.draw(
             gl, 
             program,
-            transformMat, 
             projectionMat,
             colorVec,
             this.model.projection,
@@ -166,15 +160,12 @@ class Controller {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.DEPTH_TEST);
 
-        const transformMat = this.__getTransformMatrix(this.component);
         const projectionMat = this.__getProjectionMatrix(gl, this.component);
-        const colorVec = [0.5, 0.5, 0.3];
+        const colorVec = [0.6, 0.2, 0.4];
 
-
-        this.component.object.draw(
+        this.component.object.drawComponent(
             gl, 
             program, 
-            transformMat, 
             projectionMat,
             colorVec,
             this.component.projection,
@@ -232,23 +223,6 @@ class Controller {
         const cameraTransform = mat4.mult(cameraRotation, cameraTranslation);
 
         return mat4.mult(projection, cameraTransform);
-    }
-
-    __getTransformMatrix(object) {
-        let transformMat = mat4.identityMatrix();
-        const translateMat = mat4.translationMatrix(object.translate[0]/100, object.translate[1]/100, object.translate[2]/100);
-        const rotateMat = mat4.rotationMatrix(
-            this.__degToRad(object.rotate[0]), 
-            this.__degToRad(object.rotate[1]), 
-            this.__degToRad(object.rotate[2])
-        );
-        const scaleMat = mat4.scalationMatrix(object.scale[0], object.scale[1], object.scale[2]);
-
-        transformMat = mat4.mult(transformMat, translateMat);
-        transformMat = mat4.mult(transformMat, rotateMat);
-        transformMat = mat4.mult(transformMat, scaleMat);
-
-        return transformMat;
     }
 
     __degToRad(deg) {
