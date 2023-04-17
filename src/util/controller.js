@@ -131,47 +131,55 @@ class Controller {
 
     render() {
         this.__renderModel();
-        this.__renderComponent();
+        // this.__renderComponent();
 
-        // requestAnimationFrame(this.render.bind(this));
+        requestAnimationFrame(this.render.bind(this));
     }
 
     __renderModel() {
-        const gl = this.model.gl;
-        const program = this.model.program;
+        let gl = this.model.gl;
+        let program = this.model.program;
 
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.clearColor(0.0, 0.0, 0.0, 0.0);
         gl.enable(gl.DEPTH_TEST);
-        gl.enable(gl.CULL_FACE);
 
-        const projectionMat = this.__getProjectionMatrix(gl, this.model);
-        const viewMat = this.__getViewMatrix(this.model);
         const transformMat = this.__getTransformMatrix(this.model);
-        const cameraPos = this.__getCameraPos(this.model);
-        const useShading = this.model.useShading;
-        const textureType = this.model.texture;
+        const projectionMat = this.__getProjectionMatrix(gl, this.model);
+        const colorVec = [0.5, 0.5, 0.3];
 
-        this.model.object.draw(gl, program, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType);
+        this.model.object.draw(
+            gl, 
+            program, 
+            transformMat, 
+            projectionMat,
+            colorVec,
+            this.model.useShading,
+            this.model.texture,
+        );
     }
 
     __renderComponent() {
-        const gl = this.component.gl;
-        const program = this.component.program;
+        let gl = this.component.gl;
+        let program = this.component.program;
 
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.DEPTH_TEST);
-        gl.enable(gl.CULL_FACE);
 
-        const projectionMat = this.__getProjectionMatrix(gl, this.component);
-        const viewMat = this.__getViewMatrix(this.component);
         const transformMat = this.__getTransformMatrix(this.component);
-        const cameraPos = this.__getCameraPos(this.component);
-        const useShading = this.component.useShading;
-        const textureType = this.component.texture;
+        const projectionMat = this.__getProjectionMatrix(gl, this.component);
+        const colorVec = [0.5, 0.5, 0.3];
 
-        this.component.object.draw(gl, program, projectionMat, viewMat, transformMat, cameraPos, useShading, textureType);
+
+        this.component.object.draw(
+            gl, 
+            program, 
+            transformMat, 
+            projectionMat,
+            colorVec,
+            this.component.useShading,
+            this.component.texture,
+        );
     }
 
     __getViewMatrix(object) {;
@@ -182,39 +190,60 @@ class Controller {
     }
 
     __getCameraPos(object) {
-        let cameraEye;
+        let cameraEye = mat4.identityMatrix();
 
-        const cameraMat = mat4.identityMatrix();
-        const cameraTranslate = mat4.translationMatrix(0, 0, object.cameraRadius);
-        const cameraRotation = mat4.rotationMatrix(0, object.cameraAngle, 0);
+        const cameraRotation = mat4.rotationMatrix(0, this.__degToRad(object.cameraAngle), 0);
+        const cameraTranslate = mat4.translationMatrix(0, 0, object.cameraRadius / 1000);
 
-        cameraEye = mat4.mult(cameraMat, cameraTranslate);
         cameraEye = mat4.mult(cameraEye, cameraRotation);
+        cameraEye = mat4.mult(cameraEye, cameraTranslate);
 
         return [cameraEye[12], cameraEye[13], cameraEye[14]];
     }
 
     __getProjectionMatrix(gl, object) {
         const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-        const zNear = 1;
-        const zFar = 2000;
-        const degA = this.__degToRad(45);
-        const degB = this.__degToRad(45);
+        const zNear = 0.1;
+        const zFar = 1000;
+        const degA = this.__degToRad(64);
+        const degB = this.__degToRad(64);
 
+        const left = -1;
+        const right = 1;
+        const bottom = -1;
+        const top = 1;
+        const near = -1;
+        const far = 1;
+
+        let projection;
         switch (object.projection) {
             case projectionType.ORTHOGRAPHIC:
-                return mat4.orthographic(-300, 300, -300, 300, zNear, zFar);
+                projection = mat4.orthographic(left, right, bottom, top, near, far);
+                break;
             case projectionType.OBLIQUE:
-                return mat4.oblique(degA, degB);
+                projection = mat4.oblique(degA, degB);
+                break;
             case projectionType.PERSPECTIVE:
-                return mat4.perspective(45, aspect, zNear, zFar);
+                projection = mat4.perspective(this.__degToRad(60), aspect, zNear, zFar);
+                break;
         }
+
+        const cameraRotation = mat4.rotationMatrix(0, this.__degToRad(object.cameraAngle), 0);
+        const cameraTranslation = mat4.translationMatrix(0, 0, object.cameraRadius / 1000);
+
+        const cameraTransform = mat4.mult(cameraRotation, cameraTranslation);
+
+        return mat4.mult(projection, cameraTransform);
     }
 
     __getTransformMatrix(object) {
         let transformMat = mat4.identityMatrix();
-        const translateMat = mat4.translationMatrix(object.translate[0], object.translate[1], object.translate[2]);
-        const rotateMat = mat4.rotationMatrix(object.rotate[0], object.rotate[1], object.rotate[2]);
+        const translateMat = mat4.translationMatrix(object.translate[0]/100, object.translate[1]/100, object.translate[2]/100);
+        const rotateMat = mat4.rotationMatrix(
+            this.__degToRad(object.rotate[0]), 
+            this.__degToRad(object.rotate[1]), 
+            this.__degToRad(object.rotate[2])
+        );
         const scaleMat = mat4.scalationMatrix(object.scale[0], object.scale[1], object.scale[2]);
 
         transformMat = mat4.mult(transformMat, translateMat);

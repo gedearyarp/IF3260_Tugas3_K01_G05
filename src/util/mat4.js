@@ -114,13 +114,13 @@ export const mat4 = {
         return [
             2 / (right - left), 0, 0, 0,
             0, 2 / (top - bottom), 0, 0,
-            0, 0, 2 / (near - far), 0,
-            (left + right) / (left - right), (bottom + top) / (bottom - top), (near + far) / (near - far), 1
+            0, 0, 2 / (far - near), 0,
+            0, 0, 0, 1
         ];
     },
 
     perspective: function (fovy, aspect, near, far) {
-        let f = 1 / Math.tan(fovy / 2);
+        let f = Math.tan(Math.PI * 0.5 - 0.5 * fovy);
         let nf = 1 / (near - far);
 
         return [
@@ -132,13 +132,13 @@ export const mat4 = {
     },
 
     oblique: function (a, b) {
-        const cot = 1 / Math.tan(a);
-        const cot2 = 1 / Math.tan(b);
+        const cos1 = Math.cos(a);
+        const cos2 = Math.cos(b);
 
         return [
             1, 0, 0, 0,
             0, 1, 0, 0,
-            cot, cot2, 1, 0,
+            cos1, cos2, 1, 0,
             0, 0, 0, 1
         ];
     },

@@ -18,13 +18,8 @@ function main() {
     const componentProgram = generateShaderProgram(componentGl);
 
     const controller = new Controller(modelGl, modelProgram, componentGl, componentProgram);
-
     configureEventListener(controller);
-
-    console.log(controller);
-
     controller.render();
-    // requestAnimationFrame(controller.render.bind(controller));
 }
 
 main();
