@@ -11,6 +11,8 @@ export class GlObject {
 
         this.attributes = this.__generateAttributesData();
 
+        // this.texture = this.__generateTexture(gl);
+
         this.translate = [0, 0, 0];
         this.rotate = [0, 0, 0];
         this.scale = [1, 1, 1];
@@ -20,6 +22,9 @@ export class GlObject {
     draw(gl, program, projectionMat, cameraViewMat, cameraPosition, colorVec, projType, useShading, textureType, parentTransform) {
         this.__createBuffers(gl);
         this.__getLocations(gl, program);
+
+        // Masih bikin lag, karna kerender ulang terus
+        this.texture = this.__generateTexture(gl);
 
         gl.useProgram(program);
 
@@ -113,19 +118,17 @@ export class GlObject {
         gl.uniform1i(this.useShadingLoc, useShading);
         gl.uniform1i(this.textureTypeLoc, textureType);
 
-        // const texture = this.__generateTexture(gl);
-
         gl.uniform1i(this.textureBumpLoc, 0);
         gl.activeTexture(gl.TEXTURE0);
-        // gl.bindTexture(gl.TEXTURE_2D, texture.bump);
+        gl.bindTexture(gl.TEXTURE_2D, this.texture.bump);
 
         gl.uniform1i(this.textureReflectiveLoc, 1);
         gl.activeTexture(gl.TEXTURE1);
-        // gl.bindTexture(gl.TEXTURE_2D, texture.reflective);
+        gl.bindTexture(gl.TEXTURE_2D, this.texture.reflective);
 
         gl.uniform1i(this.textureImageLoc, 2);
         gl.activeTexture(gl.TEXTURE2);
-        // gl.bindTexture(gl.TEXTURE_2D, texture.image);
+        gl.bindTexture(gl.TEXTURE_2D, this.texture.image);
 
     }
 

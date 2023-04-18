@@ -82,27 +82,27 @@ const fragCode3D = `
 
         gl_FragColor = vec4(uColor, 1.0);
 
-        // // Bump
-        // if (uTextureType == 0) {
-        //     vec3 lightDirection = normalize(vTBN * vViewTransformPosition - vTBN * uReverseLightDirection);
-        //     vec3 albedo = texture2D(uTextureBump, vTextureCoord).rgb;
-        //     vec3 ambientLight = 0.3 * albedo;
-        //     vec3 tangentNormal = normalize(texture2D(uTextureBump, vTextureCoord).rgb * 2.0 - 1.0);
-        //     float diffuse = max(dot(lightDirection, tangentNormal), 0.0);
-        //     gl_FragColor = vec4(ambientLight + diffuse * albedo, 1.0);
-        // } 
+        // Bump
+        if (uTextureType == 0) {
+            vec3 lightDirection = normalize(vTBN * vViewTransformPosition - vTBN * uReverseLightDirection);
+            vec3 albedo = texture2D(uTextureBump, vTextureCoord).rgb;
+            vec3 ambientLight = 0.3 * albedo;
+            vec3 tangentNormal = normalize(texture2D(uTextureBump, vTextureCoord).rgb * 2.0 - 1.0);
+            float diffuse = max(dot(lightDirection, tangentNormal), 0.0);
+            gl_FragColor = vec4(ambientLight + diffuse * albedo, 1.0);
+        } 
 
-        // // Reflective
-        // else if (uTextureType == 1) {
-        //     vec3 eyeDirection = normalize(vTransformPosition - uCameraPosition);
-        //     vec3 reflectedDirection = reflect(eyeDirection, normal);
-        //     gl_FragColor = textureCube(uTextureReflective, reflectedDirection);
-        // }
+        // Reflective
+        else if (uTextureType == 1) {
+            vec3 eyeDirection = normalize(vTransformPosition - uCameraPosition);
+            vec3 reflectedDirection = reflect(eyeDirection, normal);
+            gl_FragColor = textureCube(uTextureReflective, reflectedDirection);
+        }
         
-        // // Image
-        // else if (uTextureType == 2) {
-        //     gl_FragColor = texture2D(uTextureImage, vTextureCoord);
-        // }
+        // Image
+        else if (uTextureType == 2) {
+            gl_FragColor = texture2D(uTextureImage, vTextureCoord);
+        }
 
         if (uUseShading) {
             gl_FragColor.rgb *= color;
