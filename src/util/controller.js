@@ -14,7 +14,7 @@ class Controller {
             program: modelProgram,
             object: WolfModel.getModel(),
             projection: projectionType.ORTHOGRAPHIC,
-            texture: textureType.BUMP,
+            texture: textureType.COLOR,
             cameraAngle: 0,
             cameraRadius: 0,
             useShading: true,
@@ -26,7 +26,7 @@ class Controller {
             program: componentProgram,
             object: this.model.object.findComponentByName("body"),
             projection: projectionType.ORTHOGRAPHIC,
-            texture: textureType.BUMP,
+            texture: textureType.COLOR,
             cameraAngle: 0,
             cameraRadius: 0,
             useShading: true,
@@ -44,7 +44,7 @@ class Controller {
                 } else if (objectType === modelType.WOLF) {
                     controller.model.object = WolfModel.getModel();
                 } else if (objectType === modelType.HORSE) {
-                    controller.model.object = HorseModel.getModel(); // TODO: change to car model
+                    controller.model.object = HorseModel.getModel();
                 }
 
                 controller.component.object = controller.model.object;
@@ -185,17 +185,13 @@ class Controller {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.DEPTH_TEST);
 
-        const projectionMat = this.__getProjectionMatrix(gl, this.model);
-        const cameraViewMat = this.__getCameraViewMatrix(gl, this.model);
-        const cameraPosition = this.__getCameraPos(gl, this.model);
+        const projectionMat = this.__getProjectionMatrix(this.model);
         const colorVec = [0.6, 0.2, 0.4];
 
         this.model.object.draw(
             gl, 
             program,
             projectionMat,
-            cameraViewMat,
-            cameraPosition,
             colorVec,
             this.model.projection,
             this.model.useShading,
@@ -210,17 +206,13 @@ class Controller {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.DEPTH_TEST);
 
-        const projectionMat = this.__getProjectionMatrix(gl, this.component);
-        const cameraViewMat = this.__getCameraViewMatrix(gl, this.component);
-        const cameraPosition = this.__getCameraPos(gl, this.component);
+        const projectionMat = this.__getProjectionMatrix(this.component);
         const colorVec = [0.6, 0.2, 0.4];
 
         this.component.object.drawComponent(
             gl, 
             program, 
             projectionMat,
-            cameraViewMat,
-            cameraPosition,
             colorVec,
             this.component.projection,
             this.component.useShading,
@@ -228,7 +220,7 @@ class Controller {
         );
     }
 
-    __getViewMatrix(object) {;
+    __getViewMatrix(object) {
         const cameraPos = this.__getCameraPos(object);
         const viewMat = mat4.lookAt(cameraPos, [0, 0, 0], [0, 1, 0]);
 
@@ -247,7 +239,7 @@ class Controller {
         return [cameraEye[12], cameraEye[13], cameraEye[14]];
     }
 
-    __getProjectionMatrix(gl, object) {
+    __getProjectionMatrix(object) {
         const degA = this.__degToRad(64);
         const degB = this.__degToRad(64);
 
@@ -271,16 +263,15 @@ class Controller {
                 break;
         }
 
-        // const cameraRotation = mat4.rotationMatrix(0, this.__degToRad(object.cameraAngle), 0);
-        // const cameraTranslation = mat4.translationMatrix(0, 0, object.cameraRadius / 1000);
+        const cameraRotation = mat4.rotationMatrix(0, this.__degToRad(object.cameraAngle), 0);
+        const cameraTranslation = mat4.translationMatrix(0, 0, object.cameraRadius / 1000);
 
-        // const cameraTransform = mat4.mult(cameraRotation, cameraTranslation);
+        const cameraTransform = mat4.mult(cameraRotation, cameraTranslation);
 
-        // return mat4.mult(projection, cameraTransform);
-        return projection;
+        return mat4.mult(projection, cameraTransform);
     }
 
-    __getCameraViewMatrix(gl, object) {
+    __getCameraViewMatrix(object) {
         const cameraRotation = mat4.rotationMatrix(0, this.__degToRad(object.cameraAngle), 0);
         const cameraTranslation = mat4.translationMatrix(0, 0, object.cameraRadius / 1000);
 
