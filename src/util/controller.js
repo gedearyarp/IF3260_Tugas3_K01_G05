@@ -12,7 +12,7 @@ class Controller {
         this.model = {
             gl: modelGl,
             program: modelProgram,
-            object: WolfModel.getModel(),
+            object: PersonModel.getModel(),
             projection: projectionType.ORTHOGRAPHIC,
             texture: textureType.COLOR,
             cameraAngle: 0,
@@ -24,7 +24,7 @@ class Controller {
         this.component = {
             gl: componentGl,
             program: componentProgram,
-            object: this.model.object.findComponentByName("body"),
+            object: this.model.object,
             projection: projectionType.ORTHOGRAPHIC,
             texture: textureType.COLOR,
             cameraAngle: 0,
@@ -169,6 +169,10 @@ class Controller {
                 resetComponentViewControl();
             }
         }
+    }
+
+    getComponentTreeDisplay() {
+        return this.model.object.getComponentTreeDisplay();
     }
 
     render() {

@@ -15,18 +15,6 @@ export class ArticulatedObject {
         this.child.push(child);
     }
 
-    getChild() {
-        return this.child;
-    }
-
-    getName() {
-        return this.name;
-    }
-
-    getObject() {
-        return this.object;
-    }
-
     drawComponent(gl, program, projectionMat, colorVec, projType, useShading, textureType) {
         this.object.draw(
             gl, 
@@ -104,5 +92,53 @@ export class ArticulatedObject {
         for (let i = 0; i < this.child.length; i++) {
             this.child[i].dfsScale(id, scale);
         }
+    }
+
+    getComponentTreeDisplay() {
+        let result = `<div class="d-flex flex-column" style="gap: 0.3rem">`;
+
+        const nextRandomColor = this.__generateRandomColor();
+        result += this.dfsComponentTreeDisplay(0, nextRandomColor);
+        result += `</div>`;
+
+        return result;
+    }
+
+    dfsComponentTreeDisplay(depth, color) {
+        let result = `<div>`;
+
+        const space = "&nbsp;".repeat(depth * 6);
+        const kebabCaseName = this.__toKebabCase(this.name);
+        const componentId = `component-part-${kebabCaseName}`;
+
+        result += 
+        `${space}
+        <button 
+            type="button" class="btn btn-primary" 
+            id="${componentId}"
+            style="background-color: ${color};"
+        >
+            ${this.name}
+        </button>`;
+        result += `</div>`;
+
+        const nextRandomColor = this.__generateRandomColor();
+        for (let i = 0; i < this.child.length; i++) {
+            result += this.child[i].dfsComponentTreeDisplay(depth + 1, nextRandomColor);
+        }
+
+        return result;
+    }
+
+    __toKebabCase(str) {
+        return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
+    }
+
+    __generateRandomColor() {
+        const r = Math.floor(Math.random() * 128);
+        const g = Math.floor(Math.random() * 128);
+        const b = Math.floor(Math.random() * 128);
+
+        return `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
     }
 }

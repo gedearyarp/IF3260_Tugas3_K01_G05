@@ -81,19 +81,31 @@ function resetComponentViewControl() {
 
 function modelEventListener(controller) {
     document.getElementById("person").addEventListener("change", (event) => {
-        controller.setModel().object(modelType.PERSON)
+        controller.setModel().object(modelType.PERSON);
+
+        const tree = document.getElementById("component-tree");
+        tree.innerHTML = controller.getComponentTreeDisplay();
     });
 
     document.getElementById("chicken").addEventListener("change", (event) => {
         controller.setModel().object(modelType.CHICKEN);
+
+        const tree = document.getElementById("component-tree");
+        tree.innerHTML = controller.getComponentTreeDisplay();
     });
 
     document.getElementById("wolf").addEventListener("change", (event) => {
         controller.setModel().object(modelType.WOLF);
+
+        const tree = document.getElementById("component-tree");
+        tree.innerHTML = controller.getComponentTreeDisplay();
     });
 
     document.getElementById("horse").addEventListener("change", (event) => {
         controller.setModel().object(modelType.HORSE);
+
+        const tree = document.getElementById("component-tree");
+        tree.innerHTML = controller.getComponentTreeDisplay();
     });
 }
 
@@ -307,6 +319,9 @@ function configureEventListener(controller) {
     transformationComponentEventListener(controller);
 
     resetEventListener(controller);
+
+    const tree = document.getElementById("component-tree");
+    tree.innerHTML = controller.getComponentTreeDisplay();
 }
 
 export { configureEventListener, resetModelViewControl, resetComponentViewControl };
