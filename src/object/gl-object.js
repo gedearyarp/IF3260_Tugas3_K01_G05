@@ -15,14 +15,14 @@ export class GlObject {
 
     }
 
-    draw(gl, program, projectionMat, colorVec, projType, useShading, textureType, parentTransform) {
+    draw(gl, program, projectionMat, cameraViewMat, colorVec, projType, useShading, textureType, parentTransform) {
         this.__createBuffers(gl);
         this.__getLocations(gl, program);
 
         gl.useProgram(program);
 
         this.__bindBuffers(gl);
-        this.__setUniforms(gl, projectionMat, colorVec, projType, useShading, textureType, parentTransform);
+        this.__setUniforms(gl, projectionMat, cameraViewMat, colorVec, projType, useShading, textureType, parentTransform);
 
         gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
     }
@@ -37,6 +37,7 @@ export class GlObject {
         this.colorLoc = gl.getUniformLocation(program, 'uColor');
         this.transformLoc = gl.getUniformLocation(program, "uTransform");
         this.projectionLoc = gl.getUniformLocation(program, "uProjection");
+        this.cameraViewLoc = gl.getUniformLocation(program, "uCameraView");
         this.fudgeFactorLoc = gl.getUniformLocation(program, "uFudgeFactor");
 
         this.useShadingLoc = gl.getUniformLocation(program, "uUseShading");
@@ -53,12 +54,13 @@ export class GlObject {
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
     }
 
-    __setUniforms(gl, projectionMat, colorVec, projType, useShading, textureType, parentTransform) {
+    __setUniforms(gl, projectionMat, cameraViewMat, colorVec, projType, useShading, textureType, parentTransform) {
         gl.uniform3fv(this.colorLoc, new Float32Array(colorVec));
 
         const transformMat = this.__getTransformMatrix(parentTransform);
         gl.uniformMatrix4fv(this.transformLoc, false, new Float32Array(transformMat));
         gl.uniformMatrix4fv(this.projectionLoc, false, new Float32Array(projectionMat));
+        gl.uniformMatrix4fv(this.cameraViewLoc, false, new Float32Array(cameraViewMat));
 
         if (projType === projectionType.PERSPECTIVE) {
             gl.uniform1f(this.fudgeFactorLoc, 1.0);

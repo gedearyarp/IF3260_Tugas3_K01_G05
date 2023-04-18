@@ -27,11 +27,12 @@ export class ArticulatedObject {
         return this.object;
     }
 
-    drawComponent(gl, program, projectionMat, colorVec, projType, useShading, textureType) {
+    drawComponent(gl, program, projectionMat, cameraViewMat, colorVec, projType, useShading, textureType) {
         this.object.draw(
             gl, 
             program, 
             projectionMat, 
+            cameraViewMat,
             colorVec, 
             projType, 
             useShading, 
@@ -44,11 +45,12 @@ export class ArticulatedObject {
         );
     }
 
-    draw(gl, program, projectionMat, colorVec, projType, useShading, textureType) {
+    draw(gl, program, projectionMat, cameraViewMat, colorVec, projType, useShading, textureType) {
         this.object.draw(
             gl, 
             program, 
             projectionMat, 
+            cameraViewMat,
             colorVec, 
             projType, 
             useShading, 
@@ -61,7 +63,7 @@ export class ArticulatedObject {
         );
 
         for (let i = 0; i < this.child.length; i++) {
-            this.child[i].draw(gl, program, projectionMat, colorVec, projType, useShading, textureType);
+            this.child[i].draw(gl, program, projectionMat, cameraViewMat, colorVec, projType, useShading, textureType);
         }
     }
 
