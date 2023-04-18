@@ -98,20 +98,19 @@ export class ArticulatedObject {
 
     getComponentTreeDisplay() {
         let result = `<div class="d-flex flex-column" style="gap: 0.3rem">`;
-
-        const nextRandomColor = this.__generateRandomColor();
-        result += this.dfsComponentTreeDisplay(0, nextRandomColor);
+        result += this.dfsComponentTreeDisplay(0);
         result += `</div>`;
 
         return result;
     }
 
-    dfsComponentTreeDisplay(depth, color) {
+    dfsComponentTreeDisplay(depth) {
         let result = `<div>`;
 
         const space = "&nbsp;".repeat(depth * 6);
         const componentId = `component-part-${this.__removeSpace(this.name)}`;
 
+        const color = `#${((3*(depth)).toString()).repeat(6)}`
         result += 
         `${space}
         <button 
@@ -123,9 +122,8 @@ export class ArticulatedObject {
         </button>`;
         result += `</div>`;
 
-        const nextRandomColor = this.__generateRandomColor();
         for (let i = 0; i < this.child.length; i++) {
-            result += this.child[i].dfsComponentTreeDisplay(depth + 1, nextRandomColor);
+            result += this.child[i].dfsComponentTreeDisplay(depth + 1);
         }
 
         return result;
@@ -133,13 +131,5 @@ export class ArticulatedObject {
 
     __removeSpace(str) {
         return str.replace(/\s/g, "");
-    }
-
-    __generateRandomColor() {
-        const r = Math.floor(Math.random() * 128);
-        const g = Math.floor(Math.random() * 128);
-        const b = Math.floor(Math.random() * 128);
-
-        return `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
     }
 }
