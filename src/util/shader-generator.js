@@ -4,12 +4,23 @@
 
 const vertCode3D = `
     attribute vec4 aPosition;
+    attribute vec3 aNormal;
+    attribute vec3 aTangent;
+    attribute vec3 aBitangent;
+    attribute vec2 aTextureCoord;
 
-    uniform mat4 uTransform;
-    uniform mat4 uProjection;
+    uniform mat4 uTransform;    // model
+    uniform mat4 uProjection;   // projection(model) * cameraview
+    uniform mat4 uCameraView;         // cameraview
     uniform float uFudgeFactor;
+    uniform mat4 uNormal;
 
     varying float color;
+    varying vec3 vTransformPosition;
+    varying vec3 vViewTransformPosition;
+    varying vec3 vNormal;
+    varying vec2 vTextureCoord;
+    varying mat3 vTBN;
 
     mat3 transpose(in mat3 inMatrix) {
         vec3 i0 = inMatrix[0];
@@ -25,7 +36,7 @@ const vertCode3D = `
 
     void main(void) {
         vec4 transformedPos = uTransform * aPosition;
-        vec4 projectedPos = uProjection * transformedPos;
+        vec4 projectedPos = uProjection * uCameraView * transformedPos;
 
         color = min(max((1.0 - transformedPos.z) / 2.0, 0.0), 1.0);
 
@@ -35,6 +46,15 @@ const vertCode3D = `
         } else {
             gl_Position = projectedPos;
         }
+
+        vTransformPosition = transformedPos.xyz;
+        vViewTransformPosition = (uCameraView * transformedPos).xyz;
+
+        vNormal = mat3(uTransform) * aNormal;
+
+        vTextureCoord = aTextureCoord;
+
+        vTBN = transpose(mat3(normalize(mat3(uNormal) * aTangent), normalize(mat3(uNormal) * aBitangent), normalize(mat3(uNormal) * aNormal)));
     }
 `
 
@@ -42,20 +62,46 @@ const fragCode3D = `
     precision mediump float;
 
     uniform vec3 uColor;
+    uniform vec3 uCameraPosition;
+    uniform vec3 uReverseLightDirection;
     uniform bool uUseShading;
     uniform int uTextureType;
+    uniform sampler2D uTextureBump;
+    uniform samplerCube uTextureReflective;
+    uniform sampler2D uTextureImage;
 
     varying float color;
+    varying vec3 vTransformPosition;
+    varying vec3 vViewTransformPosition;
+    varying vec3 vNormal;
+    varying vec2 vTextureCoord;
+    varying mat3 vTBN;
 
     void main() {
+        vec3 normal = normalize(vNormal);
+
         gl_FragColor = vec4(uColor, 1.0);
 
+        // Bump
         if (uTextureType == 0) {
+            vec3 lightDirection = normalize(vTBN * vViewTransformPosition - vTBN * uReverseLightDirection);
+            vec3 albedo = texture2D(uTextureBump, vTextureCoord).rgb;
+            vec3 ambientLight = 0.3 * albedo;
+            vec3 tangentNormal = normalize(texture2D(uTextureBump, vTextureCoord).rgb * 2.0 - 1.0);
+            float diffuse = max(dot(lightDirection, tangentNormal), 0.0);
+            gl_FragColor = vec4(ambientLight + diffuse * albedo, 1.0);
+        } 
 
-        } else if (uTextureType == 1) {
-
-        } else if (uTextureType == 2) {
-            
+        // Reflective
+        else if (uTextureType == 1) {
+            vec3 eyeDirection = normalize(vTransformPosition - uCameraPosition);
+            vec3 reflectedDirection = reflect(eyeDirection, normal);
+            gl_FragColor = textureCube(uTextureReflective, reflectedDirection);
+        }
+        
+        // Image
+        else if (uTextureType == 2) {
+            gl_FragColor = texture2D(uTextureImage, vTextureCoord);
         }
 
         if (uUseShading) {

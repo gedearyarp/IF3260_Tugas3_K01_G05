@@ -186,12 +186,16 @@ class Controller {
         gl.enable(gl.DEPTH_TEST);
 
         const projectionMat = this.__getProjectionMatrix(gl, this.model);
+        const cameraViewMat = this.__getCameraViewMatrix(gl, this.model);
+        const cameraPosition = this.__getCameraPos(gl, this.model);
         const colorVec = [0.6, 0.2, 0.4];
 
         this.model.object.draw(
             gl, 
             program,
             projectionMat,
+            cameraViewMat,
+            cameraPosition,
             colorVec,
             this.model.projection,
             this.model.useShading,
@@ -207,12 +211,16 @@ class Controller {
         gl.enable(gl.DEPTH_TEST);
 
         const projectionMat = this.__getProjectionMatrix(gl, this.component);
+        const cameraViewMat = this.__getCameraViewMatrix(gl, this.component);
+        const cameraPosition = this.__getCameraPos(gl, this.component);
         const colorVec = [0.6, 0.2, 0.4];
 
         this.component.object.drawComponent(
             gl, 
             program, 
             projectionMat,
+            cameraViewMat,
+            cameraPosition,
             colorVec,
             this.component.projection,
             this.component.useShading,
@@ -263,13 +271,24 @@ class Controller {
                 break;
         }
 
+        // const cameraRotation = mat4.rotationMatrix(0, this.__degToRad(object.cameraAngle), 0);
+        // const cameraTranslation = mat4.translationMatrix(0, 0, object.cameraRadius / 1000);
+
+        // const cameraTransform = mat4.mult(cameraRotation, cameraTranslation);
+
+        // return mat4.mult(projection, cameraTransform);
+        return projection;
+    }
+
+    __getCameraViewMatrix(gl, object) {
         const cameraRotation = mat4.rotationMatrix(0, this.__degToRad(object.cameraAngle), 0);
         const cameraTranslation = mat4.translationMatrix(0, 0, object.cameraRadius / 1000);
 
         const cameraTransform = mat4.mult(cameraRotation, cameraTranslation);
 
-        return mat4.mult(projection, cameraTransform);
+        return cameraTransform;
     }
+
 
     __degToRad(deg) {
         return deg * Math.PI / 180;
