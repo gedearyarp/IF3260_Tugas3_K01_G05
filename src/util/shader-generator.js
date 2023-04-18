@@ -37,7 +37,6 @@ const vertCode3D = `
     void main(void) {
         vec4 transformedPos = uTransform * aPosition;
         vec4 projectedPos = uProjection * uCameraView * transformedPos;
-        // vec4 projectedPos = uProjection * transformedPos;
 
         color = min(max((1.0 - transformedPos.z) / 2.0, 0.0), 1.0);
 

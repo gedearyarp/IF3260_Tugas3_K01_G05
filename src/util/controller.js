@@ -186,6 +186,7 @@ class Controller {
 
         const projectionMat = this.__getProjectionMatrix(gl, this.model);
         const cameraViewMat = this.__getCameraViewMatrix(gl, this.model);
+        const cameraPosition = this.__getCameraPos(gl, this.model);
         const colorVec = [0.6, 0.2, 0.4];
 
         this.model.object.draw(
@@ -193,6 +194,7 @@ class Controller {
             program,
             projectionMat,
             cameraViewMat,
+            cameraPosition,
             colorVec,
             this.model.projection,
             this.model.useShading,
@@ -209,6 +211,7 @@ class Controller {
 
         const projectionMat = this.__getProjectionMatrix(gl, this.component);
         const cameraViewMat = this.__getCameraViewMatrix(gl, this.component);
+        const cameraPosition = this.__getCameraPos(gl, this.component);
         const colorVec = [0.6, 0.2, 0.4];
 
         this.component.object.drawComponent(
@@ -216,6 +219,7 @@ class Controller {
             program, 
             projectionMat,
             cameraViewMat,
+            cameraPosition,
             colorVec,
             this.component.projection,
             this.component.useShading,
