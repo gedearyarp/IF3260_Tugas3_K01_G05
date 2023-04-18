@@ -2,6 +2,7 @@ import { projectionType, textureType, modelType } from '../config/constant.js';
 import { mat4 } from './mat4.js';
 import { PersonModel } from '../config/person.js';
 import { ChickenModel } from '../config/chicken.js';
+import { WolfModel } from '../config/wolf.js';
 
 import {resetModelViewControl, resetComponentViewControl} from '../view.js'
 
@@ -10,7 +11,7 @@ class Controller {
         this.model = {
             gl: modelGl,
             program: modelProgram,
-            object: PersonModel.getModel(),
+            object: WolfModel.getModel(),
             projection: projectionType.ORTHOGRAPHIC,
             texture: textureType.BUMP,
             cameraAngle: 0,
@@ -39,8 +40,8 @@ class Controller {
                     controller.model.object = PersonModel.getModel();
                 } else if (objectType === modelType.CHICKEN) {
                     controller.model.object = ChickenModel.getModel();
-                } else if (objectType === modelType.TABLE) {
-                    controller.model.object = PersonModel.getModel(); // TODO: change to table model
+                } else if (objectType === modelType.WOLF) {
+                    controller.model.object = WolfModel.getModel();
                 } else if (objectType === modelType.CAR) {
                     controller.model.object = PersonModel.getModel(); // TODO: change to car model
                 }

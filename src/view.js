@@ -88,8 +88,8 @@ function modelEventListener(controller) {
         controller.setModel().object(modelType.CHICKEN);
     });
 
-    document.getElementById("table").addEventListener("change", (event) => {
-        controller.setModel().object(modelType.TABLE);
+    document.getElementById("wolf").addEventListener("change", (event) => {
+        controller.setModel().object(modelType.WOLF);
     });
 
     document.getElementById("car").addEventListener("change", (event) => {

@@ -1,7 +1,7 @@
 const modelType = {
     PERSON: 'PERSON',
     CHICKEN: 'CHICKEN',
-    TABLE: 'TABLE',
+    WOLF: 'WOLF',
     CAR: 'CAR',
 };
 
