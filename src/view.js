@@ -92,8 +92,8 @@ function modelEventListener(controller) {
         controller.setModel().object(modelType.WOLF);
     });
 
-    document.getElementById("car").addEventListener("change", (event) => {
-        controller.setModel().object(modelType.CAR);
+    document.getElementById("horse").addEventListener("change", (event) => {
+        controller.setModel().object(modelType.HORSE);
     });
 }
 

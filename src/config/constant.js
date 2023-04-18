@@ -2,7 +2,7 @@ const modelType = {
     PERSON: 'PERSON',
     CHICKEN: 'CHICKEN',
     WOLF: 'WOLF',
-    CAR: 'CAR',
+    HORSE: 'HORSE',
 };
 
 const projectionType = {

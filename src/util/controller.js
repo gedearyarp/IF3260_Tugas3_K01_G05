@@ -3,6 +3,7 @@ import { mat4 } from './mat4.js';
 import { PersonModel } from '../config/person.js';
 import { ChickenModel } from '../config/chicken.js';
 import { WolfModel } from '../config/wolf.js';
+import { HorseModel } from '../config/horse.js';
 
 import {resetModelViewControl, resetComponentViewControl} from '../view.js'
 
@@ -42,8 +43,8 @@ class Controller {
                     controller.model.object = ChickenModel.getModel();
                 } else if (objectType === modelType.WOLF) {
                     controller.model.object = WolfModel.getModel();
-                } else if (objectType === modelType.CAR) {
-                    controller.model.object = PersonModel.getModel(); // TODO: change to car model
+                } else if (objectType === modelType.HORSE) {
+                    controller.model.object = HorseModel.getModel(); // TODO: change to car model
                 }
 
                 controller.component.object = controller.model.object;
