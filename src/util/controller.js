@@ -5,7 +5,7 @@ import { ChickenModel } from '../config/chicken.js';
 import { WolfModel } from '../config/wolf.js';
 import { HorseModel } from '../config/horse.js';
 
-import {resetModelViewControl, resetComponentViewControl} from '../view.js'
+import {resetModelViewControl, resetComponentViewControl, setComponentViewControl} from '../view.js'
 
 class Controller {
     constructor(modelGl, modelProgram, componentGl, componentProgram) {
@@ -120,6 +120,13 @@ class Controller {
         return {
             object: function (name) {
                 controller.component.object = controller.model.object.findComponentByName(name);
+                setComponentViewControl(
+                    {
+                        translate: controller.component.object.object.translate,
+                        rotate: controller.component.object.object.rotate,
+                        scale: controller.component.object.object.scale,
+                    }
+                )
             },
 
             projection: function (projectionType) {

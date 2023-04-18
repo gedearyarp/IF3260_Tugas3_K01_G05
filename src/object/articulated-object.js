@@ -61,7 +61,9 @@ export class ArticulatedObject {
     }
 
     findComponentByName(name) {
-        if (this.name === name) {
+        if (
+            this.__removeSpace(this.name) === this.__removeSpace(name)
+        ) {
             return this;
         }
 
@@ -108,8 +110,7 @@ export class ArticulatedObject {
         let result = `<div>`;
 
         const space = "&nbsp;".repeat(depth * 6);
-        const kebabCaseName = this.__toKebabCase(this.name);
-        const componentId = `component-part-${kebabCaseName}`;
+        const componentId = `component-part-${this.__removeSpace(this.name)}`;
 
         result += 
         `${space}
@@ -130,8 +131,8 @@ export class ArticulatedObject {
         return result;
     }
 
-    __toKebabCase(str) {
-        return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
+    __removeSpace(str) {
+        return str.replace(/\s/g, "");
     }
 
     __generateRandomColor() {

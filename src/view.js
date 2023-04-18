@@ -79,12 +79,45 @@ function resetComponentViewControl() {
     document.getElementById("perspective-component").checked = false;
 }
 
+function setComponentViewControl(data) {
+    document.getElementById("translate-x-component").value = data.translate[0];
+    document.getElementById("translate-y-component").value = data.translate[1];
+    document.getElementById("translate-z-component").value = data.translate[2];
+
+    document.getElementById("translate-x-component").nextElementSibling.value = data.translate[0];
+    document.getElementById("translate-y-component").nextElementSibling.value = data.translate[1];
+    document.getElementById("translate-z-component").nextElementSibling.value = data.translate[2];
+
+    document.getElementById("rotate-x-component").value = data.rotate[0];
+    document.getElementById("rotate-y-component").value = data.rotate[1];
+    document.getElementById("rotate-z-component").value = data.rotate[2];
+
+    document.getElementById("rotate-x-component").nextElementSibling.value = data.rotate[0];
+    document.getElementById("rotate-y-component").nextElementSibling.value = data.rotate[1];
+    document.getElementById("rotate-z-component").nextElementSibling.value = data.rotate[2];
+
+    document.getElementById("scale-x-component").value = data.scale[0];
+    document.getElementById("scale-y-component").value = data.scale[1];
+    document.getElementById("scale-z-component").value = data.scale[2];
+
+    document.getElementById("scale-x-component").nextElementSibling.value = data.scale[0];
+    document.getElementById("scale-y-component").nextElementSibling.value = data.scale[1];
+    document.getElementById("scale-z-component").nextElementSibling.value = data.scale[2];
+}
+
 function modelEventListener(controller) {
     document.getElementById("person").addEventListener("change", (event) => {
         controller.setModel().object(modelType.PERSON);
 
         const tree = document.getElementById("component-tree");
         tree.innerHTML = controller.getComponentTreeDisplay();
+
+        const componentTreeButtons = document.querySelectorAll('[id^="component-part-"]');
+        componentTreeButtons.forEach((button) => {
+            button.addEventListener("click", (event) => {
+                controller.setComponent().object(event.target.id.split("-")[2]);
+            });
+        });
     });
 
     document.getElementById("chicken").addEventListener("change", (event) => {
@@ -92,6 +125,13 @@ function modelEventListener(controller) {
 
         const tree = document.getElementById("component-tree");
         tree.innerHTML = controller.getComponentTreeDisplay();
+
+        const componentTreeButtons = document.querySelectorAll('[id^="component-part-"]');
+        componentTreeButtons.forEach((button) => {
+            button.addEventListener("click", (event) => {
+                controller.setComponent().object(event.target.id.split("-")[2]);
+            });
+        });
     });
 
     document.getElementById("wolf").addEventListener("change", (event) => {
@@ -99,6 +139,13 @@ function modelEventListener(controller) {
 
         const tree = document.getElementById("component-tree");
         tree.innerHTML = controller.getComponentTreeDisplay();
+
+        const componentTreeButtons = document.querySelectorAll('[id^="component-part-"]');
+        componentTreeButtons.forEach((button) => {
+            button.addEventListener("click", (event) => {
+                controller.setComponent().object(event.target.id.split("-")[2]);
+            });
+        });
     });
 
     document.getElementById("horse").addEventListener("change", (event) => {
@@ -106,6 +153,13 @@ function modelEventListener(controller) {
 
         const tree = document.getElementById("component-tree");
         tree.innerHTML = controller.getComponentTreeDisplay();
+
+        const componentTreeButtons = document.querySelectorAll('[id^="component-part-"]');
+        componentTreeButtons.forEach((button) => {
+            button.addEventListener("click", (event) => {
+                controller.setComponent().object(event.target.id.split("-")[2]);
+            });
+        });
     });
 }
 
@@ -322,6 +376,18 @@ function configureEventListener(controller) {
 
     const tree = document.getElementById("component-tree");
     tree.innerHTML = controller.getComponentTreeDisplay();
+
+    const componentTreeButtons = document.querySelectorAll('[id^="component-part-"]');
+    componentTreeButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            controller.setComponent().object(event.target.id.split("-")[2]);
+        });
+    });
 }
 
-export { configureEventListener, resetModelViewControl, resetComponentViewControl };
+export { 
+    configureEventListener, 
+    resetModelViewControl, 
+    resetComponentViewControl, 
+    setComponentViewControl 
+};
