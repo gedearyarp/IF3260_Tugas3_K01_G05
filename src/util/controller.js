@@ -33,6 +33,13 @@ class Controller {
             cameraRadius: 0,
             useShading: true,
         }
+
+        this.animation = {
+            lastRenderTime: 0,
+            animationInterval: 75,
+            currentFrame: 0,
+            frames: []
+        }
     }
 
     setModel() {
@@ -85,7 +92,39 @@ class Controller {
             },
 
             animation: function (animation) {
+                if (controller.articulatedModel === modelType.PERSON) {
+                    controller.animation.frames = PersonModel.getAnimation();
+                } else if (controller.articulatedModel === modelType.CHICKEN) {
+                    controller.animation.frames = PersonModel.getAnimation();
+                } else if (controller.articulatedModel === modelType.WOLF) {
+                    controller.animation.frames = PersonModel.getAnimation();
+                } else if (controller.articulatedModel === modelType.HORSE) {
+                    controller.animation.frames = PersonModel.getAnimation();
+                }
+
                 controller.model.animation = animation;
+
+                if (!animation) {
+                    if (controller.articulatedModel === modelType.PERSON) {
+                        controller.model.object = PersonModel.getModel();
+                    } else if (controller.articulatedModel === modelType.CHICKEN) {
+                        controller.model.object = ChickenModel.getModel();
+                    } else if (controller.articulatedModel === modelType.WOLF) {
+                        controller.model.object = WolfModel.getModel();
+                    } else if (controller.articulatedModel === modelType.HORSE) {
+                        controller.model.object = HorseModel.getModel();
+                    }
+
+                    controller.model.projection = projectionType.ORTHOGRAPHIC;
+                    controller.model.texture = textureType.COLOR;
+                    controller.model.cameraAngle = 0;
+                    controller.model.cameraRadius = 0;
+                    controller.model.useShading = true;
+                    controller.model.animation = false;
+
+                    controller.component.object = controller.model.object;
+                    resetModelViewControl();
+                }
             },
 
             translate: function (id, translate) {
@@ -193,8 +232,22 @@ class Controller {
     }
 
     render() {
-        this.__renderModel();
-        this.__renderComponent();
+        if (this.model.animation) {
+            const currentTime = Date.now();
+            if (currentTime - this.animation.lastRenderTime >= this.animation.animationInterval) {
+                this.animation.currentFrame = (this.animation.currentFrame + 1) % this.animation.frames.length;
+                this.animation.lastRenderTime = currentTime;
+
+                const dataFrame = JSON.parse(this.animation.frames[this.animation.currentFrame]);
+                this.model.object = this.__dfsConstructArticulatedObject(dataFrame);
+            }
+
+            this.__renderModel();
+            this.__renderComponent();
+        } else {
+            this.__renderModel();
+            this.__renderComponent();
+        }
 
         requestAnimationFrame(this.render.bind(this));
     }
