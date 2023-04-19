@@ -367,6 +367,10 @@ function saveLoadEventListener(controller) {
     document.getElementById("save-model-data").addEventListener("click", (event) => {
         controller.save();
     });
+
+    document.getElementById("load-model-data").addEventListener("change", (event) => {
+        controller.load(event);
+    });
 }
 
 function configureEventListener(controller) {

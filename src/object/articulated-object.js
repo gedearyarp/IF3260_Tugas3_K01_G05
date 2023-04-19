@@ -134,10 +134,10 @@ export class ArticulatedObject {
             name: this.name,
             vertices: this.object.vertices,
             indices: this.object.indices,
-            child: [],
             translate: this.object.translate,
             rotate: this.object.rotate,
-            scale: this.object.scale
+            scale: this.object.scale,
+            child: [],
         };
 
         for (let i = 0; i < this.child.length; i++) {

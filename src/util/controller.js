@@ -4,11 +4,13 @@ import { PersonModel } from '../config/person.js';
 import { ChickenModel } from '../config/chicken.js';
 import { WolfModel } from '../config/wolf.js';
 import { HorseModel } from '../config/horse.js';
+import { ArticulatedObject } from '../object/articulated-object.js';
 
 import {resetModelViewControl, resetComponentViewControl, setComponentViewControl} from '../view.js'
 
 class Controller {
     constructor(modelGl, modelProgram, componentGl, componentProgram) {
+        this.articulatedModel = modelType.PERSON;
         this.model = {
             gl: modelGl,
             program: modelProgram,
@@ -39,12 +41,16 @@ class Controller {
             object: function (objectType) {
                 if (objectType === modelType.PERSON) {
                     controller.model.object = PersonModel.getModel();
+                    controller.articulatedModel = modelType.PERSON;
                 } else if (objectType === modelType.CHICKEN) {
                     controller.model.object = ChickenModel.getModel();
+                    controller.articulatedModel = modelType.CHICKEN;
                 } else if (objectType === modelType.WOLF) {
                     controller.model.object = WolfModel.getModel();
+                    controller.articulatedModel = modelType.WOLF;
                 } else if (objectType === modelType.HORSE) {
                     controller.model.object = HorseModel.getModel();
+                    controller.articulatedModel = modelType.HORSE;
                 }
 
                 controller.model.projection = projectionType.ORTHOGRAPHIC;
@@ -198,7 +204,10 @@ class Controller {
     }
 
     save() {
-        const dataArticulated = this.model.object.getArticulatedData();
+        const dataArticulated = {
+            name: this.articulatedModel,
+            model: this.model.object.getArticulatedData()
+        };
 
         const data = JSON.stringify(dataArticulated);
         const blob = new Blob([data], {type: "text/plain;charset=utf-8"});
@@ -206,8 +215,40 @@ class Controller {
         const link = document.createElement("a");
 
         link.href = url;
-        link.download = `articulated-object.json`;
+        link.download = `${this.articulatedModel}.json`;
         link.click();
+    }
+
+    load(event) {
+        const file = event.target.files[0];
+        if (!file) {
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        reader.onload = (event) => {
+            const data = JSON.parse(event.target.result);
+
+            this.articulatedModel = data.name;
+            this.setModel.object = data.name;
+
+            this.model.object = this.__dfsConstructArticulatedObject(data.model);
+            this.setComponent().object(this.model.object.name);
+        }
+    }
+
+    __dfsConstructArticulatedObject(object) {
+        const articulatedObject = new ArticulatedObject(object.name, object.vertices, object.indices);
+        articulatedObject.object.translate = object.translate;
+        articulatedObject.object.rotate = object.rotate;
+        articulatedObject.object.scale = object.scale;
+
+        for (let i = 0; i < object.child.length; i++) {
+            articulatedObject.addChild(this.__dfsConstructArticulatedObject(object.child[i]));
+        }
+
+        return articulatedObject;
     }
 
     __renderModel() {
