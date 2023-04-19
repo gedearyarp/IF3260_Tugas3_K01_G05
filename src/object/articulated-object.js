@@ -129,6 +129,24 @@ export class ArticulatedObject {
         return result;
     }
 
+    getArticulatedData() {
+        const result = {
+            name: this.name,
+            vertices: this.object.vertices,
+            indices: this.object.indices,
+            child: [],
+            translate: this.object.translate,
+            rotate: this.object.rotate,
+            scale: this.object.scale
+        };
+
+        for (let i = 0; i < this.child.length; i++) {
+            result.child.push(this.child[i].getArticulatedData());
+        }
+
+        return result;
+    }
+
     __removeSpace(str) {
         return str.replace(/\s/g, "");
     }

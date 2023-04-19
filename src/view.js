@@ -363,6 +363,12 @@ function resetEventListener(controller) {
     });
 }
 
+function saveLoadEventListener(controller) {
+    document.getElementById("save-model-data").addEventListener("click", (event) => {
+        controller.save();
+    });
+}
+
 function configureEventListener(controller) {
     modelEventListener(controller);
     projectionModelEventListener(controller);
@@ -381,6 +387,7 @@ function configureEventListener(controller) {
     transformationComponentEventListener(controller);
 
     resetEventListener(controller);
+    saveLoadEventListener(controller);
 
     const tree = document.getElementById("component-tree");
     tree.innerHTML = controller.getComponentTreeDisplay();

@@ -186,15 +186,28 @@ class Controller {
         }
     }
 
-    getComponentTreeDisplay() {
-        return this.model.object.getComponentTreeDisplay();
-    }
-
     render() {
         this.__renderModel();
         this.__renderComponent();
 
         requestAnimationFrame(this.render.bind(this));
+    }
+
+    getComponentTreeDisplay() {
+        return this.model.object.getComponentTreeDisplay();
+    }
+
+    save() {
+        const dataArticulated = this.model.object.getArticulatedData();
+
+        const data = JSON.stringify(dataArticulated);
+        const blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = `articulated-object.json`;
+        link.click();
     }
 
     __renderModel() {
