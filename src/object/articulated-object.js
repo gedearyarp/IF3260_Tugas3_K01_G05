@@ -77,6 +77,7 @@ export class ArticulatedObject {
 
     dfsTranslate(id, translation) {
         this.translate[id] = translation;
+        this.object.translate[id] = translation;
         for (let i = 0; i < this.child.length; i++) {
             this.child[i].dfsTranslate(id, translation);
         }
@@ -84,6 +85,7 @@ export class ArticulatedObject {
 
     dfsRotate(id, rotation) {
         this.rotate[id] = rotation;
+        this.object.rotate[id] = rotation;
         for (let i = 0; i < this.child.length; i++) {
             this.child[i].dfsRotate(id, rotation);
         }
@@ -91,6 +93,7 @@ export class ArticulatedObject {
 
     dfsScale(id, scale) {
         this.scale[id] = scale;
+        this.object.scale[id] = scale;
         for (let i = 0; i < this.child.length; i++) {
             this.child[i].dfsScale(id, scale);
         }
