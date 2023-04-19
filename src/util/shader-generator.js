@@ -9,7 +9,7 @@ const vertCode3D = `
     uniform mat4 uProjection;
     uniform float uFudgeFactor;
 
-    varying float color;
+    varying float vColor;
 
     mat3 transpose(in mat3 inMatrix) {
         vec3 i0 = inMatrix[0];
@@ -27,7 +27,7 @@ const vertCode3D = `
         vec4 transformedPos = uTransform * aPosition;
         vec4 projectedPos = uProjection * transformedPos;
 
-        color = min(max((1.0 - transformedPos.z) / 2.0, 0.0), 1.0);
+        vColor = (min(max((1.0 - transformedPos.z) / 2.0, 0.0), 1.0)) * 2.0;
 
         if (uFudgeFactor > 0.0) {
             float zToDivideBy = 1.0 + projectedPos.z * uFudgeFactor;
@@ -45,13 +45,13 @@ const fragCode3D = `
     uniform bool uUseShading;
     uniform int uTextureType;
 
-    varying float color;
+    varying float vColor;
 
     void main() {
         gl_FragColor = vec4(uColor, 1.0);
 
         if (uUseShading) {
-            gl_FragColor.rgb *= color;
+            gl_FragColor.rgb *= vColor;
         }
     }
 `

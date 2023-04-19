@@ -47,6 +47,13 @@ class Controller {
                     controller.model.object = HorseModel.getModel();
                 }
 
+                controller.model.projection = projectionType.ORTHOGRAPHIC;
+                controller.model.texture = textureType.COLOR;
+                controller.model.cameraAngle = 0;
+                controller.model.cameraRadius = 0;
+                controller.model.useShading = true;
+                controller.model.animation = false;
+
                 controller.component.object = controller.model.object;
                 resetModelViewControl();
             },
