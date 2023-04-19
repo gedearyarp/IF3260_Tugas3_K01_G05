@@ -116,6 +116,8 @@ function modelEventListener(controller) {
         componentTreeButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
                 controller.setComponent().object(event.target.id.split("-")[2]);
+                const componentName = document.getElementById("current-component-name");
+                componentName.value = controller.component.object.name;
             });
         });
     });
@@ -130,6 +132,8 @@ function modelEventListener(controller) {
         componentTreeButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
                 controller.setComponent().object(event.target.id.split("-")[2]);
+                const componentName = document.getElementById("current-component-name");
+                componentName.value = controller.component.object.name;
             });
         });
     });
@@ -144,6 +148,8 @@ function modelEventListener(controller) {
         componentTreeButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
                 controller.setComponent().object(event.target.id.split("-")[2]);
+                const componentName = document.getElementById("current-component-name");
+                componentName.value = controller.component.object.name;
             });
         });
     });
@@ -158,6 +164,8 @@ function modelEventListener(controller) {
         componentTreeButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
                 controller.setComponent().object(event.target.id.split("-")[2]);
+                const componentName = document.getElementById("current-component-name");
+                componentName.value = controller.component.object.name;
             });
         });
     });
@@ -381,8 +389,13 @@ function configureEventListener(controller) {
     componentTreeButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
             controller.setComponent().object(event.target.id.split("-")[2]);
+            const componentName = document.getElementById("current-component-name");
+            componentName.value = controller.component.object.name;
         });
     });
+
+    const componentName = document.getElementById("current-component-name");
+    componentName.value = controller.component.object.name;
 }
 
 export { 

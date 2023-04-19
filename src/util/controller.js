@@ -48,6 +48,7 @@ class Controller {
                 }
 
                 controller.component.object = controller.model.object;
+                resetModelViewControl();
             },
 
             projection: function (projectionType) {
