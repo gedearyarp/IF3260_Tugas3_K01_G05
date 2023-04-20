@@ -11,11 +11,11 @@ import {resetModelViewControl, resetComponentViewControl, setComponentViewContro
 
 class Controller {
     constructor(modelGl, modelProgram, componentGl, componentProgram) {
-        this.articulatedModel = modelType.WOLF;
+        this.articulatedModel = modelType.PERSON;
         this.model = {
             gl: modelGl,
             program: modelProgram,
-            object: WolfModel.getModel(),
+            object: PersonModel.getModel(),
             projection: projectionType.ORTHOGRAPHIC,
             texture: textureType.COLOR,
             textures: Texture.__generateTexture(modelGl),

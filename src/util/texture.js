@@ -1,9 +1,4 @@
 export class Texture {
-    // constructor(gl) {
-    //     this.gl = gl;
-    //     // this.texture = this.__generateTexture(gl);
-    // }
-
     static __generateTexture(gl) {
         var textures = {
             bump: this.__getBumpTexture(gl),
