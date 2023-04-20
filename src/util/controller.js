@@ -99,7 +99,7 @@ class Controller {
                 if (controller.articulatedModel === modelType.PERSON) {
                     controller.animation.frames = PersonModel.getAnimation();
                 } else if (controller.articulatedModel === modelType.CHICKEN) {
-                    controller.animation.frames = PersonModel.getAnimation();
+                    controller.animation.frames = ChickenModel.getAnimation();
                 } else if (controller.articulatedModel === modelType.WOLF) {
                     controller.animation.frames = PersonModel.getAnimation();
                 } else if (controller.articulatedModel === modelType.HORSE) {
