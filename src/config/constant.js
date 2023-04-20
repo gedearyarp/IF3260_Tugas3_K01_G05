@@ -32,5 +32,4 @@ const indicesCube = [
     3, 2, 6, 3, 6, 7,
 ];
 
-
 export { projectionType, shadingType, modelType, textureType, indicesCube };
