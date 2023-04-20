@@ -10,11 +10,11 @@ import {resetModelViewControl, resetComponentViewControl, setComponentViewContro
 
 class Controller {
     constructor(modelGl, modelProgram, componentGl, componentProgram) {
-        this.articulatedModel = modelType.PERSON;
+        this.articulatedModel = modelType.WOLF;
         this.model = {
             gl: modelGl,
             program: modelProgram,
-            object: PersonModel.getModel(),
+            object: WolfModel.getModel(),
             projection: projectionType.ORTHOGRAPHIC,
             texture: textureType.COLOR,
             cameraAngle: 0,
@@ -97,7 +97,7 @@ class Controller {
                 } else if (controller.articulatedModel === modelType.CHICKEN) {
                     controller.animation.frames = PersonModel.getAnimation();
                 } else if (controller.articulatedModel === modelType.WOLF) {
-                    controller.animation.frames = PersonModel.getAnimation();
+                    controller.animation.frames = WolfModel.getAnimation();
                 } else if (controller.articulatedModel === modelType.HORSE) {
                     controller.animation.frames = PersonModel.getAnimation();
                 }
@@ -288,6 +288,8 @@ class Controller {
 
             this.model.object = this.__dfsConstructArticulatedObject(data.model);
             this.setComponent().object(this.model.object.name);
+
+            this.getComponentTreeDisplay();
         }
     }
 
