@@ -1,4 +1,5 @@
 import { ArticulatedObject } from "../object/articulated-object.js";
+import { indicesCube } from "./constant.js";
 
 const SCALE = 0.6;
 const yTranslate = 0.225;
@@ -91,15 +92,6 @@ class PersonModel {
             -0.45, 0.5, -0.3,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            7, 6, 5, 7, 5, 4,
-            4, 0, 3, 4, 3, 7,
-            4, 5, 1, 4, 1, 0,
-            3, 2, 6, 3, 6, 7,
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
@@ -108,7 +100,7 @@ class PersonModel {
             vertices[i] += yTranslate;
         }
 
-        return new ArticulatedObject("body", vertices, indices);
+        return new ArticulatedObject("body", vertices, indicesCube);
     }
 
     static __generateHead() {
@@ -123,15 +115,6 @@ class PersonModel {
             -0.25, 0.9, -0.25,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            7, 6, 5, 7, 5, 4,
-            4, 0, 3, 4, 3, 7,
-            4, 5, 1, 4, 1, 0,
-            3, 2, 6, 3, 6, 7,
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
@@ -140,7 +123,7 @@ class PersonModel {
             vertices[i] += yTranslate;
         }
 
-        return new ArticulatedObject("head", vertices, indices);
+        return new ArticulatedObject("head", vertices, indicesCube);
     }
 
     static __generateRightArm() {
@@ -155,15 +138,6 @@ class PersonModel {
             0.45, 0.5, -0.2,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            7, 6, 5, 7, 5, 4,
-            4, 0, 3, 4, 3, 7,
-            4, 5, 1, 4, 1, 0,
-            3, 2, 6, 3, 6, 7,
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
@@ -172,7 +146,7 @@ class PersonModel {
             vertices[i] += yTranslate;
         }
 
-        return new ArticulatedObject("rightArm", vertices, indices);
+        return new ArticulatedObject("rightArm", vertices, indicesCube);
     }
 
     static __generateLeftArm() {
@@ -187,15 +161,6 @@ class PersonModel {
             -0.7, 0.5, -0.2,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            7, 6, 5, 7, 5, 4,
-            4, 0, 3, 4, 3, 7,
-            4, 5, 1, 4, 1, 0,
-            3, 2, 6, 3, 6, 7,
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
@@ -204,7 +169,7 @@ class PersonModel {
             vertices[i] += yTranslate;
         }
 
-        return new ArticulatedObject("leftArm", vertices, indices);
+        return new ArticulatedObject("leftArm", vertices, indicesCube);
     }
 
     static __generateRightForeArm() {
@@ -219,15 +184,6 @@ class PersonModel {
             0.45, -0.15, -0.15,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            7, 6, 5, 7, 5, 4,
-            4, 0, 3, 4, 3, 7,
-            4, 5, 1, 4, 1, 0,
-            3, 2, 6, 3, 6, 7,
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
@@ -236,7 +192,7 @@ class PersonModel {
             vertices[i] += yTranslate;
         }
 
-        return new ArticulatedObject("rightForeArm", vertices, indices);
+        return new ArticulatedObject("rightForeArm", vertices, indicesCube);
     }
 
     static __generateLeftForeArm() {
@@ -251,15 +207,6 @@ class PersonModel {
             -0.7, -0.15, -0.15,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            7, 6, 5, 7, 5, 4,
-            4, 0, 3, 4, 3, 7,
-            4, 5, 1, 4, 1, 0,
-            3, 2, 6, 3, 6, 7,
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
@@ -268,7 +215,7 @@ class PersonModel {
             vertices[i] += yTranslate;
         }
 
-        return new ArticulatedObject("leftForeArm", vertices, indices);
+        return new ArticulatedObject("leftForeArm", vertices, indicesCube);
     }
 
     static __generateRightThigh() {
@@ -283,15 +230,6 @@ class PersonModel {
             0.02, -0.65, -0.25,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            7, 6, 5, 7, 5, 4,
-            4, 0, 3, 4, 3, 7,
-            4, 5, 1, 4, 1, 0,
-            3, 2, 6, 3, 6, 7,
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
@@ -300,7 +238,7 @@ class PersonModel {
             vertices[i] += yTranslate;
         }
 
-        return new ArticulatedObject("rightThigh", vertices, indices);
+        return new ArticulatedObject("rightThigh", vertices, indicesCube);
     }
 
     static __generateLeftThigh() {
@@ -315,15 +253,6 @@ class PersonModel {
             -0.45, -0.65, -0.25,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            7, 6, 5, 7, 5, 4,
-            4, 0, 3, 4, 3, 7,
-            4, 5, 1, 4, 1, 0,
-            3, 2, 6, 3, 6, 7,
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
@@ -332,7 +261,7 @@ class PersonModel {
             vertices[i] += yTranslate;
         }
 
-        return new ArticulatedObject("leftThigh", vertices, indices);
+        return new ArticulatedObject("leftThigh", vertices, indicesCube);
     }
 
     static __generateRightLowerLeg() {
@@ -347,15 +276,6 @@ class PersonModel {
             0.05, -1.1, -0.25,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            7, 6, 5, 7, 5, 4,
-            4, 0, 3, 4, 3, 7,
-            4, 5, 1, 4, 1, 0,
-            3, 2, 6, 3, 6, 7,
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
@@ -364,7 +284,7 @@ class PersonModel {
             vertices[i] += yTranslate;
         }
 
-        return new ArticulatedObject("rightLowerLeg", vertices, indices);
+        return new ArticulatedObject("rightLowerLeg", vertices, indicesCube);
     }
 
     static __generateLeftLowerLeg() {
@@ -379,15 +299,6 @@ class PersonModel {
             -0.42, -1.1, -0.25,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            7, 6, 5, 7, 5, 4,
-            4, 0, 3, 4, 3, 7,
-            4, 5, 1, 4, 1, 0,
-            3, 2, 6, 3, 6, 7,
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
@@ -396,7 +307,7 @@ class PersonModel {
             vertices[i] += yTranslate;
         }
 
-        return new ArticulatedObject("leftLowerLeg", vertices, indices);
+        return new ArticulatedObject("leftLowerLeg", vertices, indicesCube);
     }
 }
 

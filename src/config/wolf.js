@@ -1,4 +1,5 @@
 import { ArticulatedObject } from "../object/articulated-object.js";
+import { indicesCube } from "./constant.js";
 
 class WolfModel {
     static getComponents() {
@@ -84,20 +85,11 @@ class WolfModel {
             -0.3, 0.2, -0.6
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("body", vertices, indices);
+        return new ArticulatedObject("body", vertices, indicesCube);
     }
 
 
-    static __generateHead(gl, program) {
+    static __generateHead() {
         const vertices = [
             -0.3, -0.3, 0.4,
             0.3, -0.3, 0.4,
@@ -109,20 +101,11 @@ class WolfModel {
             -0.3, 0.2, 0.6,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("head", vertices, indices);
+        return new ArticulatedObject("head", vertices, indicesCube);
     }
 
 
-    static __generateNose(gl, program) {
+    static __generateNose() {
         const vertices = [
             -0.15, -0.3, 0.6,
             0.15, -0.3, 0.6,
@@ -134,20 +117,11 @@ class WolfModel {
             -0.15, -0.05, 0.8,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("nose", vertices, indices);
+        return new ArticulatedObject("nose", vertices, indicesCube);
     }
 
 
-    static __generateRightEar(gl, program) {
+    static __generateRightEar() {
         const vertices = [
             0.1, 0.2, 0.4,
             0.3, 0.2, 0.4,
@@ -160,20 +134,11 @@ class WolfModel {
             0.1, 0.4, 0.5,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("rightEar", vertices, indices);
+        return new ArticulatedObject("rightEar", vertices, indicesCube);
     }
 
 
-    static __generateLeftEar(gl, program) {
+    static __generateLeftEar() {
         const vertices = [
             -0.3, 0.2, 0.4,
             -0.1, 0.2, 0.4,
@@ -186,20 +151,11 @@ class WolfModel {
             -0.3, 0.4, 0.5,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("leftEar", vertices, indices);
+        return new ArticulatedObject("leftEar", vertices, indicesCube);
     }
 
 
-    static __generateTopMane(gl, program) {
+    static __generateTopMane() {
         const vertices = [
             //Top Mane
             -0.3, 0.2, 0.0,
@@ -212,19 +168,10 @@ class WolfModel {
             -0.3, 0.3, 0.4,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("mane", vertices, indices);
+        return new ArticulatedObject("mane", vertices, indicesCube);
     }
 
-    static __generateRightMane(gl, program) {
+    static __generateRightMane() {
         const vertices = [
             0.3, -0.3, 0.0,
             0.4, -0.3, 0.0,
@@ -236,19 +183,10 @@ class WolfModel {
             0.3, 0.3, 0.4,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("rightMane", vertices, indices);
+        return new ArticulatedObject("rightMane", vertices, indicesCube);
     }
 
-    static __generateLeftMane(gl, program) {
+    static __generateLeftMane() {
         const vertices = [
             -0.4, -0.3, 0.0,
             -0.3, -0.3, 0.0,
@@ -260,19 +198,10 @@ class WolfModel {
             -0.4, 0.3, 0.4,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("leftMane", vertices, indices);
+        return new ArticulatedObject("leftMane", vertices, indicesCube);
     }
 
-    static __generateRightFrontLeg(gl, program) {
+    static __generateRightFrontLeg() {
         const vertices = [
             0.1, -0.8, 0.2,
             0.3, -0.8, 0.2,
@@ -284,20 +213,11 @@ class WolfModel {
             0.1, -0.2, 0.4,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("rightFrontLeg", vertices, indices);
+        return new ArticulatedObject("rightFrontLeg", vertices, indicesCube);
     }
 
 
-    static __generateLeftFrontLeg(gl, program) {
+    static __generateLeftFrontLeg() {
         const vertices = [
             -0.3, -0.8, 0.2,
             -0.1, -0.8, 0.2,
@@ -309,20 +229,11 @@ class WolfModel {
             -0.3, -0.2, 0.4,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("leftFrontLeg", vertices, indices);
+        return new ArticulatedObject("leftFrontLeg", vertices, indicesCube);
     }
 
 
-    static __generateLeftHindLeg(gl, program) {
+    static __generateLeftHindLeg() {
         const vertices = [
             -0.3, -0.8, -0.6,
             -0.1, -0.8, -0.6,
@@ -334,20 +245,11 @@ class WolfModel {
             -0.3, -0.2, -0.4,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("leftHindLeg", vertices, indices);
+        return new ArticulatedObject("leftHindLeg", vertices, indicesCube);
     }
 
 
-    static __generateRightHindLeg(gl, program) {
+    static __generateRightHindLeg() {
         const vertices = [
             0.1, -0.8, -0.6,
             0.3, -0.8, -0.6,
@@ -359,20 +261,11 @@ class WolfModel {
             0.1, -0.2, -0.4,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("rightHindLeg", vertices, indices);
+        return new ArticulatedObject("rightHindLeg", vertices, indicesCube);
     }
 
 
-    static __generateTail(gl, program) {
+    static __generateTail() {
         const vertices = [
             -0.1, 0.0, -1.1,
             0.1, 0.0, -1.1,
@@ -384,16 +277,7 @@ class WolfModel {
             -0.1, 0.2, -0.5,
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("tail", vertices, indices);
+        return new ArticulatedObject("tail", vertices, indicesCube);
     }
 }
 

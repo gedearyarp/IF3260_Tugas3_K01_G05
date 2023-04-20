@@ -1,4 +1,5 @@
 import { ArticulatedObject } from "../object/articulated-object.js";
+import { indicesCube } from "./constant.js";
 
 class ChickenModel {
     static getComponents() {
@@ -117,20 +118,11 @@ class ChickenModel {
             -0.3, 0.3, -0.4
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("body", vertices, indices);
+        return new ArticulatedObject("body", vertices, indicesCube);
     }
 
 
-    static __generateHead(gl, program) {
+    static __generateHead() {
         const vertices = [
             -0.2, 0.1, 0.6,
             0.2, 0.1, 0.6,
@@ -142,20 +134,11 @@ class ChickenModel {
             -0.2, 0.7, 0.3
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("head", vertices, indices);
+        return new ArticulatedObject("head", vertices, indicesCube);
     }
 
 
-    static __generateUpperBeak(gl, program) {
+    static __generateUpperBeak() {
         const vertices = [
             -0.2, 0.3, 0.8,
             0.2, 0.3, 0.8,
@@ -167,20 +150,11 @@ class ChickenModel {
             -0.2, 0.4, 0.6
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("upperBeak", vertices, indices);
+        return new ArticulatedObject("upperBeak", vertices, indicesCube);
     }
 
 
-    static __generateLowerBeak(gl, program) {
+    static __generateLowerBeak() {
         const vertices = [
             -0.2, 0.4, 0.8,
             0.2, 0.4, 0.8,
@@ -192,20 +166,11 @@ class ChickenModel {
             -0.2, 0.5, 0.6
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("lowerBeak", vertices, indices);
+        return new ArticulatedObject("lowerBeak", vertices, indicesCube);
     }
 
 
-    static __generateWattle(gl, program) {
+    static __generateWattle() {
         const vertices = [
             -0.1, 0.05, 0.7,
             0.1, 0.05, 0.7,
@@ -217,20 +182,11 @@ class ChickenModel {
             -0.1, 0.3, 0.6
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("wattle", vertices, indices);
+        return new ArticulatedObject("wattle", vertices, indicesCube);
     }
 
 
-    static __generateComb(gl, program) {
+    static __generateComb() {
         const vertices = [
             -0.05, 0.7, 0.55,
             0.05, 0.7, 0.55,
@@ -242,20 +198,11 @@ class ChickenModel {
             -0.05, 0.8, 0.3
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("comb", vertices, indices);
+        return new ArticulatedObject("comb", vertices, indicesCube);
     }
 
 
-    static __generateLeftWing(gl, program) {
+    static __generateLeftWing() {
         const vertices = [
             -0.4, -0.1, 0.3,
             -0.3, -0.1, 0.3,
@@ -267,20 +214,11 @@ class ChickenModel {
             -0.4, 0.3, -0.3
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("leftWing", vertices, indices);
+        return new ArticulatedObject("leftWing", vertices, indicesCube);
     }
 
 
-    static __generateRightWing(gl, program) {
+    static __generateRightWing() {
         const vertices = [
             0.3, -0.1, 0.3,
             0.4, -0.1, 0.3,
@@ -292,20 +230,11 @@ class ChickenModel {
             0.3, 0.3, -0.3
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("rightWing", vertices, indices);
+        return new ArticulatedObject("rightWing", vertices, indicesCube);
     }
 
 
-    static __generateLeftLeg(gl, program) {
+    static __generateLeftLeg() {
         const vertices = [
             -0.2, -0.7, 0.0,
             -0.1, -0.7, 0.0,
@@ -317,20 +246,11 @@ class ChickenModel {
             -0.2, -0.3, -0.1
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("leftLeg", vertices, indices);
+        return new ArticulatedObject("leftLeg", vertices, indicesCube);
     }
 
 
-    static __generateRightLeg(gl, program) {
+    static __generateRightLeg() {
         const vertices = [
             0.1, -0.7, 0.0,
             0.2, -0.7, 0.0,
@@ -342,20 +262,11 @@ class ChickenModel {
             0.1, -0.3, -0.1
         ];
 
-        const indices = [
-            0, 1, 2, 0, 2, 3,
-            1, 5, 6, 1, 6, 2,
-            5, 4, 7, 5, 7, 6,
-            4, 0, 3, 4, 3, 7,
-            3, 2, 6, 3, 6, 7,
-            4, 5, 1, 4, 1, 0
-        ];
-
-        return new ArticulatedObject("rightLeg", vertices, indices);
+        return new ArticulatedObject("rightLeg", vertices, indicesCube);
     }
 
 
-    static __generateLeftToe(gl, program) {
+    static __generateLeftToe() {
         const vertices = [
             -0.3, -0.8, 0.2,
             0.0, -0.8, 0.2,
@@ -390,11 +301,11 @@ class ChickenModel {
             12, 13, 9, 12, 9, 8
         ];
 
-        return new ArticulatedObject("leftToe", vertices, indices);
+        return new ArticulatedObject("leftToe", vertices, indicesCube);
     }
 
 
-    static __generateRightToe(gl, program) {
+    static __generateRightToe() {
         const vertices = [
             0.0, -0.8, 0.2,
             0.3, -0.8, 0.2,
@@ -429,7 +340,7 @@ class ChickenModel {
             12, 13, 9, 12, 9, 8
         ];
 
-        return new ArticulatedObject("rightToe", vertices, indices);
+        return new ArticulatedObject("rightToe", vertices, indicesCube);
     }
 
 }

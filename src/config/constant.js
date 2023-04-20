@@ -23,5 +23,14 @@ const textureType = {
     IMAGE: 2,
 }
 
+const indicesCube = [
+    0, 1, 2, 0, 2, 3,
+    1, 5, 6, 1, 6, 2,
+    7, 6, 5, 7, 5, 4,
+    4, 0, 3, 4, 3, 7,
+    4, 5, 1, 4, 1, 0,
+    3, 2, 6, 3, 6, 7,
+];
 
-export { projectionType, shadingType, modelType, textureType };
+
+export { projectionType, shadingType, modelType, textureType, indicesCube };

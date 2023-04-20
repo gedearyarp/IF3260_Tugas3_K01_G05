@@ -1,4 +1,5 @@
 import { ArticulatedObject } from "../object/articulated-object.js";
+import { indicesCube } from "./constant.js";
 
 const SCALE = 0.6;
 
@@ -113,25 +114,14 @@ class HorseModel{
             -0.3, 0.27, -0.6 // 7
         ];
 
-        const indices = [
-            0, 1, 2, 2, 3, 0,
-            4, 0, 3, 3, 7, 4,
-            1, 5, 6, 6, 2, 1,
-            4, 5, 6, 6, 7, 4,
-            7, 3, 2, 2, 6, 7,
-            0, 1, 5, 5, 4, 0,
-
-
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
 
-        return new ArticulatedObject("body", vertices, indices);
+        return new ArticulatedObject("body", vertices, indicesCube);
     }
 
-    static __generateRightFrontLeg(gl, program){
+    static __generateRightFrontLeg(){
         const vertices = [
             0.15, -0.2, 0.6,//0
             0.15, -0.8, 0.6, // 1
@@ -144,24 +134,14 @@ class HorseModel{
             0.3, -0.2, 0.35, //7
         ];
 
-        const indices = [
-            0, 1, 2, 2, 3, 0,
-            4, 5, 6, 6, 7, 4,
-            5, 1, 2, 2, 6, 5,
-            3, 2, 6, 6, 7, 3,
-            4, 5, 1, 1, 0, 4, 
-
-
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
 
-        return new ArticulatedObject("rightFrontLeg", vertices, indices);
+        return new ArticulatedObject("rightFrontLeg", vertices, indicesCube);
     }
 
-    static __generateLeftFrontLeg(gl, program){
+    static __generateLeftFrontLeg(){
         const vertices = [
             -0.15, -0.2, 0.6,//0
             -0.15, -0.8, 0.6, // 1
@@ -174,24 +154,14 @@ class HorseModel{
             -0.3, -0.2, 0.35, //7
         ];
 
-        const indices = [
-            0, 1, 2, 2, 3, 0,
-            4, 5, 6, 6, 7, 4,
-            5, 1, 2, 2, 6, 5,
-            3, 2, 6, 6, 7, 3,
-            4, 5, 1, 1, 0, 4, 
-
-
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
 
-        return new ArticulatedObject("leftFrontLeg", vertices, indices);
+        return new ArticulatedObject("leftFrontLeg", vertices, indicesCube);
     }
 
-    static __generateRightBackLeg(gl, program){
+    static __generateRightBackLeg(){
         const vertices = [
             0.15, -0.2, -0.6,//0
             0.15, -0.8, -0.6, // 1
@@ -204,24 +174,14 @@ class HorseModel{
             0.3, -0.2, -0.35, //7
         ];
 
-        const indices = [
-            0, 1, 2, 2, 3, 0,
-            4, 5, 6, 6, 7, 4,
-            5, 1, 2, 2, 6, 5,
-            3, 2, 6, 6, 7, 3,
-            4, 5, 1, 1, 0, 4, 
-
-
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
 
-        return new ArticulatedObject("rightBackLeg", vertices, indices);
+        return new ArticulatedObject("rightBackLeg", vertices, indicesCube);
     }
 
-    static __generateLeftBackLeg(gl, program){
+    static __generateLeftBackLeg(){
         const vertices = [
             -0.15, -0.2, -0.6,//0
             -0.15, -0.8, -0.6, // 1
@@ -234,24 +194,14 @@ class HorseModel{
             -0.3, -0.2, -0.35, //7
         ];
 
-        const indices = [
-            0, 1, 2, 2, 3, 0,
-            4, 5, 6, 6, 7, 4,
-            5, 1, 2, 2, 6, 5,
-            3, 2, 6, 6, 7, 3,
-            4, 5, 1, 1, 0, 4, 
-
-
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
 
-        return new ArticulatedObject("leftBackLeg", vertices, indices);
+        return new ArticulatedObject("leftBackLeg", vertices, indicesCube);
     }
 
-    static __generateNeck(gl, program){
+    static __generateNeck(){
         const vertices = [
             -0.15, 0.1, 0.6,
             0.15, 0.1, 0.6,
@@ -266,22 +216,14 @@ class HorseModel{
 
         ];
 
-        const indices = [
-            0, 1, 2, 2, 3, 0,
-            4, 5, 6, 6, 7, 4,
-            1, 5, 6, 6, 2, 1,
-            4, 0, 3, 3, 7, 4,
-
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
 
-        return new ArticulatedObject("neck", vertices, indices);
+        return new ArticulatedObject("neck", vertices, indicesCube);
     }
 
-    static __generateHead(gl, program){
+    static __generateHead(){
         const vertices = [
             -0.3, 0.6, 0.75,
             0.3, 0.6, 0.75,
@@ -292,26 +234,16 @@ class HorseModel{
             0.3, 0.6, 0.3,
             0.3, 0.9, 0.4,
             -0.3, 0.9, 0.4,
-
-
-        ];
-
-        const indices = [
-            0, 1, 2, 2, 3, 0,
-            4, 5, 6, 6, 7, 4,
-            1, 5, 6, 6, 2, 1,
-            4, 0, 3, 3, 7, 4,
-
         ];
 
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
 
-        return new ArticulatedObject("head", vertices, indices);
+        return new ArticulatedObject("head", vertices, indicesCube);
     }
 
-    static __generateRightEar(gl, program){
+    static __generateRightEar(){
         const vertices = [
             0.25, 0.9, 0.63,
             0.1, 0.9, 0.63,
@@ -326,22 +258,14 @@ class HorseModel{
 
         ];
 
-        const indices = [
-            0, 1, 2, 2, 3, 0,
-            4, 5, 6, 6, 7, 4,
-            1, 5, 6, 6, 2, 1,
-            4, 0, 3, 3, 7, 4,
-
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
 
-        return new ArticulatedObject("rightEar", vertices, indices);
+        return new ArticulatedObject("rightEar", vertices, indicesCube);
     }
 
-    static __generateLeftEar(gl, program){
+    static __generateLeftEar(){
         const vertices = [
             -0.25, 0.9, 0.63,
             -0.1, 0.9, 0.63,
@@ -352,26 +276,16 @@ class HorseModel{
             -0.1, 0.9, 0.53,
             -0.1, 1, 0.55,
             -0.25, 1, 0.55,
-
-
-        ];
-
-        const indices = [
-            0, 1, 2, 2, 3, 0,
-            4, 5, 6, 6, 7, 4,
-            1, 5, 6, 6, 2, 1,
-            4, 0, 3, 3, 7, 4,
-
         ];
 
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
 
-        return new ArticulatedObject("leftEar", vertices, indices);
+        return new ArticulatedObject("leftEar", vertices, indicesCube);
     }
 
-    static __generateNose(gl, program){
+    static __generateNose(){
         const vertices = [
             -0.15, 0.6, 1.2,
             0.15, 0.6, 1.2,
@@ -385,22 +299,14 @@ class HorseModel{
 
         ];
 
-        const indices = [
-            0, 1, 2, 2, 3, 0,
-            4, 5, 6, 6, 7, 4,
-            1, 5, 6, 6, 2, 1,
-            4, 0, 3, 3, 7, 4,
-
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
 
-        return new ArticulatedObject("nose", vertices, indices);
+        return new ArticulatedObject("nose", vertices, indicesCube);
     }
 
-    static __generateTail(gl, program){
+    static __generateTail(){
         const vertices = [
             -0.15, 0.27, -0.6,
             0.15, 0.27, -0.6,
@@ -414,21 +320,11 @@ class HorseModel{
 
         ];
 
-        const indices = [
-            0, 1, 2, 2, 3, 0,
-            4, 0, 3, 3, 7, 4,
-            1, 5, 6, 6, 2, 1,
-            4, 5, 6, 6, 7, 4,
-            7, 3, 2, 2, 6, 7,
-            0, 1, 5, 5, 4, 0,
-
-        ];
-
         for (let i = 0; i < vertices.length; i++) {
             vertices[i] *= SCALE;
         }
 
-        return new ArticulatedObject("tail", vertices, indices);
+        return new ArticulatedObject("tail", vertices, indicesCube);
     }
 }
 
