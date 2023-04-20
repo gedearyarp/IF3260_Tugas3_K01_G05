@@ -354,7 +354,7 @@ class Controller {
             cameraViewMat,
             cameraPosition,
             colorVec,
-            this.model.textures,
+            this.component.textures,
             this.component.projection,
             this.component.useShading,
             this.component.texture,
