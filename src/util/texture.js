@@ -5,7 +5,6 @@ export class Texture {
             reflective: this.__getReflectiveTexture(gl),
             image: this.__getImageTexture(gl)
         }
-        console.log(textures);
         return textures;
     }
 

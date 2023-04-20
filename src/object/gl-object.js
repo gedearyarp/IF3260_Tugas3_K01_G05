@@ -27,7 +27,7 @@ export class GlObject {
         this.__bindBuffers(gl);
         this.__setUniforms(gl, projectionMat, cameraViewMat, cameraPosition, colorVec, projType, useShading, textureType, parentTransform);
 
-        gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
+        gl.drawArrays(gl.TRIANGLES, 0, this.attributes.vertices.length / 3);
     }
 
     __createBuffers(gl) {
@@ -63,12 +63,9 @@ export class GlObject {
 
     __bindBuffers(gl) {
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.attributes.vertices), gl.STATIC_DRAW);
         gl.vertexAttribPointer(this.positionLoc, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(this.positionLoc);
-
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.attributes.normals), gl.STATIC_DRAW);
@@ -159,7 +156,6 @@ export class GlObject {
         const attributes = {
             vertices: [],
             normals: [],
-            colors: [],
             tangents: [],
             bitangents: [],
             textureCoords: [],
@@ -169,14 +165,17 @@ export class GlObject {
         for (let i=0; i < indicesLength; i += 6) {
             for (let j=0; j < 6; j++) {
                 const index = this.indices[i + j];
-                const vertex = this.vertices[index];
-                attributes.vertices = attributes.vertices.concat(vertex);
+                const vertex = [];
 
-                attributes.colors = attributes.colors.concat([1.0, 1.0, 1.0, 1.0]);
+                for (let k=0; k < 3; k++) {
+                    vertex.push(this.vertices[index * 3 + k]);
+                }
+
+                attributes.vertices = attributes.vertices.concat(vertex);
             }
             
             attributes.textureCoords = attributes.textureCoords.concat([
-                0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1,
+                0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
             ]);
         }
 

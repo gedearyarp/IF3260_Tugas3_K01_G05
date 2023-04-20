@@ -22,7 +22,7 @@ class Controller {
             program: modelProgram,
             object: PersonModel.getModel(),
             projection: projectionType.ORTHOGRAPHIC,
-            texture: textureType.COLOR,
+            texture: textureType.BUMP,
             textures: Texture.__generateTexture(modelGl),
             cameraAngle: 0,
             cameraRadius: 0,
@@ -412,12 +412,6 @@ class Controller {
                 break;
         }
 
-        // const cameraRotation = mat4.rotationMatrix(0, this.__degToRad(object.cameraAngle), 0);
-        // const cameraTranslation = mat4.translationMatrix(0, 0, object.cameraRadius / 1000);
-
-        // const cameraTransform = mat4.mult(cameraRotation, cameraTranslation);
-
-        // return mat4.mult(projection, cameraTransform);
         return projection;
     }
 
