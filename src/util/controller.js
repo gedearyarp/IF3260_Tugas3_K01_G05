@@ -4,6 +4,7 @@ import { PersonModel } from '../config/person.js';
 import { ChickenModel } from '../config/chicken.js';
 import { WolfModel } from '../config/wolf.js';
 import { HorseModel } from '../config/horse.js';
+import { Texture } from './texture.js';
 
 import {resetModelViewControl, resetComponentViewControl} from '../view.js'
 
@@ -15,6 +16,7 @@ class Controller {
             object: WolfModel.getModel(),
             projection: projectionType.ORTHOGRAPHIC,
             texture: textureType.BUMP,
+            textures: Texture.__generateTexture(modelGl),
             cameraAngle: 0,
             cameraRadius: 0,
             useShading: true,
@@ -27,6 +29,7 @@ class Controller {
             object: this.model.object.findComponentByName("body"),
             projection: projectionType.ORTHOGRAPHIC,
             texture: textureType.BUMP,
+            textures: Texture.__generateTexture(componentGl),
             cameraAngle: 0,
             cameraRadius: 0,
             useShading: true,
@@ -197,6 +200,7 @@ class Controller {
             cameraViewMat,
             cameraPosition,
             colorVec,
+            this.model.textures,
             this.model.projection,
             this.model.useShading,
             this.model.texture,
@@ -222,6 +226,7 @@ class Controller {
             cameraViewMat,
             cameraPosition,
             colorVec,
+            this.model.textures,
             this.component.projection,
             this.component.useShading,
             this.component.texture,
