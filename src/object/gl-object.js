@@ -138,9 +138,9 @@ export class GlObject {
             (this.translate[2] + parentTranslate[2])/100
         );
         const rotateMat = mat4.rotationMatrix(
-            this.__degToRad(this.rotate[0] + parentRotate[0])/2, 
-            this.__degToRad(this.rotate[1] + parentRotate[1])/2,
-            this.__degToRad(this.rotate[2] + parentRotate[2])/2
+            this.__degToRad(this.rotate[0] + parentRotate[0]), 
+            this.__degToRad(this.rotate[1] + parentRotate[1]),
+            this.__degToRad(this.rotate[2] + parentRotate[2])
         );
         const scaleMat = mat4.scalationMatrix(
             this.scale[0] * parentScale[0],
