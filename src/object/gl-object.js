@@ -126,7 +126,7 @@ export class GlObject {
 
         gl.uniform1i(this.textureReflectiveLoc, 1);
         gl.activeTexture(gl.TEXTURE1);
-        gl.bindTexture(gl.TEXTURE_2D, this.texture.reflective);
+        gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.texture.reflective);
 
         gl.uniform1i(this.textureImageLoc, 2);
         gl.activeTexture(gl.TEXTURE2);
