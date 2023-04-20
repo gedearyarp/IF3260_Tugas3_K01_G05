@@ -22,7 +22,7 @@ class Controller {
             program: modelProgram,
             object: PersonModel.getModel(),
             projection: projectionType.ORTHOGRAPHIC,
-            texture: textureType.BUMP,
+            texture: textureType.COLOR,
             textures: Texture.__generateTexture(modelGl),
             cameraAngle: 0,
             cameraRadius: 0,
