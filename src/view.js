@@ -110,6 +110,20 @@ function setComponentViewControl(data) {
     document.getElementById("scale-z-component").nextElementSibling.value = data.scale[2];
 }
 
+function refreshComponentTree(controller) {
+    const tree = document.getElementById("component-tree");
+    tree.innerHTML = controller.getComponentTreeDisplay();
+
+    const componentTreeButtons = document.querySelectorAll('[id^="component-part-"]');
+    componentTreeButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            controller.setComponent().object(event.target.id.split("-")[2]);
+            const componentName = document.getElementById("current-component-name");
+            componentName.value = controller.component.object.name;
+        });
+    });
+}
+
 function modelEventListener(controller) {
     document.getElementById("person").addEventListener("change", (event) => {
         controller.setModel().object(modelType.PERSON);
@@ -418,5 +432,6 @@ export {
     configureEventListener, 
     resetModelViewControl, 
     resetComponentViewControl, 
-    setComponentViewControl 
+    setComponentViewControl,
+    refreshComponentTree
 };

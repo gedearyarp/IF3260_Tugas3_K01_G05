@@ -7,7 +7,12 @@ import { HorseModel } from '../config/horse.js';
 import { ArticulatedObject } from '../object/articulated-object.js';
 import { Texture } from './texture.js';
 
-import {resetModelViewControl, resetComponentViewControl, setComponentViewControl} from '../view.js'
+import {
+    resetModelViewControl, 
+    resetComponentViewControl, 
+    setComponentViewControl, 
+    refreshComponentTree
+} from '../view.js'
 
 class Controller {
     constructor(modelGl, modelProgram, componentGl, componentProgram) {
@@ -295,7 +300,7 @@ class Controller {
             this.model.object = this.__dfsConstructArticulatedObject(data.model);
             this.setComponent().object(this.model.object.name);
 
-            this.getComponentTreeDisplay();
+            refreshComponentTree(this);
         }
     }
 
