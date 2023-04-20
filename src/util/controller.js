@@ -162,6 +162,7 @@ class Controller {
                 controller.model.cameraRadius = 0;
                 controller.model.useShading = true;
                 controller.model.projection = projectionType.ORTHOGRAPHIC;
+                controller.model.texture = textureType.COLOR;
 
                 controller.component.cameraAngle = 0;
                 controller.component.cameraRadius = 0;

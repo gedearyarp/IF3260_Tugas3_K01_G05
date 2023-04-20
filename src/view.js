@@ -38,6 +38,11 @@ function resetModelViewControl() {
     document.getElementById("oblique-model").checked = false;
     document.getElementById("perspective-model").checked = false;
 
+    document.getElementById("color-model").checked = true;
+    document.getElementById("bump-model").checked = false;
+    document.getElementById("reflective-model").checked = false;
+    document.getElementById("custom-model").checked = false;
+
     resetComponentViewControl();
 }
 
