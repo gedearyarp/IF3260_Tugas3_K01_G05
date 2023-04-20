@@ -5,6 +5,7 @@ import { ChickenModel } from '../config/chicken.js';
 import { WolfModel } from '../config/wolf.js';
 import { HorseModel } from '../config/horse.js';
 import { ArticulatedObject } from '../object/articulated-object.js';
+import { Texture } from './texture.js';
 
 import {resetModelViewControl, resetComponentViewControl, setComponentViewControl} from '../view.js'
 
@@ -17,6 +18,7 @@ class Controller {
             object: PersonModel.getModel(),
             projection: projectionType.ORTHOGRAPHIC,
             texture: textureType.COLOR,
+            textures: Texture.__generateTexture(modelGl),
             cameraAngle: 0,
             cameraRadius: 0,
             useShading: true,
@@ -29,6 +31,7 @@ class Controller {
             object: this.model.object,
             projection: projectionType.ORTHOGRAPHIC,
             texture: textureType.COLOR,
+            textures: Texture.__generateTexture(componentGl),
             cameraAngle: 0,
             cameraRadius: 0,
             useShading: true,
@@ -62,6 +65,7 @@ class Controller {
 
                 controller.model.projection = projectionType.ORTHOGRAPHIC;
                 controller.model.texture = textureType.COLOR;
+                controller.model.textures = Texture.__generateTexture(controller.model.gl);
                 controller.model.cameraAngle = 0;
                 controller.model.cameraRadius = 0;
                 controller.model.useShading = true;
@@ -117,6 +121,7 @@ class Controller {
 
                     controller.model.projection = projectionType.ORTHOGRAPHIC;
                     controller.model.texture = textureType.COLOR;
+                    controller.model.textures = Texture.__generateTexture(controller.model.gl);
                     controller.model.cameraAngle = 0;
                     controller.model.cameraRadius = 0;
                     controller.model.useShading = true;
@@ -312,13 +317,18 @@ class Controller {
         gl.enable(gl.DEPTH_TEST);
 
         const projectionMat = this.__getProjectionMatrix(this.model);
+        const cameraViewMat = this.__getCameraViewMatrix(this.model);
+        const cameraPosition = this.__getCameraPos(this.model);
         const colorVec = [0.6, 0.2, 0.4];
 
         this.model.object.draw(
             gl, 
             program,
             projectionMat,
+            cameraViewMat,
+            cameraPosition,
             colorVec,
+            this.model.textures,
             this.model.projection,
             this.model.useShading,
             this.model.texture,
@@ -333,13 +343,18 @@ class Controller {
         gl.enable(gl.DEPTH_TEST);
 
         const projectionMat = this.__getProjectionMatrix(this.component);
+        const cameraViewMat = this.__getCameraViewMatrix(this.component);
+        const cameraPosition = this.__getCameraPos(this.component);
         const colorVec = [0.6, 0.2, 0.4];
 
         this.component.object.drawComponent(
             gl, 
             program, 
             projectionMat,
+            cameraViewMat,
+            cameraPosition,
             colorVec,
+            this.model.textures,
             this.component.projection,
             this.component.useShading,
             this.component.texture,
@@ -389,12 +404,13 @@ class Controller {
                 break;
         }
 
-        const cameraRotation = mat4.rotationMatrix(0, this.__degToRad(object.cameraAngle), 0);
-        const cameraTranslation = mat4.translationMatrix(0, 0, object.cameraRadius / 1000);
+        // const cameraRotation = mat4.rotationMatrix(0, this.__degToRad(object.cameraAngle), 0);
+        // const cameraTranslation = mat4.translationMatrix(0, 0, object.cameraRadius / 1000);
 
-        const cameraTransform = mat4.mult(cameraRotation, cameraTranslation);
+        // const cameraTransform = mat4.mult(cameraRotation, cameraTranslation);
 
-        return mat4.mult(projection, cameraTransform);
+        // return mat4.mult(projection, cameraTransform);
+        return projection;
     }
 
     __getCameraViewMatrix(object) {
